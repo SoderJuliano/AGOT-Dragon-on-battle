@@ -79,3 +79,67 @@ dob_dragon_prestige_gain = {
 		}
 	}
 }
+
+# Retorna o Battle Tier do dragão (1-10) baseado no dragon_size
+# Scope: o DRAGÃO (não o rider) — chamado pelo GUI no CharacterWindow do dragão
+# Equivale aos tiers internos do AGOT (base_dragon_army_modifier_1 a _10)
+# Size 0-29:   0 (filhote, não combate)
+# Size 30-49:  1
+# Size 50-79:  2-3
+# Size 80-119: 4-6
+# Size 120-149: 7-8
+# Size 150+:   9-10
+dob_dragon_battle_tier = {
+	value = 0
+
+	# Tier 1: dragão jovem pequeno
+	if = {
+		limit = { dragon_size >= 30 }
+		add = 1
+	}
+	# Tier 2
+	if = {
+		limit = { dragon_size >= 50 }
+		add = 1
+	}
+	# Tier 3
+	if = {
+		limit = { dragon_size >= 65 }
+		add = 1
+	}
+	# Tier 4
+	if = {
+		limit = { dragon_size >= 80 }
+		add = 1
+	}
+	# Tier 5
+	if = {
+		limit = { dragon_size >= 95 }
+		add = 1
+	}
+	# Tier 6
+	if = {
+		limit = { dragon_size >= 110 }
+		add = 1
+	}
+	# Tier 7
+	if = {
+		limit = { dragon_size >= 120 }
+		add = 1
+	}
+	# Tier 8
+	if = {
+		limit = { dragon_size >= 135 }
+		add = 1
+	}
+	# Tier 9
+	if = {
+		limit = { dragon_size >= 150 }
+		add = 1
+	}
+	# Tier 10
+	if = {
+		limit = { dragon_size >= 170 }
+		add = 1
+	}
+}
