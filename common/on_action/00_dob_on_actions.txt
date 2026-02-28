@@ -61,25 +61,42 @@ dob_on_combat_end_loser = {
 	effect = { dob_dragon_loser_effect = yes }
 }
 
-# ── Hook 4: Pulso anual — atualiza modifier de poder na ficha do dragão ──────────
-# Root = character (cada personagem vivo recebe um pulso por ano)
-# Apenas dragonriders com dragão vivo atualizam o modifier do dragão.
-on_yearly_pulse = {
-	on_actions = { dob_on_yearly_pulse }
+# ── Hook 4: Pulso mensal — atualiza modifier de poder na ficha do rider e do dragão ──
+# Root = character. Mensal para aparecer logo após instalar o mod em save existente.
+# - Dragonrider com dragão vivo: aplica/atualiza modifiers no rider E no dragão
+# - Perdeu o dragão: remove os modifiers do rider automaticamente
+on_monthly_pulse = {
+	on_actions = { dob_on_monthly_pulse }
 }
 
-dob_on_yearly_pulse = {
+dob_on_monthly_pulse = {
 	effect = {
 		if = {
 			limit = {
 				has_trait = dragonrider
 				exists = var:current_dragon
-				var:current_dragon = { is_alive = yes }
+				var:current_dragon = { is_alive = yes, dragon_size >= 30 }
 			}
-			# Atualizar modifier de tier na ficha do dragão
+			# 1. Modifier visível na ficha do dragão (dragon scope)
 			var:current_dragon = {
 				dob_update_dragon_power_modifier = yes
 			}
+			# 2. Modifier visível na ficha do RIDER (rider scope)
+			# → Aqui o player sempre consegue ver, sem precisar abrir a ficha do dragão
+			dob_update_rider_dragon_modifier = yes
+		}
+		# Rider perdeu o dragão → limpar modifiers do rider
+		else_if = {
+			limit = {
+				OR = {
+					has_character_modifier = dob_rider_dragon_young
+					has_character_modifier = dob_rider_dragon_mature
+					has_character_modifier = dob_rider_dragon_great
+				}
+			}
+			remove_character_modifier = dob_rider_dragon_young
+			remove_character_modifier = dob_rider_dragon_mature
+			remove_character_modifier = dob_rider_dragon_great
 		}
 	}
 }

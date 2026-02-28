@@ -56,3 +56,31 @@ dob_dragon_power_great = {
 	monthly_prestige = 0.5		# Grande dragão é lenda viva
 	stress_gain_mult = -0.05	# Pilotar um deus é eufórico
 }
+
+# ============================================================
+# MODIFIERS DO RIDER — visíveis na ficha do personagem que monta o dragão
+# Aplicados ao rider (não ao dragão), atualizados mensalmente.
+# Aparecem assim que o mod é instalado em qualquer save existente.
+# Tier sobe automaticamente conforme o dragão cresce.
+# ============================================================
+
+# Rider de dragão jovem (size 30-79) — AGOT tier 1-3
+dob_rider_dragon_young = {
+	icon = beast_positive
+	monthly_prestige = 0.1		# Fama passiva de ter um dragão
+}
+
+# Rider de dragão maduro (size 80-149) — AGOT tier 4-6
+dob_rider_dragon_mature = {
+	icon = beast_positive
+	monthly_prestige = 0.2		# Dragão reconhecido no reino
+	prowess = 2					# Treino com dragão melhora habilidade
+}
+
+# Rider de dragão imenso (size 150+) — AGOT tier 7-10 (Vhagar, Balerion)
+dob_rider_dragon_great = {
+	icon = beast_positive
+	monthly_prestige = 0.4		# Lenda viva: pilota um dos maiores dragões da história
+	prowess = 4					# Elite dos dragonriders
+	stress_gain_mult = -0.05	# Confiança de pilotar um deus
+}
