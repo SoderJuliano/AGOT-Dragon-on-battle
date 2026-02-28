@@ -191,4 +191,50 @@ dob_update_rider_dragon_modifier = {
 		limit = { var:current_dragon = { dragon_size >= 30 } }
 		add_character_modifier = dob_rider_dragon_young
 	}
+
+	# ── Armazena o tier (1-10) como variável no dragão para exibir na janela do dragão
+	# Usa if/else a partir do rider scope (var:current_dragon = {}) — método confirmado funcionar
+	if = {
+		limit = { var:current_dragon = { dragon_size >= 170 } }
+		var:current_dragon = { set_variable = { name = dob_battle_tier value = 10 } }
+	}
+	else_if = {
+		limit = { var:current_dragon = { dragon_size >= 150 } }
+		var:current_dragon = { set_variable = { name = dob_battle_tier value = 9 } }
+	}
+	else_if = {
+		limit = { var:current_dragon = { dragon_size >= 135 } }
+		var:current_dragon = { set_variable = { name = dob_battle_tier value = 8 } }
+	}
+	else_if = {
+		limit = { var:current_dragon = { dragon_size >= 120 } }
+		var:current_dragon = { set_variable = { name = dob_battle_tier value = 7 } }
+	}
+	else_if = {
+		limit = { var:current_dragon = { dragon_size >= 110 } }
+		var:current_dragon = { set_variable = { name = dob_battle_tier value = 6 } }
+	}
+	else_if = {
+		limit = { var:current_dragon = { dragon_size >= 95 } }
+		var:current_dragon = { set_variable = { name = dob_battle_tier value = 5 } }
+	}
+	else_if = {
+		limit = { var:current_dragon = { dragon_size >= 80 } }
+		var:current_dragon = { set_variable = { name = dob_battle_tier value = 4 } }
+	}
+	else_if = {
+		limit = { var:current_dragon = { dragon_size >= 65 } }
+		var:current_dragon = { set_variable = { name = dob_battle_tier value = 3 } }
+	}
+	else_if = {
+		limit = { var:current_dragon = { dragon_size >= 50 } }
+		var:current_dragon = { set_variable = { name = dob_battle_tier value = 2 } }
+	}
+	else_if = {
+		limit = { var:current_dragon = { dragon_size >= 30 } }
+		var:current_dragon = { set_variable = { name = dob_battle_tier value = 1 } }
+	}
+	else = {
+		var:current_dragon = { set_variable = { name = dob_battle_tier value = 0 } }
+	}
 }

@@ -623,22 +623,12 @@ types CharacterWindow
 
 									text_single = {
 										name = "dob_battle_tier_label"
-										text = "DOB_BATTLE_TIER_I"
-										align = nobaseline
-									}
-									text_single = {
-										name = "dob_battle_tier_value"
-										text = "[CharacterWindow.GetCharacter.MakeScope.ScriptValue('dob_dragon_battle_tier')|0]"
-										align = nobaseline
-									}
-								}
-
-								divider_light = {
-									layoutpolicy_vertical = expanding
-									visible = "[Not(Character.IsDeadAndValid)]"
-								}
-
-								# Draconic dread
+											text = "[dob_battle_tier_i]"
+											align = nobaseline
+										}
+										text_single = {
+											name = "dob_battle_tier_value"
+											text = "[CharacterWindow.GetCharacter.GetVariable('dob_battle_tier')|0]"
 								vbox = {
 									visible = "[Not(Character.IsDeadAndValid)]"
 									margin_top = 4

@@ -18,11 +18,14 @@ on_war_started = {
 
 dob_on_war_started = {
 	effect = {
-		# Caso 1: O PLAYER declarou guerra com seu próprio dragão
+		# Caso 1: O PLAYER declarou guerra e tem um dragão vivo
+		# (sem exigir 'Use dragon in warfare' ativado no menu AGOT)
 		if = {
 			limit = {
 				is_ai = no
-				dob_dragon_deployed_for_battle = yes
+				has_trait = dragonrider
+				exists = var:current_dragon
+				var:current_dragon = { is_alive = yes }
 			}
 			set_variable = {
 				name = dob_dragon_power
@@ -38,11 +41,12 @@ dob_on_war_started = {
 			}
 		}
 		# Caso 2: IA (familiar/aliada) declarou guerra com dragão → notifica o player
-		# Root = a personagem IA que declarou guerra (ex: sua irmã)
 		else_if = {
 			limit = {
 				is_ai = yes
-				dob_dragon_deployed_for_battle = yes
+				has_trait = dragonrider
+				exists = var:current_dragon
+				var:current_dragon = { is_alive = yes }
 			}
 			set_variable = {
 				name = dob_dragon_size
@@ -52,14 +56,11 @@ dob_on_war_started = {
 				name = dob_dragon_power
 				value = script_value:dob_dragon_battle_bonus
 			}
-			# Salva o scope da irmã/aliada antes de iterar os players
 			save_scope_as = dob_ally_rider
-			# Notifica família próxima que seja player humano
 			every_close_family_member = {
 				limit = { is_ai = no }
 				trigger_event = { id = dragon_battle.004 }
 			}
-			# Notifica o liege (senhor feudal) se for player
 			if = {
 				limit = {
 					exists = liege
@@ -107,10 +108,7 @@ dob_on_game_start = {
 			limit = {
 				has_trait = dragonrider
 				exists = var:current_dragon
-				var:current_dragon = {
-					is_alive = yes
-					dragon_size >= 30
-				}
+				var:current_dragon = { is_alive = yes }
 			}
 			var:current_dragon = { dob_update_dragon_power_modifier = yes }
 			dob_update_rider_dragon_modifier = yes
@@ -132,17 +130,13 @@ dob_on_monthly_pulse = {
 			limit = {
 				has_trait = dragonrider
 				exists = var:current_dragon
-				var:current_dragon = {
-					is_alive = yes
-					dragon_size >= 30
-				}
+				var:current_dragon = { is_alive = yes }
 			}
 			# 1. Modifier visível na ficha do dragão (dragon scope)
 			var:current_dragon = {
 				dob_update_dragon_power_modifier = yes
 			}
-			# 2. Modifier visível na ficha do RIDER (rider scope)
-			# → Aqui o player sempre consegue ver, sem precisar abrir a ficha do dragão
+			# 2. Modifier visível na ficha do RIDER (rider scope) + guarda variável dob_battle_tier no dragão
 			dob_update_rider_dragon_modifier = yes
 		}
 		# Rider perdeu o dragão → limpar modifiers do rider
