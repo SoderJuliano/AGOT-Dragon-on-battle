@@ -1,0 +1,31 @@
+# ============================================================
+# DRAGON ON BATTLE - Modifiers pós-batalha
+# Mod: Dragon on Battle (AGOT Addon) v0.1
+# ============================================================
+# IMPORTANTE: O AGOT JÁ aplica base_dragon_army_modifier_1-10
+# durante a batalha (combat_roll e enemy_hard_casualty).
+# Esses modifiers nossos são PÓS-BATALHA e usam PRESTÍGIO —
+# mecânica diferente, sem duplicação.
+# Duração: 30 dias ("fama de ter vencido com dragão")
+# ============================================================
+
+# Vitória com dragão jovem/pequeno (size 30-79)
+dob_dragon_victory_small = {
+	icon = beast_positive
+	monthly_prestige = 1			# Fama de vencer com dragão pequeno
+}
+
+# Vitória com dragão adulto/médio (size 80-149)
+dob_dragon_victory_medium = {
+	icon = beast_positive
+	monthly_prestige = 2			# Fama de vencer com dragão adulto
+	prestige_gain_mult = 0.05		# +5% prestígio de outras fontes
+}
+
+# Vitória com dragão grande (size 150+, tier Balerion)
+dob_dragon_victory_large = {
+	icon = beast_positive
+	monthly_prestige = 4			# Fama de vencer com dragão colossal
+	prestige_gain_mult = 0.10		# +10% prestígio de outras fontes
+	stress_gain_mult = -0.05		# Menos stress (exaltação de pilotar)
+}

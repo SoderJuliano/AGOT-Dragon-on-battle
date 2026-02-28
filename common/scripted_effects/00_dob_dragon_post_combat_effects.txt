@@ -1,0 +1,148 @@
+# ============================================================
+# DRAGON ON BATTLE - Post-Combat Scripted Effects
+# Mod: Dragon on Battle (AGOT Addon) v0.1
+# Nomes verificados contra AGOT 0.4.27
+# ============================================================
+# ESCOPO: chamado de on_combat_end_winner/loser
+#   Root = combat_side (NÃO character)
+#   every_side_commander → itera character scope de cada commander
+#   is_current_dragonrider_warfare → trigger AGOT (inclui flag agot_not_using_dragon)
+#
+# MORTE DE DRAGÃO:
+#   kill = { death_reason = death_battle } → CK3 dispara on_death automaticamente
+#   on_death → AGOT dispara agot_dragon.0001 → que notifica o rider
+#   Portanto: NÃO precisamos de evento próprio "dragão morreu"
+#   AGOT já faz tudo: cleanup de variáveis, notificação, memória de personagem
+#
+# PRESTÍGIO:
+#   Dado a TODOS os riders (AI + player) que venceram com dragão
+#   Fórmula: 100 base + (dragon_size * 2)
+#   Exemplo: dragão size 80 → +260 prestígio
+#   Exemplo: dragão size 150 → +400 prestígio
+#
+# VARIÁVEIS ARMAZENADAS NO RIDER (para eventos):
+#   dob_dragon_size      = tamanho do dragão (armazenado ANTES da rolagem de morte)
+#   dob_prestige_gained  = prestígio ganho (armazenado ANTES de aplicar)
+#   dob_dragon_power     = poder de batalha calculado (para evento 003)
+# ============================================================
+
+# ── Efeito para o lado VENCEDOR ─────────────────────────────────────────────────
+# Root = combat_side (winner)
+dob_dragon_winner_effect = {
+	every_side_commander = {
+		limit = {
+			is_current_dragonrider_warfare = yes
+			exists = var:current_dragon
+			var:current_dragon = {
+				dragon_size > 30
+				is_alive = yes
+			}
+		}
+		# Estamos agora em character scope (o rider)
+
+		# Armazenar ANTES da rolagem de morte
+		# (AGOT pode limpar var:current_dragon após kill)
+		set_variable = {
+			name = dob_dragon_size
+			value = script_value:dob_dragon_size_value
+		}
+		set_variable = {
+			name = dob_prestige_gained
+			value = script_value:dob_dragon_prestige_gain
+		}
+
+		# Dar prestígio a TODOS os riders que venceram com dragão (AI e player)
+		add_prestige = script_value:dob_dragon_prestige_gain
+
+		# 1% de chance de morte mesmo na vitória (ferimentos do combate)
+		random = {
+			chance = 1
+			# AGOT dispara agot_dragon.0001 via on_death → notifica rider automaticamente
+			var:current_dragon = {
+				kill = { death_reason = death_battle }
+			}
+		}
+
+		# Feedback visual APENAS para o player
+		if = {
+			limit = { is_ai = no }
+			# Aplicar modifier de prestígio por 30 dias
+			# AGOT já dá advantage/casualty durante o combate via base_dragon_army_modifier
+			# Este modifier é pós-batalha (fama, renome) — não duplica
+			if = {
+				limit = { var:dob_dragon_size >= 150 }
+				add_character_modifier = {
+					modifier = dob_dragon_victory_large
+					days = 30
+				}
+			}
+			else_if = {
+				limit = { var:dob_dragon_size >= 80 }
+				add_character_modifier = {
+					modifier = dob_dragon_victory_medium
+					days = 30
+				}
+			}
+			else = {
+				add_character_modifier = {
+					modifier = dob_dragon_victory_small
+					days = 30
+				}
+			}
+			# Notificação de vitória (1 dia de delay para AGOT processar primeiro)
+			trigger_event = {
+				id = dragon_battle.002
+				days = 1
+			}
+		}
+	}
+}
+
+# ── Efeito para o lado PERDEDOR ─────────────────────────────────────────────────
+# Root = combat_side (loser)
+dob_dragon_loser_effect = {
+	every_side_commander = {
+		limit = {
+			is_current_dragonrider_warfare = yes
+			exists = var:current_dragon
+			var:current_dragon = {
+				dragon_size > 30
+				is_alive = yes
+			}
+		}
+		# Estamos agora em character scope (o rider)
+
+		# Armazenar ANTES da rolagem de morte
+		set_variable = {
+			name = dob_dragon_size
+			value = script_value:dob_dragon_size_value
+		}
+		set_variable = {
+			name = dob_dragon_power
+			value = script_value:dob_dragon_battle_bonus
+		}
+
+		# 20% chance de morte na derrota
+		random = {
+			chance = 20
+			# Penalidade de prestígio: perder um dragão é catastrófico
+			add_prestige = -300
+			# Matar o dragão → AGOT dispara on_death → agot_dragon.0001
+			# → agot_dragon_death.0001 notifica o rider automaticamente
+			# Portanto NÃO precisamos de evento próprio aqui
+			var:current_dragon = {
+				kill = { death_reason = death_battle }
+			}
+		}
+
+		# Feedback visual APENAS para o player
+		if = {
+			limit = { is_ai = no }
+			# Notificação de derrota (1 dia de delay)
+			trigger_event = {
+				id = dragon_battle.003
+				days = 1
+			}
+		}
+	}
+}

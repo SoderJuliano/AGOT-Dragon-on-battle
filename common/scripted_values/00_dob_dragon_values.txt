@@ -1,0 +1,81 @@
+# ============================================================
+# DRAGON ON BATTLE - Scripted Values
+# Mod: Dragon on Battle (AGOT Addon) v0.1
+# Nomes verificados contra AGOT 0.4.27
+# ============================================================
+# O rider acessa seu dragão via: var:current_dragon
+# dragon_size é script_value no escopo do DRAGÃO (não do rider)
+# dragon_combat_effectiveness é outra script_value no escopo do DRAGÃO
+# Fórmula do bônus: 20 (base adulto) + dragon_size do dragão
+# Exemplo: dragão size 80 (level 5) → +100 de poder
+# ============================================================
+
+# Retorna o bônus de batalha do dragão
+# Scope: o personagem RIDER
+# Retorna 0 se não for rider com dragão adulto ativo em batalha
+dob_dragon_battle_bonus = {
+	value = 0
+
+	if = {
+		limit = { dob_dragon_deployed_for_battle = yes }
+
+		# Bônus base para dragão adulto (> level_two_dragon_size = 20)
+		add = 20
+
+		# dragon_size é script_value calculada no DRAGÃO
+		# Acessa via var:current_dragon (variável guardada no rider)
+		if = {
+			limit = { exists = var:current_dragon }
+			add = var:current_dragon.dragon_size
+		}
+	}
+}
+
+# Retorna a size do dragão do rider
+# Scope: o personagem RIDER
+# Retorna 0 se não tiver dragão
+dob_dragon_size_value = {
+	value = 0
+	if = {
+		limit = {
+			is_current_dragonrider = yes
+			exists = var:current_dragon
+		}
+		add = var:current_dragon.dragon_size
+	}
+}
+
+# Retorna a combat_effectiveness do dragão (inclui traits, ferimentos, rider xp)
+# Scope: o personagem RIDER
+dob_dragon_combat_effectiveness_value = {
+	value = 0
+	if = {
+		limit = {
+			is_current_dragonrider = yes
+			exists = var:current_dragon
+		}
+		add = var:current_dragon.dragon_combat_effectiveness
+	}
+}
+
+# Calcula o prestígio ganho por vencer uma batalha com dragão
+# Fórmula: 100 base + (dragon_size * 2)
+# Exemplos:
+#   Dragão size 30  → +160 prestígio
+#   Dragão size 80  → +260 prestígio
+#   Dragão size 150 → +400 prestígio
+# Scope: o personagem RIDER
+dob_dragon_prestige_gain = {
+	value = 0
+	if = {
+		limit = {
+			is_current_dragonrider = yes
+			exists = var:current_dragon
+		}
+		add = 100
+		add = {
+			value = var:current_dragon.dragon_size
+			multiply = 2
+		}
+	}
+}

@@ -1,0 +1,62 @@
+# ============================================================
+# DRAGON ON BATTLE - On Actions
+# Mod: Dragon on Battle (AGOT Addon) v0.1
+# Nomes verificados contra AGOT 0.4.27
+# ============================================================
+# Hooks corretos do CK3:
+#   on_combat_end_winner / on_combat_end_loser
+#   Root = combat_side (NÃO é character!)
+# A lógica pesada está em:
+#   common/scripted_effects/00_dob_dragon_post_combat_effects.txt
+# ============================================================
+
+# ── Hook 1: Guerra declarada ─────────────────────────────────
+# Scope: root = character que declarou a guerra (CORRETO, é character)
+on_war_started = {
+	on_actions = { dob_on_war_started }
+}
+
+dob_on_war_started = {
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				dob_dragon_deployed_for_battle = yes
+			}
+			set_variable = {
+				name = dob_dragon_power
+				value = script_value:dob_dragon_battle_bonus
+			}
+			set_variable = {
+				name = dob_dragon_size
+				value = script_value:dob_dragon_size_value
+			}
+			trigger_event = {
+				id = dragon_battle.001
+				days = 1
+			}
+		}
+	}
+}
+
+# ── Hook 2: Fim de batalha — VENCEDOR ────────────────────────
+# Root = combat_side VENCEDOR (confirmado em combat_on_actions.txt do AGOT 0.4.27)
+on_combat_end_winner = {
+	on_actions = { dob_on_combat_end_winner }
+}
+
+dob_on_combat_end_winner = {
+	# Lógica delegada para scripted_effects/00_dob_dragon_post_combat_effects.txt
+	effect = { dob_dragon_winner_effect = yes }
+}
+
+# ── Hook 3: Fim de batalha — PERDEDOR ────────────────────────
+# Root = combat_side PERDEDOR
+on_combat_end_loser = {
+	on_actions = { dob_on_combat_end_loser }
+}
+
+dob_on_combat_end_loser = {
+	# Lógica delegada para scripted_effects/00_dob_dragon_post_combat_effects.txt
+	effect = { dob_dragon_loser_effect = yes }
+}

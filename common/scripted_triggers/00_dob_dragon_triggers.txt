@@ -1,0 +1,43 @@
+# ============================================================
+# DRAGON ON BATTLE - Scripted Triggers
+# Mod: Dragon on Battle (AGOT Addon) v0.1
+# Nomes verificados contra AGOT 0.4.27
+# ============================================================
+
+# Verifica se o personagem é um dragonrider ATIVO com dragão vivo
+# Usa o trigger oficial do AGOT: is_current_dragonrider
+# Scope: character (o rider)
+dob_is_dragonrider = {
+	# is_current_dragonrider é o trigger oficial do AGOT (00_agot_dragon_triggers.txt)
+	# Ele verifica: vivo, não incapaz, não preso, has_trait = dragonrider,
+	# e que o dragão está relacionado via agot_dragon e está vivo
+	is_current_dragonrider = yes
+}
+
+# Verifica se o rider tem um dragão adulto (size > 30) para batalha
+# Scope: character (o rider)
+# O rider acessa seu dragão via var:current_dragon
+# dragon_size é uma script_value calculada no dragão diretamente
+dob_has_adult_dragon = {
+	is_current_dragonrider = yes
+	exists = var:current_dragon
+	var:current_dragon = {
+		# dragon_size é script_value definida em 00_agot_dragon_combat_values.txt
+		# Vai de 0 (level 1) a 200 (level 10)
+		# level_two_dragon_size = 20, portanto > 30 = dragão acima do tier inicial
+		dragon_size > 30
+	}
+}
+
+# Verifica se o rider ESTÁ usando o dragão em batalha (opção não desativada)
+# Scope: character (o rider)
+# No AGOT 0.4.27, is_current_dragonrider_warfare já verifica isso:
+# age >= 14 + is_current_dragonrider + NOT { has_character_flag = agot_not_using_dragon }
+dob_dragon_deployed_for_battle = {
+	# Usa o trigger oficial do AGOT que verifica tudo incluindo a flag de não usar dragão
+	is_current_dragonrider_warfare = yes
+	exists = var:current_dragon
+	var:current_dragon = {
+		dragon_size > 30
+	}
+}
