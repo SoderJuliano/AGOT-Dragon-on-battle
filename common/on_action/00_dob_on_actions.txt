@@ -61,7 +61,27 @@ dob_on_combat_end_loser = {
 	effect = { dob_dragon_loser_effect = yes }
 }
 
-# ── Hook 4: Pulso mensal — atualiza modifier de poder na ficha do rider e do dragão ──
+# ── Hook 4: Game start — aplica modifiers em TODOS os dragonriders ao carregar ───────
+# Fires quando o jogo inicia (novo jogo ou carregamento de save via lobby)
+on_game_start_after_lobby = {
+	on_actions = { dob_on_game_start }
+}
+
+dob_on_game_start = {
+	effect = {
+		every_living_character = {
+			limit = {
+				has_trait = dragonrider
+				exists = var:current_dragon
+				var:current_dragon = { is_alive = yes, dragon_size >= 30 }
+			}
+			var:current_dragon = { dob_update_dragon_power_modifier = yes }
+			dob_update_rider_dragon_modifier = yes
+		}
+	}
+}
+
+# ── Hook 5: Pulso mensal — atualiza modifier de poder na ficha do rider e do dragão ──
 # Root = character. Mensal para aparecer logo após instalar o mod em save existente.
 # - Dragonrider com dragão vivo: aplica/atualiza modifiers no rider E no dragão
 # - Perdeu o dragão: remove os modifiers do rider automaticamente
