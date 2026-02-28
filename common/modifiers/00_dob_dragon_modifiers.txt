@@ -11,23 +11,23 @@
 
 # Vitória com dragão jovem/pequeno (size 30-79)
 dob_dragon_victory_small = {
-	icon = beast_positive
-	monthly_prestige = 1			# Fama de vencer com dragão pequeno
+	icon = prestige
+	monthly_prestige = 1
 }
 
 # Vitória com dragão adulto/médio (size 80-149)
 dob_dragon_victory_medium = {
-	icon = beast_positive
-	monthly_prestige = 2			# Fama de vencer com dragão adulto
-	prestige_gain_mult = 0.05		# +5% prestígio de outras fontes
+	icon = prestige
+	monthly_prestige = 2
+	prestige_gain_mult = 0.05
 }
 
 # Vitória com dragão grande (size 150+, tier Balerion)
 dob_dragon_victory_large = {
-	icon = beast_positive
-	monthly_prestige = 4			# Fama de vencer com dragão colossal
-	prestige_gain_mult = 0.10		# +10% prestígio de outras fontes
-	stress_gain_mult = -0.05		# Menos stress (exaltação de pilotar)
+	icon = prestige
+	monthly_prestige = 4
+	prestige_gain_mult = 0.10
+	stress_gain_mult = -0.05
 }
 
 # ============================================================
@@ -38,23 +38,23 @@ dob_dragon_victory_large = {
 
 # Dragão jovem/pequeno (size 30-79) — equivale a AGOT tier 1-3
 dob_dragon_power_young = {
-	icon = beast_positive
-	prowess = 5					# Poder de combate simbólico (exibição)
+	icon = prestige
+	prowess = 5
 }
 
 # Dragão adulto/maduro (size 80-149) — equivale a AGOT tier 4-6
 dob_dragon_power_mature = {
-	icon = beast_positive
-	prowess = 12				# Poder de combate simbólico (exibição)
-	monthly_prestige = 0.25		# Dragão reconhecido gera fama passiva
+	icon = prestige
+	prowess = 12
+	monthly_prestige = 0.25
 }
 
 # Dragão imenso (size 150+) — equivale a AGOT tier 7-10 (Meraxes, Vhagar, Balerion)
 dob_dragon_power_great = {
-	icon = beast_positive
-	prowess = 25				# Poder de combate simbólico (exibição)
-	monthly_prestige = 0.5		# Grande dragão é lenda viva
-	stress_gain_mult = -0.05	# Pilotar um deus é eufórico
+	icon = prestige
+	prowess = 25
+	monthly_prestige = 0.5
+	stress_gain_mult = -0.05
 }
 
 # ============================================================
@@ -66,20 +66,20 @@ dob_dragon_power_great = {
 
 # Rider de dragão jovem (size 30-79) — AGOT tier 1-3
 dob_rider_dragon_young = {
-	icon = beast_positive
+	icon = prestige
 	monthly_prestige = 0.1		# Fama passiva de ter um dragão
 }
 
 # Rider de dragão maduro (size 80-149) — AGOT tier 4-6
 dob_rider_dragon_mature = {
-	icon = beast_positive
+	icon = prestige
 	monthly_prestige = 0.2		# Dragão reconhecido no reino
 	prowess = 2					# Treino com dragão melhora habilidade
 }
 
 # Rider de dragão imenso (size 150+) — AGOT tier 7-10 (Vhagar, Balerion)
 dob_rider_dragon_great = {
-	icon = beast_positive
+	icon = prestige
 	monthly_prestige = 0.4		# Lenda viva: pilota um dos maiores dragões da história
 	prowess = 4					# Elite dos dragonriders
 	stress_gain_mult = -0.05	# Confiança de pilotar um deus
