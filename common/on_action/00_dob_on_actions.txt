@@ -60,3 +60,26 @@ dob_on_combat_end_loser = {
 	# Lógica delegada para scripted_effects/00_dob_dragon_post_combat_effects.txt
 	effect = { dob_dragon_loser_effect = yes }
 }
+
+# ── Hook 4: Pulso anual — atualiza modifier de poder na ficha do dragão ──────────
+# Root = character (cada personagem vivo recebe um pulso por ano)
+# Apenas dragonriders com dragão vivo atualizam o modifier do dragão.
+on_yearly_pulse = {
+	on_actions = { dob_on_yearly_pulse }
+}
+
+dob_on_yearly_pulse = {
+	effect = {
+		if = {
+			limit = {
+				has_trait = dragonrider
+				exists = var:current_dragon
+				var:current_dragon = { is_alive = yes }
+			}
+			# Atualizar modifier de tier na ficha do dragão
+			var:current_dragon = {
+				dob_update_dragon_power_modifier = yes
+			}
+		}
+	}
+}
