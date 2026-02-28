@@ -80,3 +80,21 @@ dragon_battle.003 = {
 		# -300 prestígio já aplicado no scripted_effect se dragão morreu
 	}
 }
+
+# ── Evento 004: Familiar/aliada vai à guerra com dragão ─────
+# Root = player (humano). scope:dob_ally_rider = a personagem IA que declarou guerra
+dragon_battle.004 = {
+	type = character_event
+	title = dragon_battle.004.t
+	desc = dragon_battle.004.desc
+	theme = battle
+
+	left_portrait = {
+		character = scope:dob_ally_rider
+		animation = aggressive_sword
+	}
+
+	option = {
+		name = dragon_battle.004.a
+	}
+}
