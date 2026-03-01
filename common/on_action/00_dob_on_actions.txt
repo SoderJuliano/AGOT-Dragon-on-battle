@@ -120,7 +120,10 @@ on_combat_end_loser = {
 
 dob_on_combat_end_loser = {
 	# Lógica delegada para scripted_effects/00_dob_dragon_post_combat_effects.txt
-	effect = { dob_dragon_loser_effect = yes }
+	effect = {
+		dob_dragon_loser_effect = yes
+		dob_dragon_loser_notifications = yes
+	}
 }
 
 # ── Hook 4: Game start — aplica modifiers em TODOS os dragonriders ao carregar ───────

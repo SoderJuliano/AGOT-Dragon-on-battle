@@ -327,3 +327,95 @@ dragon_battle.013 = {
 		name = dragon_battle.013.a
 	}
 }
+
+# ── Evento 014: Dragão ALIADO — relatório pós-batalha ────────────────────────────
+# Root = player. scope:dob_ally_rider_combat = rider aliado (IA).
+# scope:dob_ally_dragon = dragão do aliado. Desc varia: morto / ferido / sobreviveu.
+dragon_battle.014 = {
+	type = character_event
+	title = dragon_battle.014.t
+	theme = battle
+
+	desc = {
+		triggered_desc = {
+			trigger = { scope:dob_ally_dragon = { is_alive = no } }
+			desc = dragon_battle.014.desc_dead
+		}
+		triggered_desc = {
+			trigger = {
+				scope:dob_ally_dragon = { is_alive = yes }
+				scope:dob_ally_dragon = { has_character_modifier = dob_dragon_wounded }
+			}
+			desc = dragon_battle.014.desc_wounded
+		}
+		desc = dragon_battle.014.desc_alive
+	}
+
+	left_portrait = {
+		character = scope:dob_ally_rider_combat
+		animation = {
+			triggered_animation = {
+				trigger = { scope:dob_ally_dragon = { is_alive = no } }
+				animation = grief
+			}
+			triggered_animation = {
+				trigger = { scope:dob_ally_dragon = { has_character_modifier = dob_dragon_wounded } }
+				animation = worry
+			}
+			animation = personality_bold
+		}
+	}
+	right_portrait = {
+		character = scope:dob_ally_dragon
+	}
+
+	option = {
+		name = dragon_battle.014.a
+	}
+}
+
+# ── Evento 015: Dragão INIMIGO — relatório pós-batalha ───────────────────────────
+# Root = player. scope:dob_enemy_rider_combat = rider inimigo.
+# scope:dob_enemy_dragon = dragão inimigo. Desc varia: morto / ferido / sobreviveu.
+dragon_battle.015 = {
+	type = character_event
+	title = dragon_battle.015.t
+	theme = battle
+
+	desc = {
+		triggered_desc = {
+			trigger = { scope:dob_enemy_dragon = { is_alive = no } }
+			desc = dragon_battle.015.desc_dead
+		}
+		triggered_desc = {
+			trigger = {
+				scope:dob_enemy_dragon = { is_alive = yes }
+				scope:dob_enemy_dragon = { has_character_modifier = dob_dragon_wounded }
+			}
+			desc = dragon_battle.015.desc_wounded
+		}
+		desc = dragon_battle.015.desc_alive
+	}
+
+	left_portrait = {
+		character = scope:dob_enemy_rider_combat
+		animation = {
+			triggered_animation = {
+				trigger = { scope:dob_enemy_dragon = { is_alive = no } }
+				animation = grief
+			}
+			triggered_animation = {
+				trigger = { scope:dob_enemy_dragon = { has_character_modifier = dob_dragon_wounded } }
+				animation = worry
+			}
+			animation = war_attacker
+		}
+	}
+	right_portrait = {
+		character = scope:dob_enemy_dragon
+	}
+
+	option = {
+		name = dragon_battle.015.a
+	}
+}

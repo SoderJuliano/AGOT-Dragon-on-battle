@@ -75,6 +75,20 @@
  dragon_battle.013.desc: "[dob_event_dragon.GetFirstNameNoTooltip] drove back the invaders, but the battle left its mark.\n\n#italic Dragon Size: [ROOT.GetVariable('dob_dragon_size')]#!\n\nYour dragon fought hard to protect what is yours, absorbing blows that would have fallen upon your people. The wounds are not mortal — with rest and time, the great beast will recover.\n\n#weak And when it does, it will be fiercer than before.#!"
  dragon_battle.013.a: "Rest, guardian. You have earned it."
 
+ # ── Evento 014: Dragão aliado — relatório ────────────────────
+ dragon_battle.014.t: "Report: [dob_ally_rider_combat.GetFirstNameNoTooltip]'s Dragon"
+ dragon_battle.014.desc_dead: "[dob_ally_rider_combat.GetFirstNameNoTooltip]'s dragon, [dob_ally_dragon.GetFirstNameNoTooltip], did not survive the battle.\n\nYour ally fought beside you with great courage, and their dragon gave everything. The beast fell, but its fire bought time and lives on the battlefield. The loss will weigh heavily on [dob_ally_rider_combat.GetFirstNameNoTooltip].\n\n#weak One less dragon flies today.#!"
+ dragon_battle.014.desc_wounded: "[dob_ally_rider_combat.GetFirstNameNoTooltip]'s dragon, [dob_ally_dragon.GetFirstNameNoTooltip], fought alongside your forces and survived — but bears wounds from the battle.\n\nThe great beast will recover with time, but for now it is weakened. Your ally's dragon proved its valor this day, even in pain."
+ dragon_battle.014.desc_alive: "[dob_ally_rider_combat.GetFirstNameNoTooltip]'s dragon, [dob_ally_dragon.GetFirstNameNoTooltip], fought beside your forces and emerged unscathed.\n\nThe great beast performed admirably, adding its fire to the battle alongside yours. Your ally's dragon lives to fight another day — a welcome sight on any battlefield."
+ dragon_battle.014.a: "Good to know. A dragon on our side is never wasted."
+
+ # ── Evento 015: Dragão inimigo — relatório ───────────────────
+ dragon_battle.015.t: "Report: Enemy Dragon — [dob_enemy_rider_combat.GetFirstNameNoTooltip]'s [dob_enemy_dragon.GetFirstNameNoTooltip]"
+ dragon_battle.015.desc_dead: "The enemy dragon, [dob_enemy_dragon.GetFirstNameNoTooltip], has fallen.\n\n[dob_enemy_rider_combat.GetFirstNameNoTooltip]'s great beast is dead — slain in the chaos of battle. Whether by fire, steel, or sheer exhaustion, the enemy has lost one of their most powerful weapons.\n\n#bold This changes the balance of power.#!\n#weak One less dragon to fear.#!"
+ dragon_battle.015.desc_wounded: "The enemy dragon, [dob_enemy_dragon.GetFirstNameNoTooltip], survived the battle — but scouts report it took wounds.\n\n[dob_enemy_rider_combat.GetFirstNameNoTooltip]'s beast still breathes, but it is weakened. A wounded dragon is still dangerous, yet this is a window of opportunity.\n\n#weak Strike while the fire dims.#!"
+ dragon_battle.015.desc_alive: "The enemy dragon, [dob_enemy_dragon.GetFirstNameNoTooltip], survived the battle unharmed.\n\n[dob_enemy_rider_combat.GetFirstNameNoTooltip]'s beast fought and lived to see another day. It remains a threat — a dragon that has tasted battle and emerged whole is only more dangerous for the experience.\n\n#weak Do not underestimate what flies beneath that rider's banner.#!"
+ dragon_battle.015.a: "Noted. I will not forget this."
+
  # ── Modifiers defensivos permanentes (visíveis na ficha do dragão) ─
  dob_dragon_field_guardian: "Field Guardian"
  dob_dragon_field_guardian_desc: "This dragon has proven itself in open field defense, answering the call when its rider's lands were threatened. The experience of holding the line against invaders has sharpened its instincts and deepened its ferocity."

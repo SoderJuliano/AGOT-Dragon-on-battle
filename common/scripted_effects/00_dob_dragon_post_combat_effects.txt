@@ -154,6 +154,53 @@ dob_dragon_winner_effect = {
 			}
 		}
 	}
+
+	# ── Notificar player sobre dragões ALIADOS (mesma side, IA) ──────────────────────
+	# Roda apenas se há um player neste lado
+	if = {
+		limit = { any_side_commander = { is_ai = no } }
+		every_side_commander = {
+			limit = {
+				is_ai = yes
+				has_trait = dragonrider
+				exists = var:current_dragon
+				var:current_dragon = { dragon_size >= 30 }
+			}
+			var:current_dragon = { save_scope_as = dob_ally_dragon }
+			save_scope_as = dob_ally_rider_combat
+			# prev = combat_side (winner) — encontrar o player neste lado
+			prev = {
+				every_side_commander = {
+					limit = { is_ai = no }
+					trigger_event = { id = dragon_battle.014 days = 2 }
+				}
+			}
+		}
+	}
+
+	# ── Notificar player sobre dragões INIMIGOS (side perdedora) ────────────────────
+	# Delay de 3 dias para garantir que loser_effect já processou mortes/ferimentos
+	if = {
+		limit = { any_side_commander = { is_ai = no } }
+		enemy_side = {
+			every_side_commander = {
+				limit = {
+					has_trait = dragonrider
+					exists = var:current_dragon
+					var:current_dragon = { dragon_size >= 30 }
+				}
+				save_scope_as = dob_enemy_rider_combat
+				var:current_dragon = { save_scope_as = dob_enemy_dragon }
+				# root = combat_side (winner) — encontrar o player no lado vencedor
+				root = {
+					every_side_commander = {
+						limit = { is_ai = no }
+						trigger_event = { id = dragon_battle.015 days = 3 }
+					}
+				}
+			}
+		}
+	}
 }
 
 # ── Efeito para o lado PERDEDOR ─────────────────────────────────────────────────
@@ -235,6 +282,54 @@ dob_dragon_loser_effect = {
 				}
 				else = {
 					trigger_event = { id = dragon_battle.006 days = 1 }
+				}
+			}
+		}
+	}
+}
+
+# ── Notificações de aliados e inimigos no lado PERDEDOR ──────────────────────────
+# Chamado de on_combat_end_loser após os efeitos mecânicos acima
+dob_dragon_loser_notifications = {
+	# ── Notificar player sobre dragões ALIADOS (mesma side perdedora, IA) ──────────
+	if = {
+		limit = { any_side_commander = { is_ai = no } }
+		every_side_commander = {
+			limit = {
+				is_ai = yes
+				has_trait = dragonrider
+				exists = var:current_dragon
+				var:current_dragon = { dragon_size >= 30 }
+			}
+			var:current_dragon = { save_scope_as = dob_ally_dragon }
+			save_scope_as = dob_ally_rider_combat
+			prev = {
+				every_side_commander = {
+					limit = { is_ai = no }
+					trigger_event = { id = dragon_battle.014 days = 2 }
+				}
+			}
+		}
+	}
+
+	# ── Notificar player sobre dragões INIMIGOS (side vencedora) ──────────────────
+	# Delay de 3 dias: winner_effect já processou tudo neste lado
+	if = {
+		limit = { any_side_commander = { is_ai = no } }
+		enemy_side = {
+			every_side_commander = {
+				limit = {
+					has_trait = dragonrider
+					exists = var:current_dragon
+					var:current_dragon = { dragon_size >= 30 }
+				}
+				save_scope_as = dob_enemy_rider_combat
+				var:current_dragon = { save_scope_as = dob_enemy_dragon }
+				root = {
+					every_side_commander = {
+						limit = { is_ai = no }
+						trigger_event = { id = dragon_battle.015 days = 3 }
+					}
 				}
 			}
 		}
