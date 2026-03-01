@@ -77,24 +77,66 @@ dob_dragon_prestige_gain = {
 	}
 }
 
-# Retorna o Battle Tier do dragão (1-10) baseado no dragon_size
+# Retorna o Battle Tier do dragão (0-10) baseado no dragon_size
 # Scope: o DRAGÃO (chamado pelo GUI via CharacterWindow do dragão)
-# Fórmula: dragon_size / 17, arredondado em tiers de 17 points cada
+# Usa os mesmos thresholds do AGOT (level_one a level_ten_dragon_size)
 # Exemplos:
-#   size 0-16:  0 (filhote, não vai à batalha)
-#   size 17-33:    1
-#   size 34-50:    2
-#   size 51-67:    3
-#   size 68-84:    4
-#   size 85-101:   5
-#   size 102-118:  6
-#   size 119-135:  7
-#   size 136-152:  8
-#   size 153-169:  9
-#   size 170+:     10
+#   size 0:        0 (ovo/filhote sem registro)
+#   size 1-19:     1
+#   size 20-39:    2
+#   size 40-59:    3
+#   size 60-79:    4
+#   size 80-99:    5
+#   size 100-124:  6
+#   size 125-149:  7
+#   size 150-174:  8
+#   size 175-199:  9
+#   size 200+:     10
 dob_dragon_battle_tier = {
-	# TESTE: Retorna 7 fixo para verificar se está sendo lido
-	value = 7
+	# Scope: o DRAGÃO
+	# Usa os mesmos thresholds de size do AGOT (level_one a level_ten_dragon_size)
+	value = 0
+
+	if = {
+		limit = { dragon_size >= 200 }
+		add = 10
+	}
+	else_if = {
+		limit = { dragon_size >= 175 }
+		add = 9
+	}
+	else_if = {
+		limit = { dragon_size >= 150 }
+		add = 8
+	}
+	else_if = {
+		limit = { dragon_size >= 125 }
+		add = 7
+	}
+	else_if = {
+		limit = { dragon_size >= 100 }
+		add = 6
+	}
+	else_if = {
+		limit = { dragon_size >= 80 }
+		add = 5
+	}
+	else_if = {
+		limit = { dragon_size >= 60 }
+		add = 4
+	}
+	else_if = {
+		limit = { dragon_size >= 40 }
+		add = 3
+	}
+	else_if = {
+		limit = { dragon_size >= 20 }
+		add = 2
+	}
+	else_if = {
+		limit = { dragon_size >= 1 }
+		add = 1
+	}
 }
 
 # Retorna o bônus de batalha TOTAL que este dragão dá ao rider
@@ -106,6 +148,7 @@ dob_dragon_battle_tier = {
 #   size 74 (normal):      ~74 battle power
 #   size 150 (wounded):    ~127 battle power
 dob_dragon_battle_bonus_display = {
-	# TESTE: Retorna 999 fixo para verificar se está sendo lido
-	value = 999
+	# Scope: o DRAGÃO
+	# Usa dragon_combat_effectiveness do AGOT (inclui size, traits, ferimentos, rider xp)
+	value = dragon_combat_effectiveness
 }
