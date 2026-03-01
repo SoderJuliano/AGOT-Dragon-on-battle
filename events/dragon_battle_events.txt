@@ -50,15 +50,24 @@ dragon_battle.002 = {
 	desc = dragon_battle.002.desc
 	theme = battle
 
+	immediate = {
+		if = {
+			limit = { exists = scope:dob_event_dragon }
+			scope:dob_event_dragon = { save_scope_as = dob_event_dragon }
+		}
+	}
+
 	left_portrait = {
 		character = root
 		animation = war_attacker
+	}
+	right_portrait = {
+		character = scope:dob_event_dragon
 	}
 
 	option = {
 		name = dragon_battle.002.a
 		# Prestígio já foi dado no scripted_effect
-		# Nada extra aqui para não duplicar
 	}
 }
 
@@ -69,9 +78,19 @@ dragon_battle.003 = {
 	desc = dragon_battle.003.desc
 	theme = battle
 
+	immediate = {
+		if = {
+			limit = { exists = scope:dob_event_dragon }
+			scope:dob_event_dragon = { save_scope_as = dob_event_dragon }
+		}
+	}
+
 	left_portrait = {
 		character = root
 		animation = shame
+	}
+	right_portrait = {
+		character = scope:dob_event_dragon
 	}
 
 	option = {
