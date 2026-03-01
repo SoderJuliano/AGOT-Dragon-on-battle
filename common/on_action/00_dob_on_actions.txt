@@ -1,0 +1,199 @@
+# ============================================================
+# DRAGON ON BATTLE - On Actions
+# Mod: Dragon on Battle (AGOT Addon) v0.1
+# Nomes verificados contra AGOT 0.4.27
+# ============================================================
+# Hooks corretos do CK3:
+#   on_combat_end_winner / on_combat_end_loser
+#   Root = combat_side (NÃO é character!)
+# A lógica pesada está em:
+#   common/scripted_effects/00_dob_dragon_post_combat_effects.txt
+# ============================================================
+
+# ── Hook 1: Guerra declarada ─────────────────────────────────
+# Scope: root = character que declarou a guerra (CORRETO, é character)
+on_war_started = {
+	on_actions = { dob_on_war_started }
+}
+
+dob_on_war_started = {
+	effect = {
+		# Caso 1: O PLAYER declarou guerra e tem um dragão vivo
+		# (sem exigir 'Use dragon in warfare' ativado no menu AGOT)
+		if = {
+			limit = {
+				is_ai = no
+				has_trait = dragonrider
+				exists = var:current_dragon
+				var:current_dragon = { is_alive = yes }
+			}
+			set_variable = {
+				name = dob_dragon_power
+				value = script_value:dob_dragon_battle_bonus
+			}
+			set_variable = {
+				name = dob_dragon_size
+				value = script_value:dob_dragon_size_value
+			}
+			trigger_event = {
+				id = dragon_battle.001
+				days = 1
+			}
+		}
+		# Caso 2: IA (familiar/aliada) declarou guerra com dragão → notifica o player
+		else_if = {
+			limit = {
+				is_ai = yes
+				has_trait = dragonrider
+				exists = var:current_dragon
+				var:current_dragon = { is_alive = yes }
+			}
+			set_variable = {
+				name = dob_dragon_size
+				value = script_value:dob_dragon_size_value
+			}
+			set_variable = {
+				name = dob_dragon_power
+				value = script_value:dob_dragon_battle_bonus
+			}
+			save_scope_as = dob_ally_rider
+			every_close_family_member = {
+				limit = { is_ai = no }
+				trigger_event = { id = dragon_battle.004 }
+			}
+			if = {
+				limit = {
+					exists = liege
+					liege = { is_ai = no }
+				}
+				liege = {
+					trigger_event = { id = dragon_battle.004 }
+				}
+			}
+		}
+	}
+}
+
+# ── Hook 2: Fim de batalha — VENCEDOR ────────────────────────
+# Root = combat_side VENCEDOR (confirmado em combat_on_actions.txt do AGOT 0.4.27)
+on_combat_end_winner = {
+	on_actions = { dob_on_combat_end_winner }
+}
+
+dob_on_combat_end_winner = {
+	# Lógica delegada para scripted_effects/00_dob_dragon_post_combat_effects.txt
+	effect = { dob_dragon_winner_effect = yes }
+}
+
+# ── Hook 3: Fim de batalha — PERDEDOR ────────────────────────
+# Root = combat_side PERDEDOR
+on_combat_end_loser = {
+	on_actions = { dob_on_combat_end_loser }
+}
+
+dob_on_combat_end_loser = {
+	# Lógica delegada para scripted_effects/00_dob_dragon_post_combat_effects.txt
+	effect = { dob_dragon_loser_effect = yes }
+}
+
+# ── Hook 4: Game start — aplica modifiers em TODOS os dragonriders ao carregar ───────
+# Fires quando o jogo inicia (novo jogo ou carregamento de save via lobby)
+on_game_start_after_lobby = {
+	on_actions = { dob_on_game_start }
+}
+
+dob_on_game_start = {
+	effect = {
+		# Remover dragonwidowed de todos os personagens ao carregar o save
+		# (garante que funciona mesmo em saves existentes antes do mod)
+		every_living_character = {
+			limit = { has_trait = dragonwidowed }
+			remove_trait = dragonwidowed
+		}
+		# Aplicar modifiers de poder do dragão em todos os riders
+		every_living_character = {
+			limit = {
+				has_trait = dragonrider
+				exists = var:current_dragon
+				var:current_dragon = { is_alive = yes }
+			}
+			var:current_dragon = { dob_update_dragon_power_modifier = yes }
+			dob_update_rider_dragon_modifier = yes
+		}
+	}
+}
+
+# ── Hook 5: Pulso mensal — atualiza modifier de poder na ficha do rider e do dragão ──
+# Root = character. Mensal para aparecer logo após instalar o mod em save existente.
+# - Dragonrider com dragão vivo: aplica/atualiza modifiers no rider E no dragão
+# - Perdeu o dragão: remove os modifiers do rider automaticamente
+on_monthly_pulse = {
+	on_actions = { dob_on_monthly_pulse }
+}
+
+# Backup anual — garante remoção mesmo se monthly_pulse falhar
+on_yearly_pulse = {
+	on_actions = { dob_on_yearly_pulse }
+}
+
+dob_on_yearly_pulse = {
+	effect = {
+		# ── Dragonwidowed: backup anual para qualquer caso restante ──────────────────
+		# Apenas remove o trait — NÃO toca dragões de AI para evitar crash no
+		# More Dragon Eggs (current_rider access violation via every_living_character).
+		every_living_character = {
+			limit = { has_trait = dragonwidowed }
+			remove_trait = dragonwidowed
+		}
+
+		# ── FIX: More Dragon Eggs crash (var:current_rider not set) ──────────────────
+		# Previne crash ao setar current_rider em dragões que não têm essa variável.
+		# Roda APENAS em dragões do player ou de seu realm para evitar problemas.
+		every_living_dragon = {
+			limit = {
+				OR = {
+					liege = root	# Dragão do player ou de seus vassals
+					host = root		# Dragão em dragonpit do player
+				}
+				NOT = { exists = var:current_rider }
+			}
+			# Setar current_rider como 0 (null) para prevenir crashes
+			set_variable = { name = current_rider value = 0 }
+		}
+	}
+}
+
+dob_on_monthly_pulse = {
+	effect = {
+		# ── Player: atualiza modifier do dragão na ficha do rider ──────────────────────
+		# Root = player character. Só toca o próprio player para evitar acessar
+		# current_rider de outros dragões via hooks de outros mods (crash).
+		if = {
+			limit = {
+				has_trait = dragonrider
+				exists = var:current_dragon
+				var:current_dragon = { is_alive = yes }
+			}
+			var:current_dragon = { dob_update_dragon_power_modifier = yes }
+			dob_update_rider_dragon_modifier = yes
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_character_modifier = dob_rider_dragon_young
+					has_character_modifier = dob_rider_dragon_mature
+					has_character_modifier = dob_rider_dragon_great
+				}
+			}
+			remove_character_modifier = dob_rider_dragon_young
+			remove_character_modifier = dob_rider_dragon_mature
+			remove_character_modifier = dob_rider_dragon_great
+		}
+
+		# ── Dragonwidowed: remover do player ─────────────────────────────────────────
+		if = {
+			limit = { has_trait = dragonwidowed }
+			remove_trait = dragonwidowed
+		}
+	}
+}

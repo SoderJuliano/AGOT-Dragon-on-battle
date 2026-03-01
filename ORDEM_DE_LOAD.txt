@@ -1,0 +1,41 @@
+========================================
+   ORDEM DE CARREGAMENTO - IMPORTANTE
+========================================
+
+Para evitar crashes, carregue os mods NESTA ORDEM no CK3 Launcher:
+
+1. A Game of Thrones (AGOT)        ← Base do mod
+2. AGOT More Dragon Eggs          ← DEVE vir ANTES do Dragon on Battle
+3. AGOT Valyrian Steel            ← (opcional)
+4. AGOT Suggest Dragon Bonding    ← (opcional)
+5. AGOT Better Domain Management  ← (opcional)
+6. [Outros mods AGOT...]
+7. Dragon on Battle               ← SEMPRE POR ÚLTIMO!
+
+========================================
+  POR QUE A ORDEM É IMPORTANTE?
+========================================
+
+O Dragon on Battle aplica fixes para prevenir crashes do More Dragon Eggs.
+Se o More Dragon Eggs carregar DEPOIS, os fixes não funcionam e o jogo crasha.
+
+========================================
+  SINTOMAS DE ORDEM ERRADA
+========================================
+
+- Jogo crasha ao carregar save
+- Error log mostra: "Failed to fetch variable for 'current_rider'"
+- Crash tipo: EXCEPTION_ACCESS_VIOLATION
+
+========================================
+  SOLUÇÃO
+========================================
+
+No CK3 Launcher:
+1. Clique e arraste os mods para reordenar
+2. More Dragon Eggs deve ficar ACIMA do Dragon on Battle
+3. Dragon on Battle deve ser o ÚLTIMO mod AGOT da lista
+4. Clique em "Jogar"
+
+Se ainda crashar após reordenar:
+- Execute: !DIAGNOSTICO_CRASH.bat

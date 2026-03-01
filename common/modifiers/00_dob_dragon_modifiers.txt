@@ -1,0 +1,104 @@
+# ============================================================
+# DRAGON ON BATTLE - Modifiers pós-batalha
+# Mod: Dragon on Battle (AGOT Addon) v0.1
+# ============================================================
+# IMPORTANTE: O AGOT JÁ aplica base_dragon_army_modifier_1-10
+# durante a batalha (combat_roll e enemy_hard_casualty).
+# Esses modifiers nossos são PÓS-BATALHA e usam PRESTÍGIO —
+# mecânica diferente, sem duplicação.
+# Duração: 30 dias ("fama de ter vencido com dragão")
+# ============================================================
+
+# Vitória com dragão jovem/pequeno (size 30-79)
+dob_dragon_victory_small = {
+	icon = prestige
+	monthly_prestige = 1
+}
+
+# Vitória com dragão adulto/médio (size 80-149)
+dob_dragon_victory_medium = {
+	icon = prestige
+	monthly_prestige = 2
+}
+
+# Vitória com dragão grande (size 150+, tier Balerion)
+dob_dragon_victory_large = {
+	icon = prestige
+	monthly_prestige = 4
+	stress_gain_mult = -0.05
+}
+
+# ============================================================
+# MODIFIERS DO PERSONAGEM DRAGÃO — visíveis na ficha do dragão
+# Aplicados ao dragão (não ao rider), atualizados anualmente.
+# Mostram o tier de poder em batalha baseado em dragon_size.
+# ============================================================
+
+# Dragão jovem/pequeno (size 30-79) — equivale a AGOT tier 1-3
+dob_dragon_power_young = {
+	icon = prestige
+	prowess = 5
+}
+
+# Dragão adulto/maduro (size 80-149) — equivale a AGOT tier 4-6
+dob_dragon_power_mature = {
+	icon = prestige
+	prowess = 12
+	monthly_prestige = 0.25
+}
+
+# Dragão imenso (size 150+) — equivale a AGOT tier 7-10 (Meraxes, Vhagar, Balerion)
+dob_dragon_power_great = {
+	icon = prestige
+	prowess = 25
+	monthly_prestige = 0.5
+	stress_gain_mult = -0.05
+}
+
+# ============================================================
+# MODIFIERS DO RIDER — visíveis na ficha do personagem que monta o dragão
+# Aplicados ao rider (não ao dragão), atualizados mensalmente.
+# Aparecem assim que o mod é instalado em qualquer save existente.
+# Tier sobe automaticamente conforme o dragão cresce.
+# ============================================================
+
+# Rider de dragão jovem (size 30-79) — AGOT tier 1-3
+dob_rider_dragon_young = {
+	icon = prestige
+	monthly_prestige = 0.1		# Fama passiva de ter um dragão
+}
+
+# Rider de dragão maduro (size 80-149) — AGOT tier 4-6
+dob_rider_dragon_mature = {
+	icon = prestige
+	monthly_prestige = 0.2		# Dragão reconhecido no reino
+	prowess = 2					# Treino com dragão melhora habilidade
+}
+
+# Rider de dragão imenso (size 150+) — AGOT tier 7-10 (Vhagar, Balerion)
+dob_rider_dragon_great = {
+	icon = prestige
+	monthly_prestige = 0.4		# Lenda viva: pilota um dos maiores dragões da história
+	prowess = 4					# Elite dos dragonriders
+	stress_gain_mult = -0.05	# Confiança de pilotar um deus
+}
+
+# ============================================================
+# MODIFIERS DO DRAGÃO — pós-batalha (aparecem na ficha do dragão)
+# ============================================================
+
+# Experiência de batalha — dado ao dragão vencedor (2 anos)
+# Removido e reaplicado a cada vitória para resetar a duração
+dob_dragon_battle_hardened = {
+icon = prestige
+prowess = 6
+monthly_prestige = 0.2
+}
+
+# Ferimento de batalha — dado ao dragão que sobreviveu mas foi ferido
+# Vitória: 10% chance, dura 90 dias
+# Derrota: 35% chance, dura 180 dias
+dob_dragon_wounded = {
+icon = prestige
+prowess = -8
+}

@@ -1,0 +1,51 @@
+# ============================================================
+# DRAGON ON BATTLE - Fix para crash do More Dragon Eggs
+# Mod: Dragon on Battle (AGOT Addon) v0.1
+# ============================================================
+# PROBLEMA DETECTADO NOS LOGS:
+# - Error: Failed to fetch variable for 'current_rider' due to not being set
+# - File: events/agot_events/mde_agot_filler_events_dragon.txt line: 282
+# - On action: agot_yearly_owned_dragon_pulse
+#
+# CAUSA RAIZ:
+# O More Dragon Eggs (ou outro mod) tenta acessar var:current_rider em
+# dragões que não têm essa variável setada. Isso pode acontecer com:
+# - Dragões selvagens (nunca tiveram rider)
+# - Dragões que perderam o rider
+# - Dragões criados por mods que não usam o sistema padrão do AGOT
+#
+# SOLUÇÃO:
+# Este arquivo intercepta dragões com problema ANTES do game tentar
+# acessar current_rider, e seta um valor padrão (null/0) quando
+# a variável não existe.
+#
+# IMPORTANTE: Este fix roda através do on_action on_yearly_pulse,
+# que tem prioridade sobre eventos de outros mods devido à ordem
+# de carregamento (Dragon on Battle vem depois do alfabeto).
+# ============================================================
+
+namespace = dob_mde_fix
+
+# ── Evento de manutenção anual: seta current_rider em dragões órfãos ──
+# Root = dragon character
+# Dispara via on_yearly_pulse em 00_dob_on_actions.txt
+# APENAS EM DRAGÕES, para não afetar performance
+dob_mde_fix.0001 = {
+	hidden = yes
+
+	immediate = {
+		# Se é um dragão E não tem current_rider setado, inicializa
+		if = {
+			limit = {
+				agot_is_dragon_trigger = yes
+				NOT = { exists = var:current_rider }
+			}
+			# Setar current_rider como null (0) para prevenir crashes
+			# quando outro mod tentar acessar sem verificar exists
+			set_variable = {
+				name = current_rider
+				value = 0
+			}
+		}
+	}
+}

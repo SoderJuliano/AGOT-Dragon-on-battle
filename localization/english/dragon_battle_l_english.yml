@@ -1,0 +1,46 @@
+﻿l_english:
+ # ── Battle Tier Tooltip (Dragon Window) ────────────────────
+ DOB_BATTLE_TIER_TOOLTIP: "#T Battle Tier#!\n#weak Tier [CharacterWindow.GetCharacter.MakeScope.ScriptValue('dob_dragon_battle_tier')|0]/10#!\n\nThis dragon's raw power in battle.\n\n#bold Dragon Size:#! [CharacterWindow.GetCharacter.MakeScope.ScriptValue('dragon_size')|0]\n#bold Combat Effectiveness:#! [CharacterWindow.GetCharacter.MakeScope.ScriptValue('dragon_combat_effectiveness')|0]\n#weak (Size × traits × wounds × training)#!\n\n#bold Battle Equivalence:#! ~[CharacterWindow.GetCharacter.MakeScope.ScriptValue('dragon_combat_effectiveness')|0] soldiers\n#weak (Approximate army advantage in battle)#!"
+
+ # ── Modifiers pós-batalha (prestígio, não duplicam AGOT) ───
+ dob_dragon_victory_small: "Dragon Victory — Young Flame"
+ dob_dragon_victory_small_desc: "You rode your dragon into battle and emerged victorious. Word of your young dragon's fire spreads through the realm."
+ dob_dragon_victory_medium: "Dragon Victory — Dragonlord's Triumph"
+ dob_dragon_victory_medium_desc: "Your dragon turned the tide of battle. Lords across the realm speak of the great beast that brought you victory."
+ dob_dragon_victory_large: "Dragon Victory — Terror of the Skies"
+ dob_dragon_victory_large_desc: "A dragon of monstrous size carried you to victory. Bards sing of the inferno that swept across the battlefield. Few rulers in history have commanded such a beast."
+
+ # ── Evento 001: Partindo para a guerra ─────────────────────
+ dragon_battle.001.t: "Your Dragon Takes to the Skies!"
+ dragon_battle.001.desc: "You have declared war, and your dragon will accompany your forces into battle.\n\nYour dragon stands ready to bring fire and devastation upon your enemies.\n\n#bold Dragon Battle Power: +[ROOT.GetVariable('dob_dragon_power')]#!\n#italic Dragon Size: [ROOT.GetVariable('dob_dragon_size')]#\n\nThe AGOT dragon system applies combat bonuses automatically. Victory brings great prestige."
+ dragon_battle.001.a: "For fire and blood!"
+
+ # ── Evento 002: Vitória com dragão ─────────────────────────
+ dragon_battle.002.t: "Victory! Your Dragon Scorched the Field!"
+ dragon_battle.002.desc: "The battle is won! Your dragon fought alongside your forces, burning swathes through the enemy ranks.\n\n#bold Prestige Gained: +[ROOT.GetVariable('dob_prestige_gained')]#!\n#italic Dragon Size: [ROOT.GetVariable('dob_dragon_size')]#\n\nThe sight of your great beast broke the enemy's will to fight. Your name is spoken with fear and awe across the realm."
+ dragon_battle.002.a: "The dragon has spoken!"
+
+ # ── Evento 003: Derrota com dragão ─────────────────────────
+ dragon_battle.003.t: "Defeat... Even the Dragon Could Not Save the Day"
+ dragon_battle.003.desc: "Despite your dragon's presence in the battle, your forces have been defeated.\n\n#italic Dragon Size: [ROOT.GetVariable('dob_dragon_size')]#\n\nEven mighty dragons cannot guarantee victory. Pray your dragon survived the chaos of battle — a 20% chance of loss hangs over every defeat."
+ dragon_battle.003.a: "We will avenge this defeat."
+
+ # ── Evento 004: Aliado declarou guerra com dragão ──────────
+ dragon_battle.004.t: "[dob_ally_rider.GetFirstNameNoTooltip] Rides to War!"
+ dragon_battle.004.desc: "[dob_ally_rider.GetFirstNameNoTooltip] has declared war, and [dob_ally_rider.GetHerHis] dragon takes to the skies!\n\n#bold Dragon Size: [dob_ally_rider.GetVariable('dob_dragon_size')|0]#!\n\nThe sight of the great beast will strike fear into the hearts of [dob_ally_rider.GetHerHis] enemies."
+ dragon_battle.004.a: "May the dragon bring victory!"
+
+ # ── Evento 005: Dragão morreu na VITÓRIA (1% raro) ─────────
+ dragon_battle.005.t: "Tragedy in Victory — Your Dragon Has Fallen!"
+ dragon_battle.005.desc: "The battle is won... but at a terrible cost.\n\nYour dragon, [dob_event_dragon.GetFirstNameNoTooltip], fell in the chaos of combat. Even in victory, war is cruel.\n\n#italic Dragon Size: [ROOT.GetVariable('dob_dragon_size')]#\n\nYou have lost your greatest companion. The realm will remember this tragedy."
+ dragon_battle.005.a: "Even fire can be extinguished..."
+
+ # ── Evento 006: Dragão morreu na DERROTA (20%) ─────────────
+ dragon_battle.006.t: "Catastrophe! Your Dragon Has Fallen!"
+ dragon_battle.006.desc: "Defeat is bitter, but the loss of [dob_event_dragon.GetFirstNameNoTooltip] is unbearable.\n\n#italic Dragon Size: [ROOT.GetVariable('dob_dragon_size')]#\n\nYour dragon died in battle. Your enemies will sing of this day for generations."
+ dragon_battle.006.a: "I will never forget this..."
+
+ # ── Evento 007: Dragão ferido mas vivo ─────────────────────
+ dragon_battle.007.t: "Your Dragon is Wounded!"
+ dragon_battle.007.desc: "[dob_event_dragon.GetFirstNameNoTooltip] survived the battle, but not unscathed.\n\n#italic Dragon Size: [ROOT.GetVariable('dob_dragon_size')]#\n\nYour dragon bears wounds from the combat. Time and rest will heal them."
+ dragon_battle.007.a: "Rest well, my friend."

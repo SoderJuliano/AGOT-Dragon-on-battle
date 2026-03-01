@@ -1,0 +1,111 @@
+# ============================================================
+# DRAGON ON BATTLE - Scripted Values
+# Mod: Dragon on Battle (AGOT Addon) v0.1
+# Nomes verificados contra AGOT 0.4.27
+# ============================================================
+# O rider acessa seu dragão via: var:current_dragon
+# dragon_size é script_value no escopo do DRAGÃO (não do rider)
+# dragon_combat_effectiveness: size × traits × wounds × outros
+# Fórmula do bônus: dragon_combat_effectiveness do AGOT
+# Exemplo: dragão size 80 normal → ~80 de poder
+# ============================================================
+
+# Retorna o bônus de batalha do dragão
+# Scope: o personagem RIDER
+# Retorna 0 se não for rider com dragão adulto ativo em batalha
+dob_dragon_battle_bonus = {
+	value = 0
+
+	if = {
+		limit = { dob_dragon_deployed_for_battle = yes }
+
+		# USA O CÁLCULO REAL DO AGOT: dragon_combat_effectiveness
+		# (já inclui size, traits, ferimentos, etc)
+		if = {
+			limit = { exists = var:current_dragon }
+			add = var:current_dragon.dragon_combat_effectiveness
+		}
+	}
+}
+
+# Retorna a size do dragão do rider
+# Scope: o personagem RIDER
+# Retorna 0 se não tiver dragão
+dob_dragon_size_value = {
+	value = 0
+	if = {
+		limit = {
+			is_current_dragonrider = yes
+			exists = var:current_dragon
+		}
+		add = var:current_dragon.dragon_size
+	}
+}
+
+# Retorna a combat_effectiveness do dragão (inclui traits, ferimentos, rider xp)
+# Scope: o personagem RIDER
+dob_dragon_combat_effectiveness_value = {
+	value = 0
+	if = {
+		limit = {
+			is_current_dragonrider = yes
+			exists = var:current_dragon
+		}
+		add = var:current_dragon.dragon_combat_effectiveness
+	}
+}
+
+# Calcula o prestígio ganho por vencer uma batalha com dragão
+# Fórmula: 100 base + (dragon_size * 2)
+# Exemplos:
+#   Dragão size 30  → +160 prestígio
+#   Dragão size 80  → +260 prestígio
+#   Dragão size 150 → +400 prestígio
+# Scope: o personagem RIDER
+dob_dragon_prestige_gain = {
+	value = 0
+	if = {
+		limit = {
+			is_current_dragonrider = yes
+			exists = var:current_dragon
+		}
+		add = 100
+		add = {
+			value = var:current_dragon.dragon_size
+			multiply = 2
+		}
+	}
+}
+
+# Retorna o Battle Tier do dragão (1-10) baseado no dragon_size
+# Scope: o DRAGÃO (chamado pelo GUI via CharacterWindow do dragão)
+# Fórmula: dragon_size / 17, arredondado em tiers de 17 points cada
+# Exemplos:
+#   size 0-16:  0 (filhote, não vai à batalha)
+#   size 17-33:    1
+#   size 34-50:    2
+#   size 51-67:    3
+#   size 68-84:    4
+#   size 85-101:   5
+#   size 102-118:  6
+#   size 119-135:  7
+#   size 136-152:  8
+#   size 153-169:  9
+#   size 170+:     10
+dob_dragon_battle_tier = {
+	# TESTE: Retorna 7 fixo para verificar se está sendo lido
+	value = 7
+}
+
+# Retorna o bônus de batalha TOTAL que este dragão dá ao rider
+# Scope: o DRAGÃO (chamado pelo GUI via CharacterWindow do dragão)
+# USA O CÁLCULO REAL DO AGOT: dragon_combat_effectiveness
+# (size * modificadores de traits/ferimentos/etc)
+# Exemplos:
+#   size 30 (aggressive):  ~33 battle power
+#   size 74 (normal):      ~74 battle power
+#   size 150 (wounded):    ~127 battle power
+dob_dragon_battle_bonus_display = {
+	# TESTE: Retorna 999 fixo para verificar se está sendo lido
+	value = 999
+}

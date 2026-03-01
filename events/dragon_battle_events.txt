@@ -1,0 +1,181 @@
+# ============================================================
+# DRAGON ON BATTLE - Events (Eventos de notificação)
+# Mod: Dragon on Battle (AGOT Addon) v0.1
+# ============================================================
+# 001 = Notificação ao declarar guerra (dragão vai à batalha)
+# 002 = Notificação de vitória com dragão
+# 003 = Notificação de derrota com dragão
+# ============================================================
+
+namespace = dragon_battle
+
+# ── Evento 001: Dragão parte para a guerra ──────────────────
+dragon_battle.001 = {
+	type = character_event
+	title = dragon_battle.001.t
+	desc = dragon_battle.001.desc
+	theme = battle
+
+	# Usa o ícone de dragão do AGOT se disponível
+	# Se der erro, remova a linha "left_portrait" abaixo
+	left_portrait = {
+		character = root
+		animation = aggressive_sword
+	}
+
+	# Dispara no escopo do rider (root = rider)
+	immediate = {
+		# Recalcula o bônus para garantir valor correto no texto
+		set_variable = {
+			name = dob_dragon_power
+			value = script_value:dob_dragon_battle_bonus
+		}
+		set_variable = {
+			name = dob_dragon_size
+			value = script_value:dob_dragon_size_value
+		}
+	}
+
+	option = {
+		name = dragon_battle.001.a
+		# Fecha o evento sem efeito adicional
+		# O modifier será aplicado no on_battle_end
+	}
+}
+
+# ── Evento 002: Vitória com o dragão ────────────────────────
+dragon_battle.002 = {
+	type = character_event
+	title = dragon_battle.002.t
+	desc = dragon_battle.002.desc
+	theme = battle
+
+	immediate = {
+		if = {
+			limit = { exists = scope:dob_event_dragon }
+			scope:dob_event_dragon = { save_scope_as = dob_event_dragon }
+		}
+	}
+
+	left_portrait = {
+		character = root
+		animation = war_attacker
+	}
+	right_portrait = {
+		character = scope:dob_event_dragon
+	}
+
+	option = {
+		name = dragon_battle.002.a
+		# Prestígio já foi dado no scripted_effect
+	}
+}
+
+# ── Evento 003: Derrota com o dragão ────────────────────────
+dragon_battle.003 = {
+	type = character_event
+	title = dragon_battle.003.t
+	desc = dragon_battle.003.desc
+	theme = battle
+
+	immediate = {
+		if = {
+			limit = { exists = scope:dob_event_dragon }
+			scope:dob_event_dragon = { save_scope_as = dob_event_dragon }
+		}
+	}
+
+	left_portrait = {
+		character = root
+		animation = shame
+	}
+	right_portrait = {
+		character = scope:dob_event_dragon
+	}
+
+	option = {
+		name = dragon_battle.003.a
+		# Se o dragão morreu, AGOT já disparou agot_dragon_death.0001
+		# -300 prestígio já aplicado no scripted_effect se dragão morreu
+	}
+}
+
+# ── Evento 005: Dragão morreu mesmo na VITÓRIA (1% raro) ───────────
+# Root = rider (player)
+dragon_battle.005 = {
+	type = character_event
+	title = dragon_battle.005.t
+	desc = dragon_battle.005.desc
+	theme = battle
+
+	left_portrait = {
+		character = root
+		animation = grief
+	}
+	right_portrait = {
+		character = scope:dob_event_dragon
+	}
+
+	option = {
+		name = dragon_battle.005.a
+	}
+}
+
+# ── Evento 006: Dragão morreu na DERROTA (20%) ──────────────────
+dragon_battle.006 = {
+	type = character_event
+	title = dragon_battle.006.t
+	desc = dragon_battle.006.desc
+	theme = battle
+
+	left_portrait = {
+		character = root
+		animation = grief
+	}
+	right_portrait = {
+		character = scope:dob_event_dragon
+	}
+
+	option = {
+		name = dragon_battle.006.a
+	}
+}
+
+# ── Evento 007: Dragão ferido mas vivo ───────────────────────────
+# Root = rider (player). scope:dob_event_dragon = dragão ferido.
+dragon_battle.007 = {
+	type = character_event
+	title = dragon_battle.007.t
+	desc = dragon_battle.007.desc
+	theme = battle
+
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	right_portrait = {
+		character = scope:dob_event_dragon
+	}
+
+	option = {
+		name = dragon_battle.007.a
+	}
+}
+
+# ── Evento 004: Familiar/aliada vai à guerra com dragão ─────
+# Root = player (humano). scope:dob_ally_rider = a personagem IA que declarou guerra
+dragon_battle.004 = {
+	type = character_event
+	title = dragon_battle.004.t
+	desc = dragon_battle.004.desc
+	theme = battle
+
+	left_portrait = {
+		character = scope:dob_ally_rider
+		animation = aggressive_sword
+	}
+
+	option = {
+		name = dragon_battle.004.a
+	}
+}
