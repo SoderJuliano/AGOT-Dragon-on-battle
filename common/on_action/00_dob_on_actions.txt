@@ -131,6 +131,20 @@ on_monthly_pulse = {
 	on_actions = { dob_on_monthly_pulse }
 }
 
+# Backup anual — garante remoção mesmo se monthly_pulse falhar
+on_yearly_pulse = {
+	on_actions = { dob_on_yearly_pulse }
+}
+
+dob_on_yearly_pulse = {
+	effect = {
+		every_living_character = {
+			limit = { has_trait = dragonwidowed }
+			remove_trait = dragonwidowed
+		}
+	}
+}
+
 dob_on_monthly_pulse = {
 	effect = {
 		if = {
