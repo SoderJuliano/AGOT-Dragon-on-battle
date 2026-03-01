@@ -621,9 +621,19 @@ types CharacterWindow
 									margin_left = 5
 									tooltip = "DOB_BATTLE_TIER_TOOLTIP"
 
+									icon = {
+										texture = "gfx/interface/icons/icon_dragon_combat_effectiveness.dds"
+										size = { 32 32 }
+										tooltip = "DOB_BATTLE_TIER_TOOLTIP"
+									}
 									text_single = {
-										name = "dob_battle_tier_label"
-											text = "@dragon_combat_effectiveness_stat_icon!"
+										name = "dob_battle_tier_value"
+										text = "[CharacterWindow.GetCharacter.GetVariable('dob_battle_tier')|0]"
+										align = nobaseline
+									}
+								}
+
+								divider_light = {
 									layoutpolicy_vertical = expanding
 									visible = "[Not(Character.IsDeadAndValid)]"
 								}
