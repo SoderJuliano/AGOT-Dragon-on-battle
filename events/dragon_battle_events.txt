@@ -179,3 +179,151 @@ dragon_battle.004 = {
 		name = dragon_battle.004.a
 	}
 }
+
+# ── Evento 008: Guerra declarada CONTRA o player — dragão se prepara para defender ──
+# Root = player (defensor). Disparado de dob_on_war_started quando scope:defender = player.
+dragon_battle.008 = {
+	type = character_event
+	title = dragon_battle.008.t
+	desc = dragon_battle.008.desc
+	theme = battle
+
+	left_portrait = {
+		character = root
+		animation = war_attacker
+	}
+
+	immediate = {
+		set_variable = {
+			name = dob_dragon_power
+			value = script_value:dob_dragon_battle_bonus
+		}
+		set_variable = {
+			name = dob_dragon_size
+			value = script_value:dob_dragon_size_value
+		}
+	}
+
+	option = {
+		name = dragon_battle.008.a
+	}
+}
+
+# ── Evento 009: Vitória DEFENSIVA com dragão ─────────────────────────────────────
+# Root = rider (player). scope:dob_event_dragon = o dragão.
+dragon_battle.009 = {
+	type = character_event
+	title = dragon_battle.009.t
+	desc = dragon_battle.009.desc
+	theme = battle
+
+	immediate = {
+		if = {
+			limit = { exists = scope:dob_event_dragon }
+			scope:dob_event_dragon = { save_scope_as = dob_event_dragon }
+		}
+	}
+
+	left_portrait = {
+		character = root
+		animation = war_attacker
+	}
+	right_portrait = {
+		character = scope:dob_event_dragon
+	}
+
+	option = {
+		name = dragon_battle.009.a
+	}
+}
+
+# ── Evento 010: Derrota DEFENSIVA com dragão ─────────────────────────────────────
+# Root = rider (player). scope:dob_event_dragon = o dragão.
+dragon_battle.010 = {
+	type = character_event
+	title = dragon_battle.010.t
+	desc = dragon_battle.010.desc
+	theme = battle
+
+	immediate = {
+		if = {
+			limit = { exists = scope:dob_event_dragon }
+			scope:dob_event_dragon = { save_scope_as = dob_event_dragon }
+		}
+	}
+
+	left_portrait = {
+		character = root
+		animation = shame
+	}
+	right_portrait = {
+		character = scope:dob_event_dragon
+	}
+
+	option = {
+		name = dragon_battle.010.a
+	}
+}
+
+# ── Evento 011: Dragão morreu na VITÓRIA defensiva (1% raro) ─────────────────────
+# Root = rider (player). scope:dob_event_dragon = o dragão (morto).
+dragon_battle.011 = {
+	type = character_event
+	title = dragon_battle.011.t
+	desc = dragon_battle.011.desc
+	theme = battle
+
+	left_portrait = {
+		character = root
+		animation = grief
+	}
+	right_portrait = {
+		character = scope:dob_event_dragon
+	}
+
+	option = {
+		name = dragon_battle.011.a
+	}
+}
+
+# ── Evento 012: Dragão morreu na DERROTA defensiva (20%) ─────────────────────────
+# Root = rider (player). scope:dob_event_dragon = o dragão (morto).
+dragon_battle.012 = {
+	type = character_event
+	title = dragon_battle.012.t
+	desc = dragon_battle.012.desc
+	theme = battle
+
+	left_portrait = {
+		character = root
+		animation = grief
+	}
+	right_portrait = {
+		character = scope:dob_event_dragon
+	}
+
+	option = {
+		name = dragon_battle.012.a
+	}
+}
+
+# ── Evento 013: Dragão ferido na defesa mas sobreviveu ───────────────────────────
+# Root = rider (player). scope:dob_event_dragon = o dragão ferido.
+dragon_battle.013 = {
+	type = character_event
+	title = dragon_battle.013.t
+	desc = dragon_battle.013.desc
+	theme = battle
+
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	right_portrait = {
+		character = scope:dob_event_dragon
+	}
+
+	option = {
+		name = dragon_battle.013.a
+	}
+}

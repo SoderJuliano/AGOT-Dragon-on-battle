@@ -44,3 +44,43 @@
  dragon_battle.007.t: "Your Dragon is Wounded!"
  dragon_battle.007.desc: "[dob_event_dragon.GetFirstNameNoTooltip] survived the battle, but not unscathed.\n\n#italic Dragon Size: [ROOT.GetVariable('dob_dragon_size')]#\n\nYour dragon bears wounds from the combat. Time and rest will heal them."
  dragon_battle.007.a: "Rest well, my friend."
+
+ # ── Evento 008: Guerra declarada contra o player (defensor) ─
+ dragon_battle.008.t: "Invaders Approach — Your Dragon Rises to Defend!"
+ dragon_battle.008.desc: "Word reaches you of enemy forces marching upon your lands. You have been declared upon.\n\nYour dragon stirs at the coming threat, ancient fury awakening in its eyes. [ROOT.GetHerHis] fire will be the wall between your realm and those who dare invade it.\n\n#bold Dragon Battle Power: +[ROOT.GetVariable('dob_dragon_power')]#!\n#italic Dragon Size: [ROOT.GetVariable('dob_dragon_size')]#!\n\nYou did not choose this war. But you will finish it."
+ dragon_battle.008.a: "They will learn to fear dragonfire on their own soil!"
+
+ # ── Evento 009: Vitória defensiva com dragão ─────────────────
+ dragon_battle.009.t: "The Defense Holds! Your Dragon Repelled the Invaders!"
+ dragon_battle.009.desc: "The enemy has been driven back from your lands!\n\n[dob_event_dragon.GetFirstNameNoTooltip] soared above your defenders, unleashing torrents of fire upon the attacking forces. The sight of the great dragon shattered their resolve and turned their advance into a rout.\n\n#bold Prestige Gained: +[ROOT.GetVariable('dob_prestige_gained')]#!\n#italic Dragon Size: [ROOT.GetVariable('dob_dragon_size')]#!\n\nYour realm is safe. Word will spread of the dragon that turned back the invasion — and of the dragonlord who commanded it."
+ dragon_battle.009.a: "None shall threaten our lands and live!"
+
+ # ── Evento 010: Derrota defensiva com dragão ─────────────────
+ dragon_battle.010.t: "The Enemy Breaks Through — Defeat on Home Soil"
+ dragon_battle.010.desc: "Despite [dob_event_dragon.GetFirstNameNoTooltip]'s fury, the enemy forces have prevailed on your lands.\n\n#italic Dragon Size: [ROOT.GetVariable('dob_dragon_size')]#!\n\nYour dragon fought with everything it had — fire, claw, and will — but even dragonfire cannot hold back a tide forever. The enemy walks your lands. You must regroup, survive, and prepare for what comes next.\n\n#weak The war is not over.#!"
+ dragon_battle.010.a: "We will not surrender our realm. Not today. Not ever."
+
+ # ── Evento 011: Dragão morreu na vitória defensiva (1% raro) ─
+ dragon_battle.011.t: "Victory Stained by Loss — Your Dragon Fell Defending Your Lands"
+ dragon_battle.011.desc: "The invaders have been repelled... but [dob_event_dragon.GetFirstNameNoTooltip] paid the ultimate price.\n\n#italic Dragon Size: [ROOT.GetVariable('dob_dragon_size')]#!\n\nYour dragon threw itself between the enemy and your realm, burning and tearing through their ranks until the very end. The attackers fled — but [dob_event_dragon.GetFirstNameNoTooltip] fell. Your greatest protector, your companion, is gone.\n\n#weak A victory that feels like defeat.#!"
+ dragon_battle.011.a: "I will carry this wound forever. Their sacrifice will not be forgotten."
+
+ # ── Evento 012: Dragão morreu na derrota defensiva (20%) ─────
+ dragon_battle.012.t: "Catastrophe — Defeat and Dragon Lost, Your Realm Bleeds"
+ dragon_battle.012.desc: "Defeat stings, but the loss of [dob_event_dragon.GetFirstNameNoTooltip] is a wound that may never heal.\n\n#italic Dragon Size: [ROOT.GetVariable('dob_dragon_size')]#!\n\nYour dragon gave its last breath fighting to hold back the invasion. It burned and bled until the end, protecting your people with every ounce of its ancient strength. And still the enemy prevailed.\n\nThis is a dark day for your realm — and for every dragonlord who will hear of it."
+ dragon_battle.012.a: "I will avenge them both — my dragon and my realm."
+
+ # ── Evento 013: Dragão ferido defendendo (10%) ───────────────
+ dragon_battle.013.t: "Your Dragon is Wounded — A Defender's Price"
+ dragon_battle.013.desc: "[dob_event_dragon.GetFirstNameNoTooltip] drove back the invaders, but the battle left its mark.\n\n#italic Dragon Size: [ROOT.GetVariable('dob_dragon_size')]#!\n\nYour dragon fought hard to protect what is yours, absorbing blows that would have fallen upon your people. The wounds are not mortal — with rest and time, the great beast will recover.\n\n#weak And when it does, it will be fiercer than before.#!"
+ dragon_battle.013.a: "Rest, guardian. You have earned it."
+
+ # ── Modifiers defensivos permanentes (visíveis na ficha do dragão) ─
+ dob_dragon_field_guardian: "Field Guardian"
+ dob_dragon_field_guardian_desc: "This dragon has proven itself in open field defense, answering the call when its rider's lands were threatened. The experience of holding the line against invaders has sharpened its instincts and deepened its ferocity."
+
+ dob_dragon_army_defender: "Army Defender"
+ dob_dragon_army_defender_desc: "A veteran of defensive warfare, this dragon has stood between an invading army and the realm it protects — more than once. Soldiers who march beneath its shadow know they will not fight alone."
+
+ dob_dragon_shield_realm: "Shield of the Realm"
+ dob_dragon_shield_realm_desc: "The highest honor a defensive dragon can earn. This creature has stood as an unbreakable wall against those who would threaten the realm, time and again. Bards already sing of the great beast that would not yield. Its legend as defender is known across Westeros."

@@ -99,6 +99,35 @@ monthly_prestige = 0.2
 # Vitória: 10% chance, dura 90 dias
 # Derrota: 35% chance, dura 180 dias
 dob_dragon_wounded = {
-icon = prestige
-prowess = -8
+	icon = prestige
+	prowess = -8
+}
+
+# ============================================================
+# TÍTULOS DEFENSIVOS — permanentes no dragão
+# Ganhos com 15% de chance em vitórias defensivas
+# Progressão: Field Guardian → Army Defender → Shield of the Realm
+# Cumulativos com dob_dragon_power_* e dob_dragon_battle_hardened
+# ============================================================
+
+# Tier 1 defensivo — dragão que defendeu pela primeira vez
+dob_dragon_field_guardian = {
+	icon = martial_positive
+	prowess = 5
+	monthly_prestige = 0.15
+}
+
+# Tier 2 defensivo — dragão que salvou um exército
+dob_dragon_army_defender = {
+	icon = prowess_positive
+	prowess = 8
+	monthly_prestige = 0.25
+}
+
+# Tier 3 defensivo — maior honra defensiva, lenda viva
+dob_dragon_shield_realm = {
+	icon = prestige_positive
+	prowess = 12
+	monthly_prestige = 0.4
+	stress_gain_mult = -0.05
 }

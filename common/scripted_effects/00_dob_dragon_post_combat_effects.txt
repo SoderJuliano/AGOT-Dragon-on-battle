@@ -41,6 +41,7 @@ dob_dragon_winner_effect = {
 
 		# Guardar scope do dragão ANTES de qualquer rolagem de morte
 		var:current_dragon = { save_scope_as = dob_event_dragon }
+		save_scope_as = dob_rider
 
 		set_variable = { name = dob_dragon_size value = script_value:dob_dragon_size_value }
 		set_variable = { name = dob_prestige_gained value = script_value:dob_dragon_prestige_gain }
@@ -87,19 +88,70 @@ dob_dragon_winner_effect = {
 				else = {
 					add_character_modifier = { modifier = dob_dragon_victory_small days = 30 }
 				}
-				# Evento de vitória (dia 1) + ferimento se aconteceu (dia 2)
-				trigger_event = { id = dragon_battle.002 days = 1 }
+				# ── Detectar: batalha ofensiva ou defensiva? ─────────────────────────
 				if = {
-					limit = { has_variable = dob_dragon_was_wounded }
-					trigger_event = { id = dragon_battle.007 days = 2 }
-					remove_variable = dob_dragon_was_wounded
+					limit = {
+						any_character_war = {
+							any_war_defender = { this = scope:dob_rider }
+						}
+					}
+					# ── VITÓRIA DEFENSIVA ────────────────────────────────────────────
+					trigger_event = { id = dragon_battle.009 days = 1 }
+					if = {
+						limit = { has_variable = dob_dragon_was_wounded }
+						trigger_event = { id = dragon_battle.013 days = 2 }
+						remove_variable = dob_dragon_was_wounded
+					}
+					# 15% chance de ganhar título defensivo permanente no dragão
+					scope:dob_event_dragon = {
+						random = {
+							chance = 15
+							modifier = {
+								factor = 0
+								has_character_modifier = dob_dragon_field_guardian
+								has_character_modifier = dob_dragon_army_defender
+								has_character_modifier = dob_dragon_shield_realm
+							}
+							if = {
+								limit = { NOT = { has_character_modifier = dob_dragon_field_guardian } }
+								add_character_modifier = dob_dragon_field_guardian
+							}
+							else_if = {
+								limit = { NOT = { has_character_modifier = dob_dragon_army_defender } }
+								add_character_modifier = dob_dragon_army_defender
+							}
+							else_if = {
+								limit = { NOT = { has_character_modifier = dob_dragon_shield_realm } }
+								add_character_modifier = dob_dragon_shield_realm
+							}
+						}
+					}
+				}
+				else = {
+					# ── VITÓRIA OFENSIVA ─────────────────────────────────────────────
+					trigger_event = { id = dragon_battle.002 days = 1 }
+					if = {
+						limit = { has_variable = dob_dragon_was_wounded }
+						trigger_event = { id = dragon_battle.007 days = 2 }
+						remove_variable = dob_dragon_was_wounded
+					}
 				}
 			}
 		}
-		# ── Dragão morreu (1% raro) ───────────────────────────────────────────
+		# ── Dragão morreu na vitória (1% raro) — detectar ofensivo/defensivo ──────────
 		else_if = {
 			limit = { is_ai = no }
-			trigger_event = { id = dragon_battle.005 days = 1 }
+			if = {
+				limit = {
+					any_character_war = {
+						any_war_defender = { this = scope:dob_rider }
+					}
+				}
+				trigger_event = { id = dragon_battle.011 days = 1 }
+			}
+			else = {
+				trigger_event = { id = dragon_battle.005 days = 1 }
+			}
 		}
 	}
 }
@@ -120,6 +172,7 @@ dob_dragon_loser_effect = {
 
 		# Guardar scope do dragão ANTES da rolagem de morte
 		var:current_dragon = { save_scope_as = dob_event_dragon }
+		save_scope_as = dob_rider_loser
 
 		# Armazenar ANTES da rolagem de morte
 		set_variable = {
@@ -144,13 +197,45 @@ dob_dragon_loser_effect = {
 			}
 		}
 
-		# Feedback visual APENAS para o player
+		# 35% chance de ferimento na derrota (se dragão sobreviveu)
+		if = {
+			limit = { scope:dob_event_dragon = { is_alive = yes } }
+			random = {
+				chance = 35
+				scope:dob_event_dragon = {
+					remove_character_modifier = dob_dragon_wounded
+					add_character_modifier = { modifier = dob_dragon_wounded days = 180 }
+				}
+			}
+		}
+
+		# ── Feedback visual APENAS para o player — detectar ofensivo/defensivo ─────────
 		if = {
 			limit = { is_ai = no }
-			# Notificação de derrota (1 dia de delay)
-			trigger_event = {
-				id = dragon_battle.003
-				days = 1
+			if = {
+				limit = {
+					any_character_war = {
+						any_war_defender = { this = scope:dob_rider_loser }
+					}
+				}
+				# ── DERROTA DEFENSIVA ────────────────────────────────────────────
+				if = {
+					limit = { scope:dob_event_dragon = { is_alive = yes } }
+					trigger_event = { id = dragon_battle.010 days = 1 }
+				}
+				else = {
+					trigger_event = { id = dragon_battle.012 days = 1 }
+				}
+			}
+			else = {
+				# ── DERROTA OFENSIVA ─────────────────────────────────────────────
+				if = {
+					limit = { scope:dob_event_dragon = { is_alive = yes } }
+					trigger_event = { id = dragon_battle.003 days = 1 }
+				}
+				else = {
+					trigger_event = { id = dragon_battle.006 days = 1 }
+				}
 			}
 		}
 	}

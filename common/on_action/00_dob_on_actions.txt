@@ -71,6 +71,33 @@ dob_on_war_started = {
 				}
 			}
 		}
+
+		# Caso 3: Player está sendo ATACADO (é o DEFENSOR) e tem dragão
+		# scope:defender é o defensor da guerra (root = atacante)
+		if = {
+			limit = {
+				scope:defender = {
+					is_ai = no
+					has_trait = dragonrider
+					exists = var:current_dragon
+					var:current_dragon = { is_alive = yes }
+				}
+			}
+			scope:defender = {
+				set_variable = {
+					name = dob_dragon_power
+					value = script_value:dob_dragon_battle_bonus
+				}
+				set_variable = {
+					name = dob_dragon_size
+					value = script_value:dob_dragon_size_value
+				}
+				trigger_event = {
+					id = dragon_battle.008
+					days = 1
+				}
+			}
+		}
 	}
 }
 
