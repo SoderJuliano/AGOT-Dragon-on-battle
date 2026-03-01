@@ -138,30 +138,21 @@ on_yearly_pulse = {
 
 dob_on_yearly_pulse = {
 	effect = {
-		# ── Dragonwidowed: backup anual para qualquer caso restante ───────────────────
+		# ── Dragonwidowed: backup anual para qualquer caso restante ──────────────────
+		# Apenas remove o trait — NÃO toca dragões de AI para evitar crash no
+		# More Dragon Eggs (current_rider access violation via every_living_character).
 		every_living_character = {
 			limit = { has_trait = dragonwidowed }
 			remove_trait = dragonwidowed
-		}
-
-		# ── Atualizar modifier em TODOS os dragonriders do mundo ─────────────────────
-		# Cobre AI (irmã, Targaryens rivais, etc.) que o monthly_pulse não alcança.
-		# every_living_character com limit é pesado mas yearly (1x/ano) é aceitável.
-		every_living_character = {
-			limit = {
-				has_trait = dragonrider
-				exists = var:current_dragon
-				var:current_dragon = { is_alive = yes }
-			}
-			var:current_dragon = { dob_update_dragon_power_modifier = yes }
-			dob_update_rider_dragon_modifier = yes
 		}
 	}
 }
 
 dob_on_monthly_pulse = {
 	effect = {
-		# ── Player e familiares com dragão ──────────────────────────────────────────────
+		# ── Player: atualiza modifier do dragão na ficha do rider ──────────────────────
+		# Root = player character. Só toca o próprio player para evitar acessar
+		# current_rider de outros dragões via hooks de outros mods (crash).
 		if = {
 			limit = {
 				has_trait = dragonrider
@@ -184,22 +175,7 @@ dob_on_monthly_pulse = {
 			remove_character_modifier = dob_rider_dragon_great
 		}
 
-		# ── Aplicar também em familiares próximos (irmã, filhos, etc.) ───────────────
-		# Assim a irmã da Lysena e outros dragonriders da família recebem o modifier
-		every_close_family_member = {
-			limit = {
-				has_trait = dragonrider
-				exists = var:current_dragon
-				var:current_dragon = { is_alive = yes }
-			}
-			var:current_dragon = { dob_update_dragon_power_modifier = yes }
-			dob_update_rider_dragon_modifier = yes
-		}
-
-		# ── Dragonwidowed ────────────────────────────────────────────────
-		# O AGOT aplica dragonwidowed permanentemente quando o dragão morre.
-		# Nosso mod remove toda vez que detectar — sem delay, sem tracking.
-		# Remoção direta é mais robusta do que sistema de variável.
+		# ── Dragonwidowed: remover do player ─────────────────────────────────────────
 		if = {
 			limit = { has_trait = dragonwidowed }
 			remove_trait = dragonwidowed
