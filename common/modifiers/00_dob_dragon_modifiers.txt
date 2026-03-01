@@ -84,3 +84,23 @@ dob_rider_dragon_great = {
 	prowess = 4					# Elite dos dragonriders
 	stress_gain_mult = -0.05	# Confiança de pilotar um deus
 }
+
+# ============================================================
+# MODIFIERS DO DRAGÃO — pós-batalha (aparecem na ficha do dragão)
+# ============================================================
+
+# Experiência de batalha — dado ao dragão vencedor (2 anos)
+# Removido e reaplicado a cada vitória para resetar a duração
+dob_dragon_battle_hardened = {
+icon = prestige
+prowess = 6
+monthly_prestige = 0.2
+}
+
+# Ferimento de batalha — dado ao dragão que sobreviveu mas foi ferido
+# Vitória: 10% chance, dura 90 dias
+# Derrota: 35% chance, dura 180 dias
+dob_dragon_wounded = {
+icon = prestige
+prowess = -8
+}

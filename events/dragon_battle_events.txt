@@ -100,6 +100,68 @@ dragon_battle.003 = {
 	}
 }
 
+# ── Evento 005: Dragão morreu mesmo na VITÓRIA (1% raro) ───────────
+# Root = rider (player)
+dragon_battle.005 = {
+	type = character_event
+	title = dragon_battle.005.t
+	desc = dragon_battle.005.desc
+	theme = battle
+
+	left_portrait = {
+		character = root
+		animation = grief
+	}
+	right_portrait = {
+		character = scope:dob_event_dragon
+	}
+
+	option = {
+		name = dragon_battle.005.a
+	}
+}
+
+# ── Evento 006: Dragão morreu na DERROTA (20%) ──────────────────
+dragon_battle.006 = {
+	type = character_event
+	title = dragon_battle.006.t
+	desc = dragon_battle.006.desc
+	theme = battle
+
+	left_portrait = {
+		character = root
+		animation = grief
+	}
+	right_portrait = {
+		character = scope:dob_event_dragon
+	}
+
+	option = {
+		name = dragon_battle.006.a
+	}
+}
+
+# ── Evento 007: Dragão ferido mas vivo ───────────────────────────
+# Root = rider (player). scope:dob_event_dragon = dragão ferido.
+dragon_battle.007 = {
+	type = character_event
+	title = dragon_battle.007.t
+	desc = dragon_battle.007.desc
+	theme = battle
+
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	right_portrait = {
+		character = scope:dob_event_dragon
+	}
+
+	option = {
+		name = dragon_battle.007.a
+	}
+}
+
 # ── Evento 004: Familiar/aliada vai à guerra com dragão ─────
 # Root = player (humano). scope:dob_ally_rider = a personagem IA que declarou guerra
 dragon_battle.004 = {

@@ -38,63 +38,68 @@ dob_dragon_winner_effect = {
 				dragon_size >= 30
 			}
 		}
-		# Estamos agora em character scope (o rider)
 
-		# Guardar scope do dragão ANTES da rolagem de morte
+		# Guardar scope do dragão ANTES de qualquer rolagem de morte
 		var:current_dragon = { save_scope_as = dob_event_dragon }
 
-		# Armazenar ANTES da rolagem de morte
-		# (AGOT pode limpar var:current_dragon após kill)
-		set_variable = {
-			name = dob_dragon_size
-			value = script_value:dob_dragon_size_value
-		}
-		set_variable = {
-			name = dob_prestige_gained
-			value = script_value:dob_dragon_prestige_gain
-		}
+		set_variable = { name = dob_dragon_size value = script_value:dob_dragon_size_value }
+		set_variable = { name = dob_prestige_gained value = script_value:dob_dragon_prestige_gain }
 
-		# Dar prestígio a TODOS os riders que venceram com dragão (AI e player)
+		# Dar prestígio a TODOS os riders que venceram (AI e player)
 		add_prestige = script_value:dob_dragon_prestige_gain
 
-		# 1% de chance de morte mesmo na vitória (ferimentos do combate)
+		# 1% de chance de morte mesmo na vitória
 		random = {
 			chance = 1
-			# AGOT dispara agot_dragon.0001 via on_death → notifica rider automaticamente
-			var:current_dragon = {
-				kill = { death_reason = death_battle }
-			}
+			var:current_dragon = { kill = { death_reason = death_battle } }
 		}
 
-		# Feedback visual APENAS para o player
+		# ── Dragão sobreviveu ──────────────────────────────────────────────
 		if = {
-			limit = { is_ai = no }
-			# Aplicar modifier de prestígio por 30 dias
+			limit = { scope:dob_event_dragon = { is_alive = yes } }
+
+			# Buff de experiência de batalha (2 anos) — visível na ficha do dragão
+			scope:dob_event_dragon = {
+				remove_character_modifier = dob_dragon_battle_hardened
+				add_character_modifier = { modifier = dob_dragon_battle_hardened days = 730 }
+			}
+
+			# 10% chance de ferimento mesmo na vitória
+			random = {
+				chance = 10
+				scope:dob_event_dragon = {
+					remove_character_modifier = dob_dragon_wounded
+					add_character_modifier = { modifier = dob_dragon_wounded days = 90 }
+				}
+				set_variable = { name = dob_dragon_was_wounded value = 1 }
+			}
+
 			if = {
-				limit = { var:dob_dragon_size >= 150 }
-				add_character_modifier = {
-					modifier = dob_dragon_victory_large
-					days = 30
+				limit = { is_ai = no }
+				if = {
+					limit = { var:dob_dragon_size >= 150 }
+					add_character_modifier = { modifier = dob_dragon_victory_large days = 30 }
+				}
+				else_if = {
+					limit = { var:dob_dragon_size >= 80 }
+					add_character_modifier = { modifier = dob_dragon_victory_medium days = 30 }
+				}
+				else = {
+					add_character_modifier = { modifier = dob_dragon_victory_small days = 30 }
+				}
+				# Evento de vitória (dia 1) + ferimento se aconteceu (dia 2)
+				trigger_event = { id = dragon_battle.002 days = 1 }
+				if = {
+					limit = { has_variable = dob_dragon_was_wounded }
+					trigger_event = { id = dragon_battle.007 days = 2 }
+					remove_variable = dob_dragon_was_wounded
 				}
 			}
-			else_if = {
-				limit = { var:dob_dragon_size >= 80 }
-				add_character_modifier = {
-					modifier = dob_dragon_victory_medium
-					days = 30
-				}
-			}
-			else = {
-				add_character_modifier = {
-					modifier = dob_dragon_victory_small
-					days = 30
-				}
-			}
-			# Notificação de vitória (1 dia de delay para AGOT processar primeiro)
-			trigger_event = {
-				id = dragon_battle.002
-				days = 1
-			}
+		}
+		# ── Dragão morreu (1% raro) ───────────────────────────────────────────
+		else_if = {
+			limit = { is_ai = no }
+			trigger_event = { id = dragon_battle.005 days = 1 }
 		}
 	}
 }
