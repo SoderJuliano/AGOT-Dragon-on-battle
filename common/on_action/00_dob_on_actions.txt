@@ -104,6 +104,13 @@ on_game_start_after_lobby = {
 
 dob_on_game_start = {
 	effect = {
+		# Remover dragonwidowed de todos os personagens ao carregar o save
+		# (garante que funciona mesmo em saves existentes antes do mod)
+		every_living_character = {
+			limit = { has_trait = dragonwidowed }
+			remove_trait = dragonwidowed
+		}
+		# Aplicar modifiers de poder do dragão em todos os riders
 		every_living_character = {
 			limit = {
 				has_trait = dragonrider
@@ -153,27 +160,13 @@ dob_on_monthly_pulse = {
 			remove_character_modifier = dob_rider_dragon_great
 		}
 
-		# ── Dragonwidowed temporário (1 mês) ─────────────────────────────────────────
+		# ── Dragonwidowed temporário ────────────────────────────────────────────────
 		# O AGOT aplica dragonwidowed permanentemente quando o dragão morre.
-		# Nosso mod transforma em temporário: 1 mês de luto, depois remove.
-		# Mês 1: detecta o trait → marca variável dob_dragonwidowed_tracked
-		# Mês 2: variável já existe → remove o trait
+		# Nosso mod remove toda vez que detectar — sem delay, sem tracking.
+		# Remoção direta é mais robusta do que sistema de variável.
 		if = {
-			limit = {
-				has_trait = dragonwidowed
-				has_variable = dob_dragonwidowed_tracked
-			}
-			# Já esperou 1 mês → remover trait
+			limit = { has_trait = dragonwidowed }
 			remove_trait = dragonwidowed
-			remove_variable = dob_dragonwidowed_tracked
-		}
-		else_if = {
-			limit = {
-				has_trait = dragonwidowed
-				NOT = { has_variable = dob_dragonwidowed_tracked }
-			}
-			# Primeiro mês com o trait → marcar para remover no próximo mês
-			set_variable = { name = dob_dragonwidowed_tracked value = 1 }
 		}
 	}
 }
