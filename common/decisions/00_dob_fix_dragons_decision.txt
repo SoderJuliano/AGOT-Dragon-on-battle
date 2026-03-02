@@ -31,6 +31,10 @@ dob_fix_all_dragons_decision = {
 
 	# ── Efeito ────────────────────────────────────────────────────────────────────
 	effect = {
+		log = "[DOB] ============================================================"
+		log = "[DOB] DECISAO: Restore Dragon Records acionada pelo player."
+		log = "[DOB] ============================================================"
+
 		# Previne uso múltiplo no mesmo ano
 		add_character_flag = {
 			flag = dob_fixed_dragons_this_year
@@ -39,6 +43,9 @@ dob_fix_all_dragons_decision = {
 
 		# Consertar todos os dragões vivos com story corrompida
 		dob_fix_all_broken_dragons = yes
+
+		log = "[DOB] DECISAO: Concluida. Total de dragoes corrigidos: [dob_fix_count|0]"
+		log = "[DOB] ============================================================"
 
 		# Evento que mostra o resultado com contagem de dragões corrigidos
 		trigger_event = { id = dragon_battle.017 }
