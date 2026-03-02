@@ -235,3 +235,81 @@ dob_on_monthly_pulse = {
 		}
 	}
 }
+
+# ── Hook: Aniversário do dragão ──────────────────────────────
+# Scope: root = o DRAGÃO (dispara automaticamente todo ano)
+# Detecta e corrige dragões com dragon_size_base = 0 na story
+# (problema causado pelo More Dragon Eggs e mods similares)
+on_dragon_birthday = {
+	effect = {
+		if = {
+			limit = {
+				has_trait = dragon
+				# Está na lista mas com tamanho 0 na story?
+				any_in_global_list = {
+					variable = gl_dragon_variable_storage
+					var:dragon_id ?= root
+					var:dragon_size_base <= 0
+				}
+			}
+
+			# Passo 1: estimar tamanho correto e setar no personagem do dragão
+			if = {
+				limit = { age >= 80 }
+				set_variable = { name = dragon_size_base value = 175 }
+			}
+			else_if = {
+				limit = { age >= 60 }
+				set_variable = { name = dragon_size_base value = 150 }
+			}
+			else_if = {
+				limit = { age >= 45 }
+				set_variable = { name = dragon_size_base value = 120 }
+			}
+			else_if = {
+				limit = { age >= 30 }
+				set_variable = { name = dragon_size_base value = 90 }
+			}
+			else_if = {
+				limit = { age >= 20 }
+				set_variable = { name = dragon_size_base value = 60 }
+			}
+			else_if = {
+				limit = { age >= 15 }
+				set_variable = { name = dragon_size_base value = 40 }
+			}
+			else_if = {
+				limit = { age >= 10 }
+				set_variable = { name = dragon_size_base value = 30 }
+			}
+			else_if = {
+				limit = { age >= 5 }
+				set_variable = { name = dragon_size_base value = 15 }
+			}
+			else = {
+				set_variable = { name = dragon_size_base value = 5 }
+			}
+
+			# Garantir dragon_age
+			if = {
+				limit = { NOT = { has_variable = dragon_age } }
+				set_variable = { name = dragon_age value = { value = 0 add = age } }
+			}
+
+			# Passo 2: remover story corrompida da lista e encerrá-la
+			save_temporary_scope_as = dob_birthday_dragon
+			every_in_global_list = {
+				variable = gl_dragon_variable_storage
+				limit = { var:dragon_id ?= scope:dob_birthday_dragon }
+				remove_list_global_variable = {
+					name = gl_dragon_variable_storage
+					target = this
+				}
+				end_story = yes
+			}
+
+			# Passo 3: recriar do zero com os valores corretos
+			agot_dragon_transfer_vars_to_story_cycle_effect = { DRAGON = this }
+		}
+	}
+}
