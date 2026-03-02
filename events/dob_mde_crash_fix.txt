@@ -1,4 +1,4 @@
-# ============================================================
+﻿# ============================================================
 # DRAGON ON BATTLE - Fix para crash do More Dragon Eggs
 # Mod: Dragon on Battle (AGOT Addon) v0.1
 # ============================================================
@@ -37,7 +37,7 @@ dob_mde_fix.0001 = {
 		# Se é um dragão E não tem current_rider setado, inicializa
 		if = {
 			limit = {
-				agot_is_dragon_trigger = yes
+				has_trait = dragon
 				NOT = { exists = var:current_rider }
 			}
 			# Setar current_rider como null (0) para prevenir crashes

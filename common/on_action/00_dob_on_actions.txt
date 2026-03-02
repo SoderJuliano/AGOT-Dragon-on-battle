@@ -1,4 +1,4 @@
-# ============================================================
+﻿# ============================================================
 # DRAGON ON BATTLE - On Actions
 # Mod: Dragon on Battle (AGOT Addon) v0.1
 # Nomes verificados contra AGOT 0.4.27
@@ -253,11 +253,19 @@ dob_on_dragon_birthday = {
 		if = {
 			limit = {
 				has_trait = dragon
-				# Está na lista mas com tamanho 0 na story?
-				any_in_global_list = {
-					variable = gl_dragon_variable_storage
-					var:dragon_id ?= root
-					var:dragon_size_base <= 0
+				# Caso 1: na lista com size=0, OU Caso 2: fora da lista (dragao do MDE nao registrado)
+				OR = {
+					any_in_global_list = {
+						variable = gl_dragon_variable_storage
+						var:dragon_id ?= root
+						var:dragon_size_base <= 0
+					}
+					NOT = {
+						any_in_global_list = {
+							variable = gl_dragon_variable_storage
+							var:dragon_id ?= root
+						}
+					}
 				}
 			}
 

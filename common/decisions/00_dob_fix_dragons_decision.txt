@@ -8,7 +8,9 @@
 # ============================================================
 
 dob_fix_all_dragons_decision = {
-	picture = "gfx/interface/icons/decisions/decision_dynasty_house.dds"
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_dragons.dds"
+	}
 	ai_check_interval = 0  # IA nunca executa
 
 	# ── Visibilidade ──────────────────────────────────────────────────────────────

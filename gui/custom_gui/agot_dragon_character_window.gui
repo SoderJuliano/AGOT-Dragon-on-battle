@@ -1,16 +1,13 @@
-###################################################################
+﻿###################################################################
 ################# AGOT DRAGONS CHARACTER WINDOW ###################
 ###################################################################
 
 types CharacterWindow
 {
-	##########################
-	# DRAGONS CHARACTER VIEW #
-	##########################
 	type agot_dragons_character_view = vbox {
 		name = "main_content_dragon"
 		using = Window_Margins_Sidebar
-		visible = "[IsCharacterDragon]"
+		using = visible_if_dragon
 
 		###############
 		# Character box
@@ -208,14 +205,14 @@ types CharacterWindow
 				name = "debug_buttons"
 				size = { 200 50 }
 				parentanchor = bottom|right
-				position = { 30 -10 }
+				position = { 50 -10 }
 				visible = "[InDebugMode]"
 				allow_outside = yes
 
 				# Debug personality
 				vbox = {
 					hbox = {
-						spacing = 5
+						spacing = 15
 						button = {
 							using = editor_button
 							name = "ai_watch_button"
@@ -243,9 +240,6 @@ types CharacterWindow
 				ignoreinvisible = yes
 				direction = vertical
 
-				# Dragon family tree
-				agot_dragon_tree_button = {}
-
 				## barbershop button
 				button_normal = {
 					name = "open_barbershop"
@@ -256,7 +250,10 @@ types CharacterWindow
 					tooltip = "CV_CUSTOMIZE_PORTRAIT"
 					using = tooltip_ne
 
-					icon_round_button_base = {}
+					icon = {
+						texture = "gfx/interface/buttons/button_lifestyles_base.dds"
+						size = { 100% 100% }
+					}
 
 					button_barbershop = {
 						visible = "[Character.CanCustomizePortrait]"
@@ -276,11 +273,13 @@ types CharacterWindow
 					tooltip = "CV_CUSTOMIZE_AGOT_DRAGON"
 					using = tooltip_ne
 
-					icon_round_button_base = {}
+					icon = {
+						texture = "gfx/interface/buttons/button_lifestyles_base.dds"
+						size = { 100% 100% }
+					}
 
 					button_clear = {
 						name = "dragon_edit"
-						enabled = "[GetScriptedGui('agot_dragon_skin_color_menu').IsValid(GuiScope.SetRoot(CharacterWindow.GetCharacter.MakeScope).AddScope('player', GetPlayer.MakeScope).End)]"
 						visible = "[GetScriptedGui('agot_dragon_skin_color_menu').IsShown(GuiScope.SetRoot(CharacterWindow.GetCharacter.MakeScope).AddScope('player', GetPlayer.MakeScope).End)]"
 						onclick = "[GetScriptedGui('agot_dragon_skin_color_menu').Execute(GuiScope.SetRoot(CharacterWindow.GetCharacter.MakeScope).AddScope('player', GetPlayer.MakeScope).End)]"
 						onclick = "[CharacterInteractionMenuWindow.Close]"
@@ -301,10 +300,13 @@ types CharacterWindow
 
 					datacontext = "[Character]"
 					tooltip = "OPEN_KILL_LIST_TOOLTIP"
-					using = tooltip_ne
+					using = tooltip_es
 
 
-					icon_round_button_base = {}
+					icon = {
+						texture = "gfx/interface/buttons/button_lifestyles_base.dds"
+						size = { 100% 100% }
+					}
 
 					button_kill_list = {
 						onclick = "[ToggleGameViewData( 'kill_list', Character.GetID  )]"
@@ -325,9 +327,12 @@ types CharacterWindow
 					size = { 35 35 }
 					datacontext = "[Character]"
 					tooltip = "OPEN_MEMORIES_TOOLTIP"
-					using = tooltip_ne
+					using = tooltip_es
 
-					icon_round_button_base = {}
+					icon = {
+						texture = "gfx/interface/buttons/button_lifestyles_base.dds"
+						size = { 100% 100% }
+					}
 
 					button_memories = {
 						onclick = "[ToggleGameViewData( 'memories', Character.GetID  )]"
@@ -336,17 +341,13 @@ types CharacterWindow
 					}
 				}
 
-				# DOB: Liberar dragão (apagar vínculo sem penalidade)
-				# Visível apenas quando este dragão é o dragão atual do player
+				# DOB: Liberar dragao sem penalidade
 				button_normal = {
 					name = "dob_release_dragon_button"
 					visible = "[GetScriptedGui('dob_can_release_dragon').IsShown( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).AddScope('player', GetPlayer.MakeScope ).End)]"
-					enabled = "[GetScriptedGui('dob_can_release_dragon').IsValid( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).AddScope('player', GetPlayer.MakeScope ).End)]"
 					size = { 35 35 }
 					tooltip = "DOB_RELEASE_DRAGON_BUTTON_TT"
 					using = tooltip_ne
-
-					icon_round_button_base = {}
 
 					button_clear = {
 						onclick = "[GetScriptedGui('dob_can_release_dragon').Execute( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).AddScope('player', GetPlayer.MakeScope ).End)]"
@@ -366,9 +367,12 @@ types CharacterWindow
 					visible = "[Not(Character.IsAlive)]"
 					datacontext = "[Character]"
 					tooltip = "VIEW_PAST_RIDERS"
-					using = tooltip_ne
+					using = tooltip_es
 
-					icon_round_button_base = {}
+					icon = {
+						texture = "gfx/interface/buttons/button_lifestyles_base.dds"
+						size = { 100% 100% }
+					}
 
 					button_past_dragonriders = {
 						onclick = "[GetScriptedGui('agot_show_dragon_past_rider_when_dead').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('dragon', CharacterWindow.GetCharacter.MakeScope).End)]"
@@ -383,12 +387,14 @@ types CharacterWindow
 					datacontext = "[GetScriptedGui('capture_wild_dragon')]"
 					visible = "[ScriptedGui.IsShown( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).AddScope('owner', GetPlayer.MakeScope ).End)]"
 					enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).AddScope('owner', GetPlayer.MakeScope ).End)]"
-					tooltip = "[SelectLocalization( GetPlayer.MakeScope.Var('capture_cd').IsSet, 'CANNOT_CAPTURE_WILD_DRAGON_TT', 'CAPTURE_WILD_DRAGON_TT' )]"
-					using = tooltip_ne
+					tooltip = "[ScriptedGui.BuildTooltip( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).AddScope('owner', GetPlayer.MakeScope ).End)]"
 					position = { 5 5 }
 					size = { 35 35 }
 
-					icon_round_button_base = {}
+					icon = {
+						texture = "gfx/interface/buttons/button_lifestyles_base.dds"
+						size = { 100% 100% }
+					}
 
 					button_capture_wild_dragon = {
 						onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).AddScope('owner', GetPlayer.MakeScope ).End)]"
@@ -409,38 +415,15 @@ types CharacterWindow
 					visible = "[ScriptedGui.IsShown( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).AddScope( 'owner', GetPlayer.MakeScope ).End)]"
 					enabled = "[ScriptedGui.IsValid( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).AddScope( 'owner', GetPlayer.MakeScope ).End)]"
 					tooltip = "SEND_TO_DRAGONPIT_TT"
-					using = tooltip_ne
 					position = { 5 5 }
 					size = { 35 35 }
 
-					icon_round_button_base = {}
+					icon = {
+						texture = "gfx/interface/buttons/button_lifestyles_base.dds"
+						size = { 100% 100% }
+					}
 
 					button_send_to_dragonpit = {
-						onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).AddScope('owner', GetPlayer.MakeScope ).End)]"
-						size = { 35 35 }
-						parentanchor = center
-
-						modify_texture = {
-							texture = "gfx/interface/icons/focuses/hud_icon_mask.dds"
-							blend_mode = alphamultiply
-						}
-					}
-				}
-
-				# Move or remove from dragonpit button
-				button_normal = {
-					name = "MOVE_OR_REMOVE_FROM_DRAGONPIT"
-
-					datacontext = "[GetScriptedGui('move_or_remove_from_dragonpit')]"
-					visible = "[ScriptedGui.IsShown( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).AddScope('owner', GetPlayer.MakeScope ).End)]"
-					tooltip = "MOVE_OR_REMOVE_FROM_DRAGONPIT_TT"
-					using = tooltip_ne
-					position = { 5 5 }
-					size = { 35 35 }
-
-					icon_round_button_base = {}
-
-					button_remove_from_dragonpit = {
 						onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).AddScope('owner', GetPlayer.MakeScope ).End)]"
 						size = { 35 35 }
 						parentanchor = center
@@ -459,11 +442,13 @@ types CharacterWindow
 					datacontext = "[GetScriptedGui('remove_from_dragonpit')]"
 					visible = "[ScriptedGui.IsShown( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).AddScope('owner', GetPlayer.MakeScope ).End)]"
 					tooltip = "REMOVE_FROM_DRAGONPIT_TT"
-					using = tooltip_ne
 					position = { 5 5 }
 					size = { 35 35 }
 
-					icon_round_button_base = {}
+					icon = {
+						texture = "gfx/interface/buttons/button_lifestyles_base.dds"
+						size = { 100% 100% }
+					}
 
 					button_remove_from_dragonpit = {
 						onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).AddScope('owner', GetPlayer.MakeScope ).End)]"
@@ -517,14 +502,14 @@ types CharacterWindow
 
 							text_single = {
 								name = "character_name"
-								raw_text = "[Character.GetFirstNameNicknamedNoTooltip|V], "
+								raw_text = "[Character.GetUINameNotMeNoTooltip], "
 								margin_left = 2
 								max_width = 400
 								fontsize = 20
 								fontsize_min = 14
 								align = nobaseline
 								default_format = "#medium"
-								tooltip = "[Character.GetFirstNameNicknamedNoTooltip|V]"
+								tooltip = "[Character.GetUINameNotMeNoTooltip]"
 							}
 
 							text_single = {
@@ -569,38 +554,80 @@ types CharacterWindow
 						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
 
-						using = Animation_Character_Window_Refresh
-
 						hbox = {
 							name = "skills_culture_religion"
 							layoutpolicy_horizontal = expanding
+
+							## Traits
+							hbox_dragon_traits_list = {
+								name = "tutorial_highlight_traits"
+								datacontext = "[CharacterWindow.GetTraitArrays]"
+								margin_top = 3
+								margin_bottom = 2
+							}
 
 							background = {
 								using = Background_Area
 							}
 
-							## Traits and Modifiers
-							agot_dragon_trait_expanding_button = {}
-							agot_dragon_modifiers_expanding_button = {}
+							vbox = {
+								layoutpolicy_vertical = expanding
+								margin = { -2 7 }
+
+								using = Animation_Character_Window_Refresh
+
+								fixedgridbox = {
+									name = "modifiers_grid"
+									datamodel = "[CharacterWindow.GetTimedModifiers]"
+									addcolumn = 22
+									addrow = 23
+									datamodel_wrap = 2
+									maxhorizontalslots = 2
+
+									item = {
+										modifier_item_icon = {
+											size = { 22 22 }
+
+											blockoverride "input_info_text" {
+												text = "CHARACTER_WINDOW_MODIFIERS"
+											}
+										}
+									}
+								}
+								expand = {}
+							}
 
 							hbox = {
+								# Divider
+								spacer = {
+									size = { 4 4 }
+								}
+
 								divider_light = {
 									layoutpolicy_vertical = expanding
 									visible = "[Not(Character.IsDeadAndValid)]"
 								}
 
+								spacer = {
+									size = { 4 4 }
+								}
+
 								# Dragon size
 								vbox = {
+									tooltip = "[dragon_size|E]"
 									visible = "[Not(Character.IsDeadAndValid)]"
-									margin_top = 4
-									margin_right = 5
-									margin_left = 5
+									using = tooltip_ne
+									spacing = -3
+									margin_top = 10
 
-									text_single = {
+									using = Animation_Character_Window_Refresh
+
+									icon = {
 										name = "dragon_size_icon"
-										text = "[dragon_size_i]"
-										align = nobaseline
+										size = { 32 32 }
+										texture = "gfx/interface/icons/icon_dragon_size.dds"
 									}
+
 									text_single = {
 										name = "dragon_size_value"
 										text = "[CharacterWindow.GetCharacter.MakeScope.ScriptValue('dragon_size')|0]"
@@ -608,23 +635,36 @@ types CharacterWindow
 									}
 								}
 
+								# Divider
+								spacer = {
+									size = { 4 4 }
+								}
+
 								divider_light = {
 									layoutpolicy_vertical = expanding
 									visible = "[Not(Character.IsDeadAndValid)]"
 								}
 
+								spacer = {
+									size = { 4 4 }
+								}
+
 								# Combat Effectiveness
 								vbox = {
+									tooltip = "[dragon_combat_effectiveness|E]"
 									visible = "[Not(Character.IsDeadAndValid)]"
-									margin_top = 4
-									margin_right = 5
-									margin_left = 5
+									using = tooltip_ne
+									spacing = -3
+									margin_top = 10
 
-									text_single = {
+									using = Animation_Character_Window_Refresh
+
+									icon = {
 										name = "dragon_combat_effectiveness_icon"
-										text = "[dragon_combat_effectiveness_i]"
-										align = nobaseline
+										size = { 32 32 }
+										texture = "gfx/interface/icons/icon_dragon_combat_effectiveness.dds"
 									}
+
 									text_single = {
 										name = "dragon_combat_effectiveness_value"
 										text = "[CharacterWindow.GetCharacter.MakeScope.ScriptValue('dragon_combat_effectiveness')|0]"
@@ -632,19 +672,27 @@ types CharacterWindow
 									}
 								}
 
+								# Divider
+								spacer = {
+									size = { 4 4 }
+								}
+
 								divider_light = {
 									layoutpolicy_vertical = expanding
 									visible = "[Not(Character.IsDeadAndValid)]"
 								}
 
-								# DOB: Battle Tier (Dragon on Battle mod)
+								spacer = {
+									size = { 4 4 }
+								}
+
+								# DOB: Battle Tier (Dragon on Battle)
 								vbox = {
 									visible = "[Not(Character.IsDeadAndValid)]"
 									margin_top = 4
 									margin_right = 5
 									margin_left = 5
 									tooltip = "DOB_BATTLE_TIER_TOOLTIP"
-
 									icon = {
 										texture = "gfx/interface/icons/icon_prowess.dds"
 										size = { 32 32 }
@@ -652,38 +700,35 @@ types CharacterWindow
 									}
 									text_single = {
 										name = "dob_battle_tier_value"
-										text = "[CharacterWindow.GetCharacter.MakeScope.ScriptValue('dob_dragon_battle_tier')|0]/10"
+										raw_text = "[CharacterWindow.GetCharacter.MakeScope.ScriptValue('dob_dragon_battle_tier')|0]/10"
 										align = nobaseline
 										tooltip = "DOB_BATTLE_TIER_TOOLTIP"
 									}
-									
-									# Battle Bonus: mostra o bônus total de batalha
 									text_single = {
 										name = "dob_battle_bonus"
-										text = "+[CharacterWindow.GetCharacter.MakeScope.ScriptValue('dob_dragon_battle_bonus_display')|0]"
+										raw_text = "+[CharacterWindow.GetCharacter.MakeScope.ScriptValue('dob_dragon_battle_bonus_display')|0]"
 										align = nobaseline
 										default_format = "#high"
 										tooltip = "DOB_BATTLE_TIER_TOOLTIP"
 									}
 								}
 
-								divider_light = {
-									layoutpolicy_vertical = expanding
-									visible = "[Not(Character.IsDeadAndValid)]"
-								}
-
 								# Draconic dread
 								vbox = {
+									tooltip = "[draconic_dread|E]"
 									visible = "[Not(Character.IsDeadAndValid)]"
-									margin_top = 4
-									margin_right = 5
-									margin_left = 6
+									using = tooltip_ne
+									spacing = -3
+									margin_top = 10
 
-									text_single = {
+									using = Animation_Character_Window_Refresh
+
+									icon = {
 										name = "draconic_dread_icon"
-										text = "[draconic_dread_i]"
-										align = nobaseline
+										size = { 32 32 }
+										texture = "gfx/interface/icons/icon_draconic_dread.dds"
 									}
+
 									text_single = {
 										name = "draconic_dread_value"
 										text = "[CharacterWindow.GetCharacter.MakeScope.ScriptValue('draconic_dread')|0]"
@@ -691,23 +736,36 @@ types CharacterWindow
 									}
 								}
 
+								# Divider
+								spacer = {
+									size = { 4 4 }
+								}
+
 								divider_light = {
 									layoutpolicy_vertical = expanding
 									visible = "[Not(Character.IsDeadAndValid)]"
 								}
 
+								spacer = {
+									size = { 4 4 }
+								}
+
 								# Temperament
 								vbox = {
+									tooltip = "[temperament|E]"
 									visible = "[Not(Character.IsDeadAndValid)]"
-									margin_top = 4
-									margin_right = 5
-									margin_left = 5
+									using = tooltip_ne
+									spacing = -3
+									margin_top = 10
 
-									text_single = {
+									using = Animation_Character_Window_Refresh
+
+									icon = {
 										name = "temperament_icon"
-										text = "[temperament_i]"
-										align = nobaseline
+										size = { 32 32 }
+										texture = "gfx/interface/icons/icon_draconic_temperament.dds"
 									}
+
 									text_single = {
 										name = "temperament_value"
 										text = "[CharacterWindow.GetCharacter.MakeScope.ScriptValue('temperament')|0]"
@@ -715,9 +773,18 @@ types CharacterWindow
 									}
 								}
 
+								# Divider
+								spacer = {
+									size = { 4 4 }
+								}
+
 								divider_light = {
 									layoutpolicy_vertical = expanding
 									visible = "[Not(Character.IsDeadAndValid)]"
+								}
+
+								spacer = {
+									size = { 4 4 }
 								}
 							}
 							expand = {}
@@ -1242,43 +1309,113 @@ types CharacterWindow
 		### EXPANDED VIEWS
 
 		# TRAITS EXPANDED
-		scrollbox = {
-			name = "traits_expanded"
-			visible = "[CharacterWindow.AreTraitsExpanded]"
-			layoutpolicy_vertical = expanding
-			layoutpolicy_horizontal = expanding
+		# scrollbox = {
+			# name = "traits_expanded"
+			# visible = "[CharacterWindow.AreTraitsExpanded]"
+			# layoutpolicy_vertical = expanding
+			# layoutpolicy_horizontal = expanding
 
-			using = Animation_Tab_Switch
+			# using = Animation_Tab_Switch
 
-			blockoverride "scrollbox_content"
-			{
-				spacing = 10
+			# blockoverride "scrollbox_content"
+			# {
+				# spacing = 10
 
-				agot_expanded_traits_vbox = {}
-			}
-		}
+				# vbox = {
+					# spacing = 10
 
-		# Modifiers expanded
-		scrollbox = {
-			name = "modifiers_expanded"
-			visible = "[CharacterWindow.AreModifiersExpanded]"
-			layoutpolicy_vertical = expanding
-			layoutpolicy_horizontal = expanding
+					# text_label_center = {
+						# text = "MODIFIERS"
+					# }
 
-			using = Animation_Tab_Switch
+					# text_single = {
+						# visible = "[IsDataModelEmpty(CharacterWindow.GetTimedModifiers)]"
+						# text = "CV_NO_MODIFIERS"
+						# default_format = "#low;italic"
+					# }
 
-			blockoverride "scrollbox_content"
-			{
-				spacing = 15
+					# dynamicgridbox = {
+						# name = "modifiers_grid"
+						# datamodel = "[CharacterWindow.GetTimedModifiers]"
+						# datamodel_wrap = 8
+						# flipdirection = yes
 
-				agot_expanded_modifiers_vbox = {}
-			}
-		}
+						# item = {
+							# modifier_item_icon = {
+								# size = { 22 22 }
+
+								# blockoverride "input_info_text" {
+									# text = "CHARACTER_WINDOW_MODIFIERS"
+								# }
+							# }
+						# }
+					# }
+				# }
+
+				# divider_light = {
+					# layoutpolicy_horizontal = expanding
+				# }
+
+				# vbox = {
+					# spacing = 10
+					# datacontext = "[CharacterWindow.GetTraitArrays]"
+
+					# text_label_center = {
+						# text = "TRAITS"
+					# }
+
+					# fixedgridbox = {
+						# name = "personality_traits_grid"
+						# datamodel = "[TraitArrays.GetPersonalityTraits]"
+						# addcolumn = 85
+						# addrow = 105
+						# flipdirection = yes
+						# datamodel_wrap = 6
+
+						# item = {
+							# icon_trait = {
+								# text_multi = {
+									# parentanchor = bottom|hcenter
+									# widgetanchor = top|hcenter
+									# position = { 0 -5 }
+									# autoresize = yes
+									# max_width = 80
+									# text = "[Trait.GetNameNoTooltip(Character.Self)]"
+									# default_format = "#high"
+									# align = hcenter
+								# }
+							# }
+						# }
+					# }
+
+					# fixedgridbox = {
+						# name = "traits_grid"
+						# datamodel = "[TraitArrays.GetTraits]"
+						# addcolumn = 85
+						# addrow = 105
+						# flipdirection = yes
+						# datamodel_wrap = 6
+
+						# item = {
+							# icon_trait = {
+								# text_multi = {
+									# parentanchor = bottom|hcenter
+									# widgetanchor = top|hcenter
+									# position = { 0 -5 }
+									# autoresize = yes
+									# max_width = 80
+									# text = "[Trait.GetNameNoTooltip(Character.Self)]"
+									# default_format = "#high"
+									# align = hcenter
+								# }
+							# }
+						# }
+					# }
+				# }
+			# }
+		# }
 	}
 
-	##############################
-	# DRAGONS BACKGROUND WIDGETS #
-	##############################
 	type agot_dragon_alive_background = widget
 	{
 		visible = "[Character.IsAlive]"
@@ -1333,12 +1470,9 @@ types CharacterWindow
 		}
 	}
 
-	#############################
-	# DRAGONS ARMY COMP TOOLTIP #
-	#############################
 	type agot_dragon_army_composition = hbox
 	{
-		visible = "[GetScriptedGui('agot_can_see_dragon_military_view').IsShown( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).End )]"
+		visible = "[And(Character.HasLandedTitles,GetScriptedGui('agot_can_see_dragon_military_view').IsShown( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).End ))]"
 		spacing = 2
 		tooltipwidget = {
 			using = agot_dragon_army_comp
@@ -1380,9 +1514,64 @@ types CharacterWindow
 		expand = {}
 	}
 
-	###########################
-	# DRAGONS RELATION AND AI #
-	###########################
+	type agot_dragons_relationship_row = vbox_character_row_relationship_item
+	{
+		name = "dragons"
+		visible = "[GetScriptedGui('agot_can_have_dragon').IsShown(GuiScope.SetRoot(CharacterWindow.GetCharacter.MakeScope).End)]"
+		layoutpolicy_vertical = expanding
+		blockoverride "portrait_datamodel" {
+			datamodel = "[CharacterWindow.GetRelationsOfType( GetRelation( 'agot_dragon' ) )]"
+		}
+		blockoverride "portrait_texture" {
+			#I'm scaling the portrait texture by the same amount here as in the below "portrait_transformation" to zoom in on the head. This couldn't be done with regular camera as the baby dragon would go off-frame
+			portrait_texture = "[Character.GetPortrait('environment_body', 'camera_dragon_small', 'dragon_head', Multiply_CVector2f( PdxGetWidgetScreenSize(PdxGuiWidget.Self) , '(CVector2f)9,9'))]"
+		}
+
+		blockoverride "header_text"
+		{
+			text = "DRAGON_LABEL"
+		}
+		blockoverride "remaining_items"
+		{
+			visible = "[GreaterThan_int32( GetDataModelSize( CharacterWindow.GetRelationsOfType( GetRelation( 'agot_dragon' ) ) ), '(int32)3' )]"
+			margin = { 120 }
+			text = "[GetNumberAbove_int32( GetDataModelSize( CharacterWindow.GetRelationsOfType( GetRelation( 'agot_dragon' ) ) ), '(int32)3' )|=]"
+		}
+		blockoverride "expand_button_inside" {
+			visible = "[GreaterThan_int32( GetDataModelSize( CharacterWindow.GetRelationsOfType( GetRelation( 'agot_dragon' ) ) ), '(int32)3' )]"
+			onclick = "[CharacterWindow.ToggleExpandedRelation( 'agot_dragons' )]"
+		}
+	}
+
+	type agot_friends_with_dragons = vbox_character_row_relationship_item
+	{
+		name = "friends_with_dragons"
+		layoutpolicy_vertical = expanding
+		layoutpolicy_horizontal = expanding
+		visible = "[GreaterThanOrEqualTo_int32( GetDataModelSize( CharacterWindow.GetRelationsOfType( GetRelation( 'agot_dragon' ) ) ), '(int32)1' )]"
+
+		blockoverride "portrait_datamodel" {
+			datamodel = "[CharacterWindow.GetRelationsOfType( GetRelation( 'friend' ) )]"
+			maxhorizontalslots = 6
+		}
+
+		blockoverride "header_text"
+		{
+			text = "FRIENDS_LABEL"
+		}
+
+		blockoverride "remaining_items"
+		{
+			visible = "[GreaterThan_int32( GetDataModelSize( CharacterWindow.GetRelationsOfType( GetRelation( 'friend' ) ) ), '(int32)6' )]"
+			text = "[GetNumberAbove_int32( GetDataModelSize( CharacterWindow.GetRelationsOfType( GetRelation( 'friend' ) ) ), '(int32)6' )|=]"
+		}
+
+		blockoverride "expand_button_inside" {
+			visible = "[GreaterThan_int32( GetDataModelSize( CharacterWindow.GetRelationsOfType( GetRelation( 'friend' ) ) ), '(int32)6' )]"
+			onclick = "[CharacterWindow.ToggleExpandedRelation( 'friends' )]"
+		}
+	}
+
 	type hbox_dragon_character_relation_and_ai = hbox
 	{
 		layoutpolicy_horizontal = expanding
@@ -1417,9 +1606,9 @@ types CharacterWindow
 
 			text_single = {
 				maximumsize = { 500 -1 }
-				name = "dragon_relation_to_host"
-				visible = "[GetScriptedGui('agot_relation_check_host').IsShown(GuiScope.SetRoot(CharacterWindow.GetCharacter.MakeScope).End)]"
-				text = "DRAGON_RELATION_IS_PITTED"
+				name = "dragon_relation_to_bonded_ruler"
+				visible = "[GetScriptedGui('agot_relation_check_bonded_human_ruler').IsShown(GuiScope.SetRoot(CharacterWindow.GetCharacter.MakeScope).End)]"
+				text = "DRAGON_RELATION_HAS_BONDED"
 				tooltip = "EXTENDED_RELATIONS_TOOLTIP"
 				using = tooltip_se
 
@@ -1429,9 +1618,9 @@ types CharacterWindow
 
 			text_single = {
 				maximumsize = { 500 -1 }
-				name = "dragon_relation_to_owned"
-				visible = "[GetScriptedGui('agot_relation_check_owned').IsShown(GuiScope.SetRoot(CharacterWindow.GetCharacter.MakeScope).End)]"
-				text = "DRAGON_RELATION_HAS_BONDED"
+				name = "dragon_relation_to_host"
+				visible = "[GetScriptedGui('agot_relation_check_host').IsShown(GuiScope.SetRoot(CharacterWindow.GetCharacter.MakeScope).End)]"
+				text = "DRAGON_RELATION_IS_PITTED"
 				tooltip = "EXTENDED_RELATIONS_TOOLTIP"
 				using = tooltip_se
 
@@ -1479,7 +1668,7 @@ types CharacterWindow
 			text_single = {
 				maximumsize = { 149 -1 }
 				name = "ai_personality"
-				visible = "[And( Not( Character.IsPlayer ), Not(IsCharacterDragon))]"
+				visible = "[And( Not( Character.IsPlayer ), Not( Character.HasTrait( GetTrait('dragon') )))]"
 
 				raw_text = " • #L [Character.GetAIPersonalityNoTooltip]#!"
 				tooltip = "AI_PERSONALITY_TT"
@@ -1516,71 +1705,6 @@ types CharacterWindow
 		agot_dragon_female_gender_icon = {}
 
 		expand = {}
-	}
-
-	# Dragon Relations
-	type agot_dragon_relation_and_ai = text_single
-	{
-		maximumsize = { 149 -1 }
-		visible = "[And( IsCharacterDragon, Character.IsAlive )]"
-		raw_text = " • [Character.Custom('GetDragonTypeGuiTooltip')]"
-		using = tooltip_se
-		fontsize_min = 13
-		align = nobaseline
-	}
-
-	type agot_dragon_dead_relation_and_ai = text_single
-	{
-		maximumsize = { 149 -1 }
-		visible = "[And( IsCharacterDragon, Character.IsDeadAndValid )]"
-		raw_text = "[dragon|E;L]"
-		using = tooltip_se
-		fontsize_min = 13
-		align = nobaseline
-	}
-
-	# Dragon Gender Icons
-	type agot_dragon_unknown_gender_icon = icon
-	{
-		visible = "[GetScriptedGui('agot_unknown_gender_dragon_shown').IsShown( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).End )]"
-		size = { 20 20 }
-		texture = "gfx/interface/icons/character_status/unknown_dragon.dds"
-		tooltip = "UNKNOWN_DRAGON_TOOLTIP"
-	}
-
-	type agot_dragon_male_gender_icon = icon
-	{
-		visible = "[GetScriptedGui('agot_male_gender_dragon_shown').IsShown( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).End )]"
-		size = { 20 20 }
-		texture = "gfx/interface/icons/character_status/male_dragon.dds"
-		tooltip = "MALE_DRAGON_TOOLTIP"
-	}
-
-	type agot_dragon_female_gender_icon = icon
-	{
-		visible = "[GetScriptedGui('agot_female_gender_dragon_shown').IsShown( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).End )]"
-		size = { 20 20 }
-		texture = "gfx/interface/icons/character_status/female_dragon.dds"
-		tooltip = "FEMALE_DRAGON_TOOLTIP"
-	}
-
-	###########################
-	# DRAGONS TRAITS EXPANDED #
-	###########################
-	type agot_dragon_trait_expanding_button = button_standard_hover
-	{
-		size = { 400 57 }
-		button_ignore = none
-		onclick = "[CharacterWindow.ToggleExpandedTraits]"
-		using = tooltip_nw
-		tooltip = "OUTLINER_EXPAND"
-
-		hbox_dragon_traits_list = {
-			name = "tutorial_highlight_traits"
-			datacontext = "[CharacterWindow.GetTraitArrays]"
-			margin_top = 1
-			margin_bottom = 2
-		}
 	}
 
 	type hbox_dragon_traits_list = hbox
@@ -1931,68 +2055,55 @@ types CharacterWindow
 		expand = {}
 	}
 
-	type agot_dragon_modifiers_expanding_button = button_standard_hover
+	# Dragon Relations
+	type agot_dragon_relation_and_ai = text_single
 	{
-		layoutpolicy_horizontal = expanding
-		size = { 48 57 }
-		maximumsize = { 48 57 }
-		button_ignore = none
-		onclick = "[CharacterWindow.ToggleExpandedModifiers]"
-		using = tooltip_nw
-		tooltip = "OUTLINER_EXPAND"
-
-		vbox = {
-			layoutpolicy_horizontal = expanding
-			layoutpolicy_vertical = expanding
-
-			using = Animation_Character_Window_Refresh
-
-			fixedgridbox = {
-				name = "modifiers_grid"
-				datamodel = "[CharacterWindow.GetTimedModifiers]"
-				addcolumn = 22
-				addrow = 22
-				datamodel_wrap = 2
-				maxhorizontalslots = 2
-				setitemsizefromcell = yes
-
-				item = { modifier_item_icon = {} }
-			}
-		}
+		maximumsize = { 149 -1 }
+		visible = "[And( Character.HasTrait( GetTrait('dragon') ), Character.IsAlive )]"
+		raw_text = " • [Character.Custom('GetDragonTypeGuiTooltip')]"
+		using = tooltip_se
+		fontsize_min = 13
+		align = nobaseline
 	}
 
-	#######################
-	# DRAGONS FAMILY TREE #
-	#######################
-	type agot_dragon_tree_button = button_normal
+	type agot_dragon_dead_relation_and_ai = text_single
 	{
-		name = "dragon_tree_button"
-		visible = "[And(And(GetPlayer.IsValid, Not(IsObserver)), GetScriptedGui('agot_dragon_tree_check').IsShown(GuiScope.SetRoot(CharacterWindow.GetCharacter.MakeScope).End))]"
+		maximumsize = { 149 -1 }
+		visible = "[And( Character.HasTrait( GetTrait('dragon') ), Character.IsDeadAndValid )]"
+		raw_text = "[dragon|E;L]"
+		using = tooltip_se
+		fontsize_min = 13
+		align = nobaseline
+	}
 
-		size = { 35 35 }
-		datacontext = "[CharacterWindow.AccessCharacter]"
-		tooltip = "DRAGON_TREE_TT"
-		using = tooltip_ne
+	# Dragon Gender Icons
+	type agot_dragon_unknown_gender_icon = icon
+	{
+		visible = "[GetScriptedGui('agot_unknown_gender_dragon_shown').IsShown( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).End )]"
+		size = { 20 20 }
+		texture = "gfx/interface/icons/character_status/unknown_dragon.dds"
+		tooltip = "UNKNOWN_DRAGON_TOOLTIP"
+	}
 
-		icon = {
-			texture = "gfx/interface/buttons/button_lifestyles_base.dds"
-			size = { 100% 100% }
-		}
+	type agot_dragon_male_gender_icon = icon
+	{
+		visible = "[GetScriptedGui('agot_male_gender_dragon_shown').IsShown( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).End )]"
+		size = { 20 20 }
+		texture = "gfx/interface/icons/character_status/male_dragon.dds"
+		tooltip = "MALE_DRAGON_TOOLTIP"
+	}
 
-		button_dynasty_tree = {
-			onclick = "[GetVariableSystem.Toggle('dragon_tree_visible')]"
-			onclick = "[GetScriptedGui('agot_open_dragon_tree').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('opened_character', Character.MakeScope).End)]"
-			size = { 25 25 }
-			parentanchor = center
-		}
+	type agot_dragon_female_gender_icon = icon
+	{
+		visible = "[GetScriptedGui('agot_female_gender_dragon_shown').IsShown( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).End )]"
+		size = { 20 20 }
+		texture = "gfx/interface/icons/character_status/female_dragon.dds"
+		tooltip = "FEMALE_DRAGON_TOOLTIP"
 	}
 }
 
-#####################
-# DRAGONS TEMPLATES #
-#####################
 template visible_if_dragon {
-	visible = "[IsCharacterDragon]"
+    visible = "[Character.HasTrait(GetTrait('dragon').Self)]"
 }
 
 template visible_if_dragon_normal {
@@ -2004,7 +2115,7 @@ template visible_if_dragon_small {
 }
 
 template visible_if_not_dragon {
-	visible = "[Not(IsCharacterDragon)]"
+    visible = "[Not(Character.HasTrait(GetTrait('dragon').Self))]"
 }
 
 template visible_if_dragonrider_flight {
@@ -2017,4 +2128,8 @@ template visible_if_dragon_land {
 
 template visible_if_not_dragon_or_riding_dragon {
 	visible = "[GetScriptedGui('not_dragon_or_dragonrider').IsShown(GuiScope.SetRoot(Character.MakeScope).End)]"
+}
+
+template agot_character_standard {
+    visible = "[And(Not(Or( Character.HasTrait(GetTrait('dragon').Self), Character.HasTrait(GetTrait('ruin').Self) )), Not(GetScriptedGui( 'fake_death_character' ).IsShown( GuiScope.AddScope('char', Character.MakeScope).End )))]"
 }
