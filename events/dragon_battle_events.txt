@@ -466,6 +466,30 @@ dragon_battle.016 = {
 	}
 }
 
+# ── Evento 018: Player está pessoalmente commandando na batalha ──────────────────
+# Dispara no on_combat_start quando o player É um dos commanders
+# Informa claramente que o dragão está NESSA batalha
+dragon_battle.018 = {
+	type = character_event
+	title = dragon_battle.018.t
+	desc = dragon_battle.018.desc
+	theme = battle
+
+	left_portrait = {
+		character = root
+		animation = aggressive_sword
+	}
+	right_portrait = {
+		character = scope:dob_event_dragon
+		animation = personality_bold
+	}
+
+	option = {
+		name = dragon_battle.018.a
+		highlight = yes
+	}
+}
+
 # ── Evento 017: Resultado do fix de dragões (MDE) ────────────────────────────────
 # FIX: sintaxe antiga (character_event = { id = ... }) corrigida para sintaxe moderna.
 dragon_battle.017 = {

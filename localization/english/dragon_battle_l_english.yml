@@ -125,6 +125,11 @@
  dob_fix_dragons_toast_title: "Dragon Records Restored"
  dob_fix_dragons_toast_desc: "All dragons missing from the realm's records have been registered. Their sizes have been estimated based on age. You may now rename and tame previously inaccessible dragons. #weak (Re-open the dragon's character window to see updated values.)#!"
 
+ # ── Evento 018: Player comandando pessoalmente na batalha ─────
+ dragon_battle.018.t: "Your Dragon Enters the Fray!"
+ dragon_battle.018.desc: "A battle is underway — and you are commanding your forces personally on the field.\n\n[scope:dob_event_dragon.GetFirstNameNoTooltip] fights at your side, and the enemy will feel the wrath of dragonfire firsthand.\n\n#bold Dragon Size:#! [ROOT.GetVariable('dob_dragon_size')|0]\n#bold Battle Power:#! +[ROOT.GetVariable('dob_dragon_power')|0]\n\n#weak Victory or defeat — your dragon's fate depends on this battle. Post-combat events will follow.#!"
+ dragon_battle.018.a: "Drive them back — with fire and blood!"
+
  # ── Evento 017: resultado do fix ─────────────────────────────
  dragon_battle.017.t: "Dragon Records — Ritual Complete"
  dragon_battle.017.desc: "The ritual is done.\n\n#bold [Root.GetVariable('dob_fix_count')|0] dragon(s) had their records corrected.#!\n\n#weak Their sizes were estimated from age. Close and re-open the dragon character window to see the updated values. If size still shows 0, use the Sever Dragon Bond decision to clear the broken bond and claim a new dragon.#!"
