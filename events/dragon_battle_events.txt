@@ -510,3 +510,19 @@ dragon_battle.016 = {
 		name = dragon_battle.016.b
 	}
 }
+
+# ── Evento 017: Resultado do fix de dragões (MDE) ────────────────────────────────
+character_event = {
+	id = dragon_battle.017
+	title = dragon_battle.017.t
+	desc = dragon_battle.017.desc
+	theme = dragon
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	option = {
+		name = dragon_battle.017.a
+	}
+}

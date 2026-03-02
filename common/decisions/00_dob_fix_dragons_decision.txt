@@ -37,14 +37,10 @@ dob_fix_all_dragons_decision = {
 			years = 1
 		}
 
-		# Consertar todos os dragões vivos sem registro no AGOT storage
+		# Consertar todos os dragões vivos com story corrompida
 		dob_fix_all_broken_dragons = yes
 
-		# Notificação de conclusão
-		send_interface_toast = {
-			type = event_toast_effects_good
-			title = dob_fix_dragons_toast_title
-			desc = dob_fix_dragons_toast_desc
-		}
+		# Evento que mostra o resultado com contagem de dragões corrigidos
+		trigger_event = { id = dragon_battle.017 }
 	}
 }

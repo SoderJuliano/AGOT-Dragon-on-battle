@@ -61,103 +61,83 @@ dob_estimate_dragon_size_from_age = {
 	}
 }
 
-# Verifica se este dragão está faltando no storage system do AGOT.
-# Scope: o DRAGÃO (this = dragon, dentro de any_in_global_list: this=story, prev=dragon)
-dob_dragon_missing_from_agot_storage = {
-	NOT = {
-		# Existe alguma story no global list onde dragon_id = este dragão?
-		any_in_global_list = {
-			variable = gl_dragon_variable_storage
-			var:dragon_id ?= prev
-		}
-	}
-}
+# ─────────────────────────────────────────────────────────────────────────────
+# Abordagem: DELETE & RECREATE
+# Para cada dragão com tamanho 0 na story:
+#   1. Estima tamanho correto pela idade
+#   2. Apaga a story corrompida da gl_dragon_variable_storage e a encerra
+#   3. Re-registra o dragão do zero via função oficial do AGOT
+#      (que lê dragon_size_base e dragon_age do personagem do dragão)
+# ─────────────────────────────────────────────────────────────────────────────
 
-# Conserta um único dragão quebrado já registrado no storage mas com tamanho 0.
+# Conserta um único dragão: apaga story corrompida e recria do zero.
 # Scope: o DRAGÃO (has_trait = dragon)
-# Chamado de dentro de loops após confirmar que o dragão JÁ ESTÁ na lista.
-dob_fix_single_dragon_in_storage = {
-	# Estimar tamanho pela idade e colocar no personagem (temporário)
+# REQUER: scope:dob_fix_caller já salvo (o personagem do player, para contador)
+dob_fix_single_dragon_delete_recreate = {
+	# Passo 1: estimar tamanho correto e setar no personagem do dragão
 	dob_estimate_dragon_size_from_age = yes
 
-	# Atualizar diretamente a story object na gl_dragon_variable_storage
-	# O script value dragon_size_base lê this.var:dragon_size_base DA STORY
-	save_temporary_scope_as = dob_dragon_to_fix
-	every_in_global_list = {
-		variable = gl_dragon_variable_storage
-		limit = {
-			var:dragon_id ?= scope:dob_dragon_to_fix
-		}
-		# Setar dragon_size_base na story com o valor estimado
-		set_variable = {
-			name = dragon_size_base
-			value = scope:dob_dragon_to_fix.var:dragon_size_base
-		}
-		# Setar dragon_age na story
-		set_variable = {
-			name = dragon_age
-			value = scope:dob_dragon_to_fix.age
-		}
-	}
-}
-
-# Conserta um único dragão que não está no storage (caso raro — MDE antigo).
-# Scope: o DRAGÃO (has_trait = dragon)
-dob_fix_single_dragon_storage = {
-	# Garantir dragon_size_base no personagem (o on_setup da story lê daqui)
-	if = {
-		limit = { NOT = { has_variable = dragon_size_base } }
-		dob_estimate_dragon_size_from_age = yes
-	}
-	else_if = {
-		limit = { var:dragon_size_base <= 0 }
-		dob_estimate_dragon_size_from_age = yes
-	}
-
-	# Garantir dragon_age no personagem
+	# Garantir dragon_age no personagem (lido pelo on_setup da nova story)
 	if = {
 		limit = { NOT = { has_variable = dragon_age } }
-		set_variable = {
-			name = dragon_age
-			value = { value = 0 add = age }
-		}
+		set_variable = { name = dragon_age value = { value = 0 add = age } }
 	}
 
-	# Registrar no AGOT storage via função oficial
+	# Passo 2: apagar story corrompida
+	# Dentro de every_in_global_list: this = story object, prev = o dragão
+	save_temporary_scope_as = dob_current_dragon
+	every_in_global_list = {
+		variable = gl_dragon_variable_storage
+		limit = { var:dragon_id ?= scope:dob_current_dragon }
+		# Remove da lista global
+		remove_list_global_variable = {
+			name = gl_dragon_variable_storage
+			target = this
+		}
+		# Encerra a story cycle
+		end_story = yes
+	}
+
+	# Passo 3: recriar do zero com tamanho estimado
+	# agot_dragon_transfer_vars_to_story_cycle_effect lê dragon_size_base
+	# e dragon_age do personagem do dragão (já setados acima)
 	agot_dragon_transfer_vars_to_story_cycle_effect = { DRAGON = this }
+
+	# Passo 4: incrementar contador no player
+	scope:dob_fix_caller = {
+		change_variable = { name = dob_fix_count add = 1 }
+	}
 }
 
-# Conserta TODOS os dragões vivos com problema de tamanho.
-# Scope: qualquer personagem (chamado do player via decisão)
+# Conserta TODOS os dragões vivos com dragon_size 0 na story.
+# Scope: o player (chamado da decisão)
 dob_fix_all_broken_dragons = {
+	# Salva o player como scope nomeado para o contador
+	save_scope_as = dob_fix_caller
+	set_variable = { name = dob_fix_count value = 0 }
+
 	every_living_character = {
-		limit = {
-			has_trait = dragon
-			agot_has_dragon_storage_system_global_list = yes
-		}
+		limit = { has_trait = dragon }
 		save_temporary_scope_as = current_dob_dragon_check
 		if = {
 			limit = {
-				# Caso 1: Dragão está na lista mas o tamanho na story é 0
-				any_in_global_list = {
-					variable = gl_dragon_variable_storage
-					var:dragon_id ?= scope:current_dob_dragon_check
-					var:dragon_size_base <= 0
-				}
-			}
-			dob_fix_single_dragon_in_storage = yes
-		}
-		else_if = {
-			limit = {
-				# Caso 2: Dragão não está na lista (MDE muito antigo / outro mod)
-				NOT = {
+				OR = {
+					# Dragão está na lista com tamanho 0 na story
 					any_in_global_list = {
 						variable = gl_dragon_variable_storage
 						var:dragon_id ?= scope:current_dob_dragon_check
+						var:dragon_size_base <= 0
+					}
+					# Dragão não está na lista (mod sem registro)
+					NOT = {
+						any_in_global_list = {
+							variable = gl_dragon_variable_storage
+							var:dragon_id ?= scope:current_dob_dragon_check
+						}
 					}
 				}
 			}
-			dob_fix_single_dragon_storage = yes
+			dob_fix_single_dragon_delete_recreate = yes
 		}
 	}
 }

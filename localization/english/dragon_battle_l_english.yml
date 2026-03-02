@@ -120,3 +120,8 @@
  dob_fix_dragons_toast_title: "Dragon Records Restored"
  dob_fix_dragons_toast_desc: "All dragons missing from the realm's records have been registered. Their sizes have been estimated based on age. You may now rename and tame previously inaccessible dragons. #weak (Re-open the dragon's character window to see updated values.)#!"
 
+ # ── Evento 017: resultado do fix ─────────────────────────────
+ dragon_battle.017.t: "Dragon Records — Ritual Complete"
+ dragon_battle.017.desc: "The ritual is done.\n\n#bold [Root.GetVariable('dob_fix_count')|0] dragon(s) had their records corrected.#!\n\n#weak Their sizes were estimated from age. Close and re-open the dragon character window to see the updated values. If size still shows 0, use the Sever Dragon Bond decision to clear the broken bond and claim a new dragon.#!"
+ dragon_battle.017.a: "Done. Let them grow."
+
