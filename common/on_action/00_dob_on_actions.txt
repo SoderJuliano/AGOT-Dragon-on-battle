@@ -29,11 +29,11 @@ dob_on_war_started = {
 			}
 			set_variable = {
 				name = dob_dragon_power
-				value = script_value:dob_dragon_battle_bonus
+				value = dob_dragon_battle_bonus
 			}
 			set_variable = {
 				name = dob_dragon_size
-				value = script_value:dob_dragon_size_value
+				value = dob_dragon_size_value
 			}
 			trigger_event = {
 				id = dragon_battle.001
@@ -50,11 +50,11 @@ dob_on_war_started = {
 			}
 			set_variable = {
 				name = dob_dragon_size
-				value = script_value:dob_dragon_size_value
+				value = dob_dragon_size_value
 			}
 			set_variable = {
 				name = dob_dragon_power
-				value = script_value:dob_dragon_battle_bonus
+				value = dob_dragon_battle_bonus
 			}
 			save_scope_as = dob_ally_rider
 			every_close_family_member = {
@@ -86,11 +86,11 @@ dob_on_war_started = {
 			scope:defender = {
 				set_variable = {
 					name = dob_dragon_power
-					value = script_value:dob_dragon_battle_bonus
+					value = dob_dragon_battle_bonus
 				}
 				set_variable = {
 					name = dob_dragon_size
-					value = script_value:dob_dragon_size_value
+					value = dob_dragon_size_value
 				}
 				trigger_event = {
 					id = dragon_battle.008
@@ -260,7 +260,6 @@ dob_on_dragon_birthday = {
 					var:dragon_size_base <= 0
 				}
 			}
-			log = "[DOB] BIRTHDAY FIX: Dragao [This.GetFirstName] faz aniversario com dragon_size_base=0 - corrigindo..."
 
 			# Passo 1: estimar tamanho correto e setar no personagem do dragão
 			if = {
@@ -298,13 +297,11 @@ dob_on_dragon_birthday = {
 			else = {
 				set_variable = { name = dragon_size_base value = 5 }
 			}
-			log = "[DOB] BIRTHDAY FIX: dragon_size_base estimado = [dragon_size_base|0] (idade=[This.GetAge])"
 
 			# Garantir dragon_age
 			if = {
 				limit = { NOT = { has_variable = dragon_age } }
 				set_variable = { name = dragon_age value = { value = 0 add = age } }
-				log = "[DOB] BIRTHDAY FIX: dragon_age nao existia, inicializado."
 			}
 
 			# Passo 2: remover story corrompida da lista e encerrá-la
@@ -312,7 +309,6 @@ dob_on_dragon_birthday = {
 			every_in_global_list = {
 				variable = gl_dragon_variable_storage
 				limit = { var:dragon_id ?= scope:dob_birthday_dragon }
-				log = "[DOB] BIRTHDAY FIX: Story corrompida removida da gl_dragon_variable_storage."
 				remove_list_global_variable = {
 					name = gl_dragon_variable_storage
 					target = this
@@ -321,15 +317,12 @@ dob_on_dragon_birthday = {
 			}
 
 			# Passo 3: recriar do zero com os valores corretos
-			log = "[DOB] BIRTHDAY FIX: Recriando story cycle via agot_dragon_transfer_vars_to_story_cycle_effect..."
 			agot_dragon_transfer_vars_to_story_cycle_effect = { DRAGON = this }
-			log = "[DOB] BIRTHDAY FIX: Concluido para [This.GetFirstName]."
 		}
 		else = {
 			# Log de crescimento normal para acompanhar o progresso
 			if = {
 				limit = { has_trait = dragon }
-				log = "[DOB] BIRTHDAY: [This.GetFirstName] faz aniversario normalmente. dragon_size=[This.dragon_size|0] dragon_size_base=[dragon_size_base|0]"
 			}
 		}
 	}

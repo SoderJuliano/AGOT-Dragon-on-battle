@@ -75,15 +75,12 @@ dob_estimate_dragon_size_from_age = {
 # REQUER: scope:dob_fix_caller já salvo (o personagem do player, para contador)
 dob_fix_single_dragon_delete_recreate = {
 	# Passo 1: estimar tamanho correto e setar no personagem do dragão
-	log = "[DOB] FIX: Corrigindo dragao: [This.GetFirstName] (idade=[This.GetAge])"
 	dob_estimate_dragon_size_from_age = yes
-	log = "[DOB] FIX: dragon_size_base estimado = [dragon_size_base|0]"
 
 	# Garantir dragon_age no personagem (lido pelo on_setup da nova story)
 	if = {
 		limit = { NOT = { has_variable = dragon_age } }
 		set_variable = { name = dragon_age value = { value = 0 add = age } }
-		log = "[DOB] FIX: dragon_age nao existia, inicializado com idade atual."
 	}
 
 	# Passo 2: apagar story corrompida
@@ -92,7 +89,6 @@ dob_fix_single_dragon_delete_recreate = {
 	every_in_global_list = {
 		variable = gl_dragon_variable_storage
 		limit = { var:dragon_id ?= scope:dob_current_dragon }
-		log = "[DOB] FIX: Story corrompida encontrada e removida da gl_dragon_variable_storage."
 		# Remove da lista global
 		remove_list_global_variable = {
 			name = gl_dragon_variable_storage
@@ -105,9 +101,7 @@ dob_fix_single_dragon_delete_recreate = {
 	# Passo 3: recriar do zero com tamanho estimado
 	# agot_dragon_transfer_vars_to_story_cycle_effect lê dragon_size_base
 	# e dragon_age do personagem do dragão (já setados acima)
-	log = "[DOB] FIX: Recriando story cycle via agot_dragon_transfer_vars_to_story_cycle_effect..."
 	agot_dragon_transfer_vars_to_story_cycle_effect = { DRAGON = this }
-	log = "[DOB] FIX: Story cycle recriada. dragon_size_base=[dragon_size_base|0]"
 
 	# Passo 4: incrementar contador no player
 	scope:dob_fix_caller = {
@@ -121,7 +115,6 @@ dob_fix_all_broken_dragons = {
 	# Salva o player como scope nomeado para o contador
 	save_scope_as = dob_fix_caller
 	set_variable = { name = dob_fix_count value = 0 }
-	log = "[DOB] FIX ALL: Iniciando varredura de todos os dragoes vivos..."
 
 	every_living_character = {
 		limit = { has_trait = dragon }
@@ -144,13 +137,9 @@ dob_fix_all_broken_dragons = {
 					}
 				}
 			}
-			log = "[DOB] FIX ALL: Dragao quebrado detectado: [This.GetFirstName] (idade=[This.GetAge]) - iniciando correcao..."
 			dob_fix_single_dragon_delete_recreate = yes
-			log = "[DOB] FIX ALL: [This.GetFirstName] corrigido com sucesso."
 		}
 		else = {
-			log = "[DOB] FIX ALL: OK - [This.GetFirstName] (dragon_size=[This.dragon_size|0]) - sem problemas detectados."
 		}
 	}
-	log = "[DOB] FIX ALL: Varredura concluida. Total corrigidos: [dob_fix_count|0]"
 }

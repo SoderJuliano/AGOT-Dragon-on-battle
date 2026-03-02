@@ -115,6 +115,7 @@
  # ── Fix MDE Broken Dragons (decisão utilitária) ─────────────
  dob_fix_all_dragons_decision_confirm: "Perform the Ritual"
  dob_fix_all_dragons_decision: "Restore Dragon Records"
+ dob_fix_all_dragons_decision_tooltip: "Scan all living dragons in the realm and register any that are missing from the growth tracking system. Their sizes will be estimated by age."
  dob_fix_all_dragons_decision_desc: "Some dragons in the realm lack proper growth records — a flaw caused by certain dragon mods that do not fully register new dragons with the game's internal tracking system. This affects the dragon's displayed size, the ability to rename or tame them, and how the game calculates their power.\n\nThis ritual scans all living dragons in the world and retroactively registers any that are missing, estimating their size based on age.\n\n#weak This only needs to be used once, but can be repeated once per year if new broken dragons appear.#!\n\n#warning Dragons will have their size estimated from age. This is approximate — traits and actual growth history are not available.#!"
 
  dob_fix_dragons_toast_title: "Dragon Records Restored"

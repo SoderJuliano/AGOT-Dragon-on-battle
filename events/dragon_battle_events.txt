@@ -28,11 +28,11 @@ dragon_battle.001 = {
 		# Recalcula o bônus para garantir valor correto no texto
 		set_variable = {
 			name = dob_dragon_power
-			value = script_value:dob_dragon_battle_bonus
+			value = dob_dragon_battle_bonus
 		}
 		set_variable = {
 			name = dob_dragon_size
-			value = script_value:dob_dragon_size_value
+			value = dob_dragon_size_value
 		}
 	}
 
@@ -196,11 +196,11 @@ dragon_battle.008 = {
 	immediate = {
 		set_variable = {
 			name = dob_dragon_power
-			value = script_value:dob_dragon_battle_bonus
+			value = dob_dragon_battle_bonus
 		}
 		set_variable = {
 			name = dob_dragon_size
-			value = script_value:dob_dragon_size_value
+			value = dob_dragon_size_value
 		}
 	}
 
