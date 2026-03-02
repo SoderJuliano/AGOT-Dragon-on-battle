@@ -336,6 +336,28 @@ types CharacterWindow
 					}
 				}
 
+				# DOB: Liberar dragão (apagar vínculo sem penalidade)
+				# Visível apenas quando este dragão é o dragão atual do player
+				button_normal = {
+					name = "dob_release_dragon_button"
+					visible = "[GetScriptedGui('dob_can_release_dragon').IsShown( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).AddScope('player', GetPlayer.MakeScope ).End)]"
+					enabled = "[GetScriptedGui('dob_can_release_dragon').IsValid( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).AddScope('player', GetPlayer.MakeScope ).End)]"
+					size = { 35 35 }
+					tooltip = "DOB_RELEASE_DRAGON_BUTTON_TT"
+					using = tooltip_ne
+
+					icon_round_button_base = {}
+
+					button_clear = {
+						onclick = "[GetScriptedGui('dob_can_release_dragon').Execute( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).AddScope('player', GetPlayer.MakeScope ).End)]"
+						size = { 30 30 }
+						parentanchor = center
+						texture = "gfx/interface/icons/icon_revoke_title.dds"
+						tooltip = "DOB_RELEASE_DRAGON_BUTTON_TT"
+						using = tooltip_ne
+					}
+				}
+
 				# Open past riders button
 				button_normal = {
 					name = "open_past_riders"
@@ -546,6 +568,8 @@ types CharacterWindow
 					vbox = {
 						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
+
+						using = Animation_Character_Window_Refresh
 
 						hbox = {
 							name = "skills_culture_religion"

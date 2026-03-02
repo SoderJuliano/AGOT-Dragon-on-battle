@@ -331,35 +331,52 @@ dragon_battle.013 = {
 # ── Evento 014: Dragão ALIADO — relatório pós-batalha ────────────────────────────
 # Root = player. scope:dob_ally_rider_combat = rider aliado (IA).
 # scope:dob_ally_dragon = dragão do aliado. Desc varia: morto / ferido / sobreviveu.
+# FIX: triggered_animation blocks inside left_portrait broke the CK3 event parser
+#      (parser treated 'right_portrait' and 'option' as new event IDs).
+#      Use immediate + variable to drive animation via simple static value.
 dragon_battle.014 = {
 	type = character_event
 	title = dragon_battle.014.t
 	theme = battle
 
+	immediate = {
+		# 0 = dragão vivo e saudável, 1 = ferido, 2 = morto
+		if = {
+			limit = { scope:dob_ally_dragon = { is_alive = no } }
+			set_variable = { name = dob_ally_status value = 2 }
+		}
+		else_if = {
+			limit = { scope:dob_ally_dragon = { has_character_modifier = dob_dragon_wounded } }
+			set_variable = { name = dob_ally_status value = 1 }
+		}
+		else = {
+			set_variable = { name = dob_ally_status value = 0 }
+		}
+	}
+
 	desc = {
-		triggered_desc = {
-			trigger = { scope:dob_ally_dragon = { is_alive = no } }
-			desc = dragon_battle.014.desc_dead
-		}
-		triggered_desc = {
-			trigger = {
-				scope:dob_ally_dragon = { is_alive = yes }
-				scope:dob_ally_dragon = { has_character_modifier = dob_dragon_wounded }
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:dob_ally_dragon = { is_alive = no } }
+				desc = dragon_battle.014.desc_dead
 			}
-			desc = dragon_battle.014.desc_wounded
+			triggered_desc = {
+				trigger = { scope:dob_ally_dragon = { has_character_modifier = dob_dragon_wounded } }
+				desc = dragon_battle.014.desc_wounded
+			}
+			desc = dragon_battle.014.desc_alive
 		}
-		desc = dragon_battle.014.desc_alive
 	}
 
 	left_portrait = {
 		character = scope:dob_ally_rider_combat
 		animation = {
 			triggered_animation = {
-				trigger = { scope:dob_ally_dragon = { is_alive = no } }
+				trigger = { var:dob_ally_status >= 2 }
 				animation = grief
 			}
 			triggered_animation = {
-				trigger = { scope:dob_ally_dragon = { has_character_modifier = dob_dragon_wounded } }
+				trigger = { var:dob_ally_status >= 1 }
 				animation = worry
 			}
 			animation = personality_bold
@@ -377,35 +394,49 @@ dragon_battle.014 = {
 # ── Evento 015: Dragão INIMIGO — relatório pós-batalha ───────────────────────────
 # Root = player. scope:dob_enemy_rider_combat = rider inimigo.
 # scope:dob_enemy_dragon = dragão inimigo. Desc varia: morto / ferido / sobreviveu.
+# FIX: mesmo fix do evento 014 — triggered_animation quebrava o parser.
 dragon_battle.015 = {
 	type = character_event
 	title = dragon_battle.015.t
 	theme = battle
 
+	immediate = {
+		if = {
+			limit = { scope:dob_enemy_dragon = { is_alive = no } }
+			set_variable = { name = dob_enemy_status value = 2 }
+		}
+		else_if = {
+			limit = { scope:dob_enemy_dragon = { has_character_modifier = dob_dragon_wounded } }
+			set_variable = { name = dob_enemy_status value = 1 }
+		}
+		else = {
+			set_variable = { name = dob_enemy_status value = 0 }
+		}
+	}
+
 	desc = {
-		triggered_desc = {
-			trigger = { scope:dob_enemy_dragon = { is_alive = no } }
-			desc = dragon_battle.015.desc_dead
-		}
-		triggered_desc = {
-			trigger = {
-				scope:dob_enemy_dragon = { is_alive = yes }
-				scope:dob_enemy_dragon = { has_character_modifier = dob_dragon_wounded }
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:dob_enemy_dragon = { is_alive = no } }
+				desc = dragon_battle.015.desc_dead
 			}
-			desc = dragon_battle.015.desc_wounded
+			triggered_desc = {
+				trigger = { scope:dob_enemy_dragon = { has_character_modifier = dob_dragon_wounded } }
+				desc = dragon_battle.015.desc_wounded
+			}
+			desc = dragon_battle.015.desc_alive
 		}
-		desc = dragon_battle.015.desc_alive
 	}
 
 	left_portrait = {
 		character = scope:dob_enemy_rider_combat
 		animation = {
 			triggered_animation = {
-				trigger = { scope:dob_enemy_dragon = { is_alive = no } }
+				trigger = { var:dob_enemy_status >= 2 }
 				animation = grief
 			}
 			triggered_animation = {
-				trigger = { scope:dob_enemy_dragon = { has_character_modifier = dob_dragon_wounded } }
+				trigger = { var:dob_enemy_status >= 1 }
 				animation = worry
 			}
 			animation = war_attacker
@@ -417,5 +448,65 @@ dragon_battle.015 = {
 
 	option = {
 		name = dragon_battle.015.a
+	}
+}
+
+# ── Evento 016: Confirmação — Liberar / Apagar vínculo com o dragão ───────────────
+# Disparado na tela do dragão pelo botão DOB na janela de personagem.
+# Root = player (rider). var:current_dragon = o dragão a ser liberado.
+dragon_battle.016 = {
+	type = character_event
+	title = dragon_battle.016.t
+	desc = dragon_battle.016.desc
+	theme = diplomacy_neutral
+
+	left_portrait = {
+		character = root
+		animation = stress
+	}
+	right_portrait = {
+		character = var:current_dragon
+	}
+
+	# CONFIRMAR: libera o dragão, sem nenhuma penalidade
+	option = {
+		name = dragon_battle.016.a
+		highlight = yes
+		dob_release_dragon_effect = yes
+	}
+
+	# CANCELAR
+	option = {
+		name = dragon_battle.016.b
+	}
+}
+
+# ── Evento 016: Confirmação — Liberar / Apagar vínculo com o dragão ───────────────
+# Disparado na tela do dragão pelo botão DOB na janela de personagem.
+# Root = player (rider). var:current_dragon = o dragão a ser liberado.
+dragon_battle.016 = {
+	type = character_event
+	title = dragon_battle.016.t
+	desc = dragon_battle.016.desc
+	theme = diplomacy_neutral
+
+	left_portrait = {
+		character = root
+		animation = stress
+	}
+	right_portrait = {
+		character = var:current_dragon
+	}
+
+	# ── CONFIRMAR: libera o dragão, sem nenhuma penalidade ─────────────────────
+	option = {
+		name = dragon_battle.016.a
+		highlight = yes
+		dob_release_dragon_effect = yes
+	}
+
+	# ── CANCELAR ────────────────────────────────────────────────────────────────
+	option = {
+		name = dragon_battle.016.b
 	}
 }

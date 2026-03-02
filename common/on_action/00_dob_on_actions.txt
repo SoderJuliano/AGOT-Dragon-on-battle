@@ -141,13 +141,17 @@ dob_on_game_start = {
 			remove_trait = dragonwidowed
 		}
 		# Aplicar modifiers de poder do dragão em todos os riders
+		# Usa is_current_dragonrider (relação AGOT, não var) para pegar riders válidos.
+		# Não usa exists = var:current_dragon pois falha para dragões ghost/inválidos.
 		every_living_character = {
 			limit = {
-				has_trait = dragonrider
-				exists = var:current_dragon
-				var:current_dragon = { is_alive = yes }
+				is_current_dragonrider = yes
 			}
-			var:current_dragon = { dob_update_dragon_power_modifier = yes }
+			# Atualiza power modifier no dragão apenas se o var aponta para personagem válido
+			if = {
+				limit = { exists = var:current_dragon }
+				var:current_dragon = { dob_update_dragon_power_modifier = yes }
+			}
 			dob_update_rider_dragon_modifier = yes
 		}
 	}
@@ -178,6 +182,8 @@ dob_on_yearly_pulse = {
 
 		# ── FIX: More Dragon Eggs crash (var:current_rider not set) ──────────────────
 		# Previne crash ao setar current_rider em dragões que não têm essa variável.
+		# CRÍTICO: usa has_variable (não exists) para não sobrescrever referências a riders
+		# ghost/inválidos — exists falha para objetos ghost, has_variable checa só a chave.
 		# Roda APENAS em dragões do player ou de seu realm para evitar problemas.
 		every_living_dragon = {
 			limit = {
@@ -185,7 +191,7 @@ dob_on_yearly_pulse = {
 					liege = root	# Dragão do player ou de seus vassals
 					host = root		# Dragão em dragonpit do player
 				}
-				NOT = { exists = var:current_rider }
+				NOT = { has_variable = current_rider }	# has_variable ≠ exists — não quebra riders ghost
 			}
 			# Setar current_rider como 0 (null) para prevenir crashes
 			set_variable = { name = current_rider value = 0 }
@@ -199,12 +205,14 @@ dob_on_monthly_pulse = {
 		# Root = player character. Só toca o próprio player para evitar acessar
 		# current_rider de outros dragões via hooks de outros mods (crash).
 		if = {
-			limit = {
-				has_trait = dragonrider
-				exists = var:current_dragon
-				var:current_dragon = { is_alive = yes }
+			# Usa is_current_dragonrider (relação AGOT) em vez de exists = var:current_dragon
+			# is_current_dragonrider verifica: vivo, não incapaz, dragonrider trait, relação agot_dragon ativa
+			# Funciona mesmo quando var:current_dragon aponta para personagem ghost/inválido
+			limit = { is_current_dragonrider = yes }
+			if = {
+				limit = { exists = var:current_dragon }
+				var:current_dragon = { dob_update_dragon_power_modifier = yes }
 			}
-			var:current_dragon = { dob_update_dragon_power_modifier = yes }
 			dob_update_rider_dragon_modifier = yes
 		}
 		else_if = {

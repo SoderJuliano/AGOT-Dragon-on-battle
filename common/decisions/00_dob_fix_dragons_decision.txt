@@ -1,0 +1,50 @@
+# ============================================================
+# DRAGON ON BATTLE - Decisão: Consertar Dragões Quebrados (MDE Fix)
+# Conserta todos os dragões que não foram registrados no storage
+# system do AGOT (problema do More Dragon Eggs).
+#
+# Visível para: todos os jogadores (não-IA)
+# Cooldown: 1 vez por ano (flag dob_fixed_dragons_this_year)
+# ============================================================
+
+dob_fix_all_dragons_decision = {
+	picture = "gfx/interface/icons/decisions/decision_dynasty_house.dds"
+	major = yes
+	ai_check_interval = 0  # IA nunca executa
+
+	# ── Visibilidade ──────────────────────────────────────────────────────────────
+	is_shown = {
+		is_ai = no
+	}
+
+	# ── Válido se não foi usado este ano ──────────────────────────────────────────
+	is_valid = {
+		is_ai = no
+		NOT = { has_character_flag = dob_fixed_dragons_this_year }
+	}
+
+	is_valid_showing_failures_only = {
+		NOT = { has_character_flag = dob_fixed_dragons_this_year }
+	}
+
+	cost = { }
+
+	# ── Efeito ────────────────────────────────────────────────────────────────────
+	effect = {
+		# Previne uso múltiplo no mesmo ano
+		add_character_flag = {
+			flag = dob_fixed_dragons_this_year
+			years = 1
+		}
+
+		# Consertar todos os dragões vivos sem registro no AGOT storage
+		dob_fix_all_broken_dragons = yes
+
+		# Notificação de conclusão
+		send_interface_toast = {
+			type = event_toast_effects_good
+			title = dob_fix_dragons_toast_title
+			desc = dob_fix_dragons_toast_desc
+		}
+	}
+}

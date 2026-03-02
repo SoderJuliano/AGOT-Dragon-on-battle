@@ -94,47 +94,58 @@ dob_dragon_prestige_gain = {
 #   size 200+:     10
 dob_dragon_battle_tier = {
 	# Scope: o DRAGÃO
-	# Usa os mesmos thresholds de size do AGOT (level_one a level_ten_dragon_size)
+	# Thresholds sincronizados com dob_update_rider_dragon_modifier
+	# (valores verificados contra AGOT 0.4.27 level_one a level_ten_dragon_size)
+	#   Tier 1:  size >= 30   (dragão jovem mínimo para batalha)
+	#   Tier 2:  size >= 50
+	#   Tier 3:  size >= 65
+	#   Tier 4:  size >= 80
+	#   Tier 5:  size >= 95
+	#   Tier 6:  size >= 110
+	#   Tier 7:  size >= 120
+	#   Tier 8:  size >= 135
+	#   Tier 9:  size >= 150
+	#   Tier 10: size >= 170   (Vhagar, Balerion)
 	value = 0
 
 	if = {
-		limit = { dragon_size >= 200 }
+		limit = { dragon_size >= 170 }
 		add = 10
 	}
 	else_if = {
-		limit = { dragon_size >= 175 }
+		limit = { dragon_size >= 150 }
 		add = 9
 	}
 	else_if = {
-		limit = { dragon_size >= 150 }
+		limit = { dragon_size >= 135 }
 		add = 8
 	}
 	else_if = {
-		limit = { dragon_size >= 125 }
+		limit = { dragon_size >= 120 }
 		add = 7
 	}
 	else_if = {
-		limit = { dragon_size >= 100 }
+		limit = { dragon_size >= 110 }
 		add = 6
 	}
 	else_if = {
-		limit = { dragon_size >= 80 }
+		limit = { dragon_size >= 95 }
 		add = 5
 	}
 	else_if = {
-		limit = { dragon_size >= 60 }
+		limit = { dragon_size >= 80 }
 		add = 4
 	}
 	else_if = {
-		limit = { dragon_size >= 40 }
+		limit = { dragon_size >= 65 }
 		add = 3
 	}
 	else_if = {
-		limit = { dragon_size >= 20 }
+		limit = { dragon_size >= 50 }
 		add = 2
 	}
 	else_if = {
-		limit = { dragon_size >= 1 }
+		limit = { dragon_size >= 30 }
 		add = 1
 	}
 }

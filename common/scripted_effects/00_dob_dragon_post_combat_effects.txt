@@ -166,10 +166,15 @@ dob_dragon_winner_effect = {
 				exists = var:current_dragon
 				var:current_dragon = { dragon_size >= 30 }
 			}
-			var:current_dragon = { save_scope_as = dob_ally_dragon }
+			var:current_dragon = {
+				save_scope_as = dob_ally_dragon
+				save_event_target_as = dob_ally_dragon
+			}
 			save_scope_as = dob_ally_rider_combat
-			# prev = combat_side (winner) — encontrar o player neste lado
-			prev = {
+			save_event_target_as = dob_ally_rider_combat
+			# root = combat_side (winner) — sempre válido em scripted_effect
+			# FIX: prev era instável quando chamado via on_action; root é garantido
+			root = {
 				every_side_commander = {
 					limit = { is_ai = no }
 					trigger_event = { id = dragon_battle.014 days = 2 }
@@ -301,9 +306,14 @@ dob_dragon_loser_notifications = {
 				exists = var:current_dragon
 				var:current_dragon = { dragon_size >= 30 }
 			}
-			var:current_dragon = { save_scope_as = dob_ally_dragon }
+			var:current_dragon = {
+				save_scope_as = dob_ally_dragon
+				save_event_target_as = dob_ally_dragon
+			}
 			save_scope_as = dob_ally_rider_combat
-			prev = {
+			save_event_target_as = dob_ally_rider_combat
+			# root = combat_side (loser) — FIX: prev era instável em scripted_effect
+			root = {
 				every_side_commander = {
 					limit = { is_ai = no }
 					trigger_event = { id = dragon_battle.014 days = 2 }
@@ -368,6 +378,8 @@ dob_update_rider_dragon_modifier = {
 	remove_character_modifier = dob_rider_dragon_great
 
 	# Aplicar tier correto lendo o tamanho do dragão a partir do rider scope
+	# FIX: o else final aplica dob_rider_dragon_young mesmo para size=0 (MDE) ou ghost
+	# is_current_dragonrider usa a relação AGOT (agot_dragon) — não falha para dragons ghost
 	if = {
 		limit = { var:current_dragon = { dragon_size >= 150 } }
 		add_character_modifier = dob_rider_dragon_great
@@ -379,6 +391,14 @@ dob_update_rider_dragon_modifier = {
 	else_if = {
 		limit = { var:current_dragon = { dragon_size >= 30 } }
 		add_character_modifier = dob_rider_dragon_young
+	}
+	else = {
+		# Dragon size < 30, size=0 (MDE bug), ou var:current_dragon é ghost
+		# Se o rider AINDA tem bond válido via AGOT (relação agot_dragon), aplica modifier base
+		if = {
+			limit = { is_current_dragonrider = yes }
+			add_character_modifier = dob_rider_dragon_young
+		}
 	}
 
 	# ── Armazena o tier (1-10) como variável no dragão para exibir na janela do dragão
@@ -424,6 +444,71 @@ dob_update_rider_dragon_modifier = {
 		var:current_dragon = { set_variable = { name = dob_battle_tier value = 1 } }
 	}
 	else = {
-		var:current_dragon = { set_variable = { name = dob_battle_tier value = 0 } }
+		# dragon_size < 30 ou var:current_dragon ghost/inválido
+		# Guarda com exists para não logar erros de acesso ghost
+		if = {
+			limit = { exists = var:current_dragon }
+			var:current_dragon = { set_variable = { name = dob_battle_tier value = 0 } }
+		}
 	}
+}
+# ── Liberar / Apagar vínculo com o dragão (chamado de dragon_battle.016) ──────────
+# Scope: o RIDER (player).
+# Remove todos os modifiers e variáveis do DOB dos dois lados.
+# NÃO aplica penalidades — não dá dragonwidowed, não dá -prestígio.
+# Se o dragão for um objeto válido: severs bond sem matar (dragon fica "wild").
+# Se o dragão for inválido/ghost (id morto na memória): apenas limpa as vars.
+dob_release_dragon_effect = {
+	# ── 1. Limpar modifiers DOB do rider ──────────────────────────────────────────
+	remove_character_modifier = dob_rider_dragon_young
+	remove_character_modifier = dob_rider_dragon_mature
+	remove_character_modifier = dob_rider_dragon_great
+	remove_character_modifier = dob_dragon_victory_small
+	remove_character_modifier = dob_dragon_victory_medium
+	remove_character_modifier = dob_dragon_victory_large
+
+	# ── 2. Remover relação AGOT (agot_dragon) — sem isso AGOT ainda considera o rider como bonded
+	# CRÍTICO: este é o passo que o AGOT usa internamente para encerrar o bond
+	# Para dragon ghost: exists falha → passo ignorado → AGOT auto-limpa na morte
+	if = {
+		limit = {
+			exists = var:current_dragon
+			has_relation_agot_dragon = var:current_dragon
+		}
+		remove_relation_agot_dragon = var:current_dragon
+	}
+
+	# ── 3. Se o dragão existe E está vivo: limpa o lado do dragão também ──────────
+	if = {
+		limit = {
+			exists = var:current_dragon
+			var:current_dragon = { is_alive = yes }
+		}
+		var:current_dragon = {
+			remove_character_modifier = dob_dragon_power_young
+			remove_character_modifier = dob_dragon_power_mature
+			remove_character_modifier = dob_dragon_power_great
+			remove_character_modifier = dob_dragon_battle_hardened
+			remove_character_modifier = dob_dragon_wounded
+			if = { limit = { has_variable = dob_battle_tier } remove_variable = dob_battle_tier }
+			# Severar referência: remove current_rider no lado do dragão
+			# Usa has_variable (não exists) para limpar mesmo se rider for ghost
+			if = { limit = { has_variable = current_rider } clear_variable = current_rider }
+		}
+	}
+
+	# ── 4. Severar referência no rider: apaga current_dragon ──────────────────
+	# Usa has_variable (não exists) para funcionar mesmo com dragão ghost/inválido
+	if = { limit = { has_variable = current_dragon } clear_variable = current_dragon }
+
+	# ── 5. Remover dragonwidowed se existir (precaução) ────────────────────────
+	remove_trait = dragonwidowed
+
+	# ── 6. Limpar variáveis de rastreamento do DOB no rider ──────────────────────
+	if = { limit = { has_variable = dob_dragon_power } remove_variable = dob_dragon_power }
+	if = { limit = { has_variable = dob_dragon_size } remove_variable = dob_dragon_size }
+	if = { limit = { has_variable = dob_dragon_was_wounded } remove_variable = dob_dragon_was_wounded }
+	if = { limit = { has_variable = dob_prestige_gained } remove_variable = dob_prestige_gained }
+	if = { limit = { has_variable = dob_ally_status } remove_variable = dob_ally_status }
+	if = { limit = { has_variable = dob_enemy_status } remove_variable = dob_enemy_status }
 }

@@ -1,6 +1,6 @@
 ﻿l_english:
  # ── Battle Tier Tooltip (Dragon Window) ────────────────────
- DOB_BATTLE_TIER_TOOLTIP: "#T Battle Tier#!\n#weak Tier [CharacterWindow.GetCharacter.MakeScope.ScriptValue('dob_dragon_battle_tier')|0]/10#!\n\nThis dragon's raw power in battle.\n\n#bold Dragon Size:#! [CharacterWindow.GetCharacter.MakeScope.ScriptValue('dragon_size')|0]\n#bold Combat Effectiveness:#! [CharacterWindow.GetCharacter.MakeScope.ScriptValue('dragon_combat_effectiveness')|0]\n#weak (Size × traits × wounds × training)#!\n\n#bold Battle Equivalence:#! ~[CharacterWindow.GetCharacter.MakeScope.ScriptValue('dragon_combat_effectiveness')|0] soldiers\n#weak (Approximate army advantage in battle)#!"
+ DOB_BATTLE_TIER_TOOLTIP: "#T Battle Tier#!\n#weak Tier [CharacterWindow.GetCharacter.MakeScope.ScriptValue('dob_dragon_battle_tier')|0]/10#!\n\nThis dragon's raw power in battle.\n\n#bold Dragon Size:#! [CharacterWindow.GetCharacter.MakeScope.ScriptValue('dragon_size')|0]\n#bold Battle Power Score:#! [CharacterWindow.GetCharacter.MakeScope.ScriptValue('dragon_combat_effectiveness')|0]\n#weak (Size × personality traits × wounds × rider training)#!\n\n#bold What this means:#!\n#weak A dragon is not measured in soldiers — it is measured in #!#bold terror#!#weak . Higher Battle Power means larger post-combat bonuses, greater prestige gains, stronger rider modifiers, and more devastating combat events.#!\n\n#warning If this shows 0, your dragon's size data may not be registered in the game's storage system (known issue with some spawned dragons). Use the #!#bold Sever Dragon Bond#!#warning decision to reset the bond and claim a new dragon.#!"
 
  # ── Modifiers pós-batalha (prestígio, não duplicam AGOT) ───
  dob_dragon_victory_small: "Dragon Victory — Young Flame"
@@ -98,3 +98,24 @@
 
  dob_dragon_shield_realm: "Shield of the Realm"
  dob_dragon_shield_realm_desc: "The highest honor a defensive dragon can earn. This creature has stood as an unbreakable wall against those who would threaten the realm, time and again. Bards already sing of the great beast that would not yield. Its legend as defender is known across Westeros."
+
+ # ── Release Dragon (botão + evento 016) ─────────────────────
+ DOB_RELEASE_DRAGON_BUTTON_TT: "#T Release Dragon Bond#!\n\nSever your bond with this dragon.\n\n#weak This will permanently remove all records of your bond. The dragon will become unbound. No prestige penalty, no dragonwidowed trait.#!\n\n#warning Use this if your dragon is bugged (showing size 0 or other invalid data).#!"
+
+ dragon_battle.016.t: "Sever the Bond with Your Dragon?"
+ dragon_battle.016.desc: "You contemplate releasing your dragon — severing the bond between rider and beast.\n\nOnce broken, all records of your bonding will be erased. The dragon will become unbound, free to wander as it pleases.\n\n#bold You will suffer no penalties, lose no prestige, and gain no dragonwidowed trait.#!\n\n#warning This action cannot be undone. Are you certain?#!"
+ dragon_battle.016.a: "Sever the bond. Let the dragon go."
+ dragon_battle.016.b: "No. I will keep my dragon."
+
+ # ── Release Dragon (decisão de personagem) ──────────────────
+ dob_release_dragon_decision: "Sever Dragon Bond"
+ dob_release_dragon_decision_desc: "Your bond with your dragon has become a burden — perhaps the dragon is lost, dead, or cursed by dark magic that prevents the beast from growing.\n\nYou may choose to sever this bond entirely, releasing all ties between rider and dragon.\n\n#bold You will suffer no penalties, lose no prestige, and gain no dragonwidowed trait.#!\n\n#weak All Dragon on Battle records and modifiers will be cleared.#!\n\n#warning This cannot be undone. After severing the bond, you may seek a new dragon through the Dragon Claiming system.#!"
+
+ # ── Fix MDE Broken Dragons (decisão utilitária) ─────────────
+ dob_fix_all_dragons_decision_confirm: "Perform the Ritual"
+ dob_fix_all_dragons_decision: "Restore Dragon Records"
+ dob_fix_all_dragons_decision_desc: "Some dragons in the realm lack proper growth records — a flaw caused by certain dragon mods that do not fully register new dragons with the game's internal tracking system. This affects the dragon's displayed size, the ability to rename or tame them, and how the game calculates their power.\n\nThis ritual scans all living dragons in the world and retroactively registers any that are missing, estimating their size based on age.\n\n#weak This only needs to be used once, but can be repeated once per year if new broken dragons appear.#!\n\n#warning Dragons will have their size estimated from age. This is approximate — traits and actual growth history are not available.#!"
+
+ dob_fix_dragons_toast_title: "Dragon Records Restored"
+ dob_fix_dragons_toast_desc: "All dragons missing from the realm's records have been registered. Their sizes have been estimated based on age. You may now rename and tame previously inaccessible dragons. #weak (Re-open the dragon's character window to see updated values.)#!"
+

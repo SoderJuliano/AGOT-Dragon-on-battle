@@ -1,0 +1,35 @@
+# ============================================================
+# DRAGON ON BATTLE - Scripted GUI: Release Dragon
+# Aparece como botão na janela do dragão (tela do personagem)
+# Scope da GUI: root = dragão sendo visualizado
+#                scope:player = GetPlayer (o jogador local)
+# ============================================================
+
+# Controla visibilidade do botão "Liberar Dragão"
+# FIX: usa has_variable (não exists) para detectar dragon ghost/inválido
+# FIX: não testa this = root (falha para ghost) — mostra sempre que player tem bond para liberar
+dob_can_release_dragon = {
+	is_shown = {
+		exists = scope:player
+		# O player tem que ser dragonrider COM variável current_dragon registrada
+		# has_variable funciona mesmo para ghost dragons (exists falha para ghost)
+		scope:player = {
+			has_trait = dragonrider
+			has_variable = current_dragon
+		}
+	}
+	is_valid = {
+		exists = scope:player
+		scope:player = {
+			has_trait = dragonrider
+			has_variable = current_dragon
+		}
+	}
+	effect = {
+		# Dispara o evento de confirmação no player (rider scope)
+		scope:player = {
+			trigger_event = { id = dragon_battle.016 }
+		}
+	}
+}
+
