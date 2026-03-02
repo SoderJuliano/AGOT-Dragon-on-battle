@@ -101,6 +101,44 @@ dob_on_war_started = {
 	}
 }
 
+# ── Hook 1b: Entrou em guerra como aliado/suporte ────────────
+# Root = o personagem que se juntou como secundário
+# scope:war = a guerra que entrou
+on_join_war_as_secondary = {
+	on_actions = { dob_on_join_war_as_secondary }
+}
+
+dob_on_join_war_as_secondary = {
+	effect = {
+		# Caso 1: Player entrou no lado atacante com dragão
+		if = {
+			limit = {
+				is_ai = no
+				has_trait = dragonrider
+				exists = var:current_dragon
+				var:current_dragon = { is_alive = yes }
+				scope:war = { is_attacker = root }
+			}
+			set_variable = { name = dob_dragon_power value = dob_dragon_battle_bonus }
+			set_variable = { name = dob_dragon_size  value = dob_dragon_size_value }
+			trigger_event = { id = dragon_battle.001 days = 1 }
+		}
+		# Caso 2: Player entrou no lado defensor com dragão
+		else_if = {
+			limit = {
+				is_ai = no
+				has_trait = dragonrider
+				exists = var:current_dragon
+				var:current_dragon = { is_alive = yes }
+				NOT = { scope:war = { is_attacker = root } }
+			}
+			set_variable = { name = dob_dragon_power value = dob_dragon_battle_bonus }
+			set_variable = { name = dob_dragon_size  value = dob_dragon_size_value }
+			trigger_event = { id = dragon_battle.008 days = 1 }
+		}
+	}
+}
+
 # ── Hook 2: Fim de batalha — VENCEDOR ────────────────────────
 # Root = combat_side VENCEDOR (confirmado em combat_on_actions.txt do AGOT 0.4.27)
 on_combat_end_winner = {
