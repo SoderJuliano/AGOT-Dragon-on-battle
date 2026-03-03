@@ -29,20 +29,36 @@ dob_estimate_dragon_size_from_age = {
 		set_variable = { name = dragon_size_base value = 175 }
 	}
 	else_if = {
-		limit = { age >= 60 }
+		limit = { age >= 75 }
 		set_variable = { name = dragon_size_base value = 150 }
+	}
+	else_if = {
+		limit = { age >= 60 }
+		set_variable = { name = dragon_size_base value = 135 }
 	}
 	else_if = {
 		limit = { age >= 45 }
 		set_variable = { name = dragon_size_base value = 120 }
 	}
 	else_if = {
+		limit = { age >= 40 }
+		set_variable = { name = dragon_size_base value = 110 }
+	}
+	else_if = {
+		limit = { age >= 35 }
+		set_variable = { name = dragon_size_base value = 95 }
+	}
+	else_if = {
 		limit = { age >= 30 }
-		set_variable = { name = dragon_size_base value = 90 }
+		set_variable = { name = dragon_size_base value = 80 }
+	}
+	else_if = {
+		limit = { age >= 25 }
+		set_variable = { name = dragon_size_base value = 65 }
 	}
 	else_if = {
 		limit = { age >= 20 }
-		set_variable = { name = dragon_size_base value = 60 }
+		set_variable = { name = dragon_size_base value = 50 }
 	}
 	else_if = {
 		limit = { age >= 15 }
@@ -188,20 +204,36 @@ dob_correct_all_dragon_sizes_on_load = {
 				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 175 } } set_variable = { name = dragon_size_base value = 175 } }
 			}
 			else_if = {
-				limit = { age >= 60 }
+				limit = { age >= 75 }
 				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 150 } } set_variable = { name = dragon_size_base value = 150 } }
+			}
+			else_if = {
+				limit = { age >= 60 }
+				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 135 } } set_variable = { name = dragon_size_base value = 135 } }
 			}
 			else_if = {
 				limit = { age >= 45 }
 				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 120 } } set_variable = { name = dragon_size_base value = 120 } }
 			}
 			else_if = {
+				limit = { age >= 40 }
+				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 110 } } set_variable = { name = dragon_size_base value = 110 } }
+			}
+			else_if = {
+				limit = { age >= 35 }
+				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 95 } } set_variable = { name = dragon_size_base value = 95 } }
+			}
+			else_if = {
 				limit = { age >= 30 }
-				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 90 } } set_variable = { name = dragon_size_base value = 90 } }
+				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 80 } } set_variable = { name = dragon_size_base value = 80 } }
+			}
+			else_if = {
+				limit = { age >= 25 }
+				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 65 } } set_variable = { name = dragon_size_base value = 65 } }
 			}
 			else_if = {
 				limit = { age >= 20 }
-				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 60 } } set_variable = { name = dragon_size_base value = 60 } }
+				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 50 } } set_variable = { name = dragon_size_base value = 50 } }
 			}
 			else_if = {
 				limit = { age >= 15 }

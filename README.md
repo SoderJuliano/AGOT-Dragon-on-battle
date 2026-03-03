@@ -102,11 +102,15 @@ O mod aplica automaticamente ao entrar no jogo um piso mínimo de `dragon_size_b
 | < 5 anos | 5 | — |
 | 5–9 anos | 15 | — |
 | 10–14 anos | 30 | Tier 1 |
-| 15–19 anos | 40 | Tier 1–2 |
-| 20–29 anos | 60 | Tier 2–3 |
-| 30–44 anos | 90 | Tier 4 |
+| 15–19 anos | 40 | Tier 1 |
+| 20–24 anos | 50 | Tier 2 |
+| 25–29 anos | 65 | Tier 3 |
+| 30–34 anos | 80 | Tier 4 |
+| 35–39 anos | 95 | Tier 5 |
+| 40–44 anos | 110 | Tier 6 |
 | 45–59 anos | 120 | Tier 7 |
-| 60–79 anos | 150 | Tier 9 |
+| 60–74 anos | 135 | Tier 8 |
+| 75–79 anos | 150 | Tier 9 |
 | 80+ anos | 175 | Tier 10 |
 
 > O tamanho **nunca é reduzido** — se o AGOT já registrou um valor maior, ele é mantido.
@@ -173,7 +177,7 @@ Dragões criados pelo MDE não usam o sistema de registro padrão do AGOT, o que
 
 ### Dragão não aparece no Battle Report
 
-1. Verifique se o `dragon_size` do dragão é > 10 (abra a janela do dragão, olhe o Battle Tier)
+1. Verifique se o `dragon_size` do dragão é > 0 (abra a janela do dragão, olhe o Battle Tier)
 2. Se for 0, use a decisão **"Restore Dragon Records"** (em Decisões) — ela corrige dragões MDE com size 0
 3. O fix automático roda ao carregar o save, mas só funciona se o dragão já tem `dragon_age` definido
 
@@ -294,6 +298,8 @@ AGOT-Dragon-on-battle/
 - **FIX MDE**: `every_side_knight` incluído no battle report
 - **FIX MDE**: threshold `dragon_size >= 30` reduzido para `>= 10`
 - **FIX MDE**: fallback `var:current_dragon` nos triggers de guerra e join war
+- **FIX Battle Report**: threshold de gravação baixado para `dragon_size >= 1` — dragões com size bugada aparecem no painel
+- **FIX progressão de tier**: faixas de idade divididas em intervalos de 5 anos (20–79) para cobrir todos os tiers sem saltos
 
 ### v0.2
 - Eventos de guerra defensiva (008–013)
