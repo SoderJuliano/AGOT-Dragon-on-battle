@@ -124,7 +124,6 @@
  dob_release_dragon_decision_desc: "Your bond with your dragon has become a burden — perhaps the dragon is lost, dead, or cursed by dark magic that prevents the beast from growing.\n\nYou may choose to sever this bond entirely, releasing all ties between rider and dragon.\n\n#bold You will suffer no penalties, lose no prestige, and gain no dragonwidowed trait.#!\n\n#weak All Dragon on Battle records and modifiers will be cleared.#!\n\n#warning This cannot be undone. After severing the bond, you may seek a new dragon through the Dragon Claiming system.#!"
 
  # ── Trigger / Flag display names ────────────────────────────
- is_ai_trigger: "AI-controlled ruler"
  dob_fixed_dragons_this_year: "Dragon records restored this year"
 
  # ── Fix MDE Broken Dragons (decisão utilitária) ─────────────
