@@ -1,4 +1,8 @@
 ﻿l_english:
+ # ── Battle Summary GUI overrides ────────────────────────────
+ BATTLE_SUMMARY_DOB_YOU: "⚔ YOU"
+ BATTLE_SUMMARY_DOB_YOU_TT: "You are personally commanding in this battle. Post-battle dragon events will fire based on the outcome."
+
  # ── Battle Tier Tooltip (Dragon Window) ────────────────────
  DOB_BATTLE_TIER_TOOLTIP: "#T Battle Tier#!\n#weak Tier [CharacterWindow.GetCharacter.MakeScope.ScriptValue('dob_dragon_battle_tier')|0]/10#!\n\nThis dragon's raw power in battle.\n\n#bold Dragon Size:#! [CharacterWindow.GetCharacter.MakeScope.ScriptValue('dragon_size')|0]\n#bold Battle Power Score:#! [CharacterWindow.GetCharacter.MakeScope.ScriptValue('dragon_combat_effectiveness')|0]\n#weak (Size × personality traits × wounds × rider training)#!\n\n#bold What this means:#!\n#weak A dragon is not measured in soldiers — it is measured in #!#bold terror#!#weak . Higher Battle Power means larger post-combat bonuses, greater prestige gains, stronger rider modifiers, and more devastating combat events.#!\n\n#warning If this shows 0, your dragon's size data may not be registered in the game's storage system (known issue with some spawned dragons). Use the #!#bold Sever Dragon Bond#!#warning decision to reset the bond and claim a new dragon.#!"
 
