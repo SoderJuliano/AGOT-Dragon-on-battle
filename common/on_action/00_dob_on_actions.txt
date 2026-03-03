@@ -224,24 +224,19 @@ on_game_start_after_lobby = {
 dob_on_game_start = {
 	effect = {
 		# Remover dragonwidowed de todos os personagens ao carregar o save
-		# (garante que funciona mesmo em saves existentes antes do mod)
 		every_living_character = {
 			limit = { has_trait = dragonwidowed }
 			remove_trait = dragonwidowed
 		}
-		# ── FIX ON LOAD: corrigir tamanho de todos os dragões vivos ─────────────────────
-		# Aplica piso de tamanho mínimo por idade imediatamente ao carregar o save.
-		# Corrige dragões que estavam bugados (size menor que o esperado pela idade)
-		# sem precisar esperar o próximo aniversário do dragão.
-		dob_correct_all_dragon_sizes_on_load = yes
+		# Resetar flag de sessão para que o pulso mensal rode a correção logo em seguida
+		# (on_game_start_after_lobby só dispara via lobby — o monthly_pulse cobre reloads diretos)
+		if = {
+			limit = { has_character_flag = dob_sizes_corrected }
+			remove_character_flag = dob_sizes_corrected
+		}
 		# Aplicar modifiers de poder do dragão em todos os riders
-		# Usa is_current_dragonrider (relação AGOT, não var) para pegar riders válidos.
-		# Não usa exists = var:current_dragon pois falha para dragões ghost/inválidos.
 		every_living_character = {
-			limit = {
-				is_current_dragonrider = yes
-			}
-			# Atualiza power modifier no dragão apenas se o var aponta para personagem válido
+			limit = { is_current_dragonrider = yes }
 			if = {
 				limit = { exists = var:current_dragon }
 				var:current_dragon = { dob_update_dragon_power_modifier = yes }
@@ -295,6 +290,19 @@ dob_on_yearly_pulse = {
 
 dob_on_monthly_pulse = {
 	effect = {
+		# ── FIX ON LOAD (uma vez por sessão) ────────────────────────────────────────────
+		# Roda assim que o jogador começa a jogar, independente de ter carregado via lobby
+		# ou reload direto de save. A flag dob_sizes_corrected dura 1 ano in-game;
+		# on_game_start_after_lobby remove ela para garantir re-execução em cada carga.
+		if = {
+			limit = { NOT = { has_character_flag = dob_sizes_corrected } }
+			dob_correct_all_dragon_sizes_on_load = yes
+			add_character_flag = {
+				flag = dob_sizes_corrected
+				years = 1
+			}
+		}
+
 		# ── Player: atualiza modifier do dragão na ficha do rider ──────────────────────
 		# Root = player character. Só toca o próprio player para evitar acessar
 		# current_rider de outros dragões via hooks de outros mods (crash).
