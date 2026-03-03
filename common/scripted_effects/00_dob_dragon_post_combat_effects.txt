@@ -31,11 +31,18 @@
 dob_dragon_winner_effect = {
 	every_side_commander = {
 		limit = {
-			has_trait = dragonrider
+			OR = {
+				has_trait = dragonrider
+				AND = {
+					has_variable = current_dragon
+					exists = var:current_dragon
+					var:current_dragon = { is_alive = yes has_trait = dragon }
+				}
+			}
 			exists = var:current_dragon
 			var:current_dragon = {
 				is_alive = yes
-				dragon_size >= 30
+				dragon_size >= 10
 			}
 		}
 
@@ -306,9 +313,9 @@ dob_dragon_winner_effect = {
 		every_side_commander = {
 			limit = {
 				is_ai = yes
-				has_trait = dragonrider
+				has_variable = current_dragon
 				exists = var:current_dragon
-				var:current_dragon = { dragon_size >= 30 }
+				var:current_dragon = { dragon_size >= 10 }
 			}
 			var:current_dragon = {
 				save_scope_as = dob_ally_dragon
@@ -334,9 +341,9 @@ dob_dragon_winner_effect = {
 		enemy_side = {
 			every_side_commander = {
 				limit = {
-					has_trait = dragonrider
+					has_variable = current_dragon
 					exists = var:current_dragon
-					var:current_dragon = { dragon_size >= 30 }
+					var:current_dragon = { dragon_size >= 10 }
 				}
 				save_scope_as = dob_enemy_rider_combat
 				var:current_dragon = { save_scope_as = dob_enemy_dragon }
@@ -352,9 +359,14 @@ dob_dragon_winner_effect = {
 	}
 
 	# ── Gravar participantes dragões para o Battle Report GUI ────────────────────────
-	# Só roda se o player está neste lado (winner side)
+	# Roda se o player está neste lado como commander OU como knight
 	if = {
-		limit = { any_side_commander = { is_ai = no } }
+		limit = {
+			OR = {
+				any_side_commander = { is_ai = no }
+				any_side_knight    = { is_ai = no }
+			}
+		}
 		dob_record_battle_dragons_effect = yes
 	}
 }
@@ -364,11 +376,18 @@ dob_dragon_winner_effect = {
 dob_dragon_loser_effect = {
 	every_side_commander = {
 		limit = {
-			has_trait = dragonrider
+			OR = {
+				has_trait = dragonrider
+				AND = {
+					has_variable = current_dragon
+					exists = var:current_dragon
+					var:current_dragon = { is_alive = yes has_trait = dragon }
+				}
+			}
 			exists = var:current_dragon
 			var:current_dragon = {
 				is_alive = yes
-				dragon_size >= 30
+				dragon_size >= 10
 			}
 		}
 		# Estamos agora em character scope (o rider)
@@ -444,9 +463,14 @@ dob_dragon_loser_effect = {
 	}
 
 	# ── Gravar participantes dragões para o Battle Report GUI ────────────────────────
-	# Só roda se o player está neste lado (loser side)
+	# Roda se o player está neste lado como commander OU como knight
 	if = {
-		limit = { any_side_commander = { is_ai = no } }
+		limit = {
+			OR = {
+				any_side_commander = { is_ai = no }
+				any_side_knight    = { is_ai = no }
+			}
+		}
 		dob_record_battle_dragons_effect = yes
 	}
 }
@@ -462,9 +486,9 @@ dob_dragon_loser_notifications = {
 		every_side_commander = {
 			limit = {
 				is_ai = yes
-				has_trait = dragonrider
+				has_variable = current_dragon
 				exists = var:current_dragon
-				var:current_dragon = { dragon_size >= 30 }
+				var:current_dragon = { dragon_size >= 10 }
 			}
 			var:current_dragon = {
 				save_scope_as = dob_ally_dragon
@@ -489,9 +513,9 @@ dob_dragon_loser_notifications = {
 		enemy_side = {
 			every_side_commander = {
 				limit = {
-					has_trait = dragonrider
+					has_variable = current_dragon
 					exists = var:current_dragon
-					var:current_dragon = { dragon_size >= 30 }
+					var:current_dragon = { dragon_size >= 10 }
 				}
 				save_scope_as = dob_enemy_rider_combat
 				var:current_dragon = { save_scope_as = dob_enemy_dragon }
@@ -721,7 +745,7 @@ dob_record_battle_dragons_effect = {
 		limit = {
 			has_variable = current_dragon
 			exists = var:current_dragon
-			var:current_dragon = { dragon_size >= 30 }
+			var:current_dragon = { dragon_size >= 10 }
 		}
 		save_scope_as = dob_rec_rider
 		var:current_dragon = { save_scope_as = dob_rec_dragon }
@@ -760,7 +784,7 @@ dob_record_battle_dragons_effect = {
 		limit = {
 			has_variable = current_dragon
 			exists = var:current_dragon
-			var:current_dragon = { dragon_size >= 30 }
+			var:current_dragon = { dragon_size >= 10 }
 		}
 		save_scope_as = dob_rec_rider
 		var:current_dragon = { save_scope_as = dob_rec_dragon }
@@ -802,7 +826,7 @@ dob_record_battle_dragons_effect = {
 			limit = {
 				has_variable = current_dragon
 				exists = var:current_dragon
-				var:current_dragon = { dragon_size >= 30 }
+				var:current_dragon = { dragon_size >= 10 }
 			}
 			save_scope_as = dob_rec_rider
 			var:current_dragon = { save_scope_as = dob_rec_dragon }
@@ -841,7 +865,7 @@ dob_record_battle_dragons_effect = {
 			limit = {
 				has_variable = current_dragon
 				exists = var:current_dragon
-				var:current_dragon = { dragon_size >= 30 }
+				var:current_dragon = { dragon_size >= 10 }
 			}
 			save_scope_as = dob_rec_rider
 			var:current_dragon = { save_scope_as = dob_rec_dragon }
