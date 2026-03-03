@@ -138,6 +138,105 @@ dob_fix_single_dragon_delete_recreate = {
 	}
 }
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ON LOAD: corrigir tamanho de TODOS os dragões vivos ao entrar no jogo.
+# Diferente de dob_fix_all_broken_dragons (que só trata size=0 ou fora da lista),
+# este effect aplica o piso mínimo de tamanho por IDADE em QUALQUER dragão cujo
+# dragon_size_base esteja abaixo do esperado — independente de estar na lista.
+# Também registra dragões totalmente fora da story cycle.
+# Scope: nenhum (chamado de dob_on_game_start via every_living_character)
+# ─────────────────────────────────────────────────────────────────────────────
+dob_correct_all_dragon_sizes_on_load = {
+	every_living_character = {
+		limit = { has_trait = dragon }
+		save_temporary_scope_as = dob_load_check_dragon
+
+		if = {
+			# Caso A: dragão totalmente fora da story cycle → registrar do zero
+			limit = {
+				NOT = {
+					any_in_global_list = {
+						variable = gl_dragon_variable_storage
+						var:dragon_id ?= scope:dob_load_check_dragon
+					}
+				}
+			}
+			# Estimar size pela idade antes de registrar
+			dob_estimate_dragon_size_from_age = yes
+			if = {
+				limit = { NOT = { has_variable = dragon_age } }
+				set_variable = { name = dragon_age value = { value = 0 add = age } }
+			}
+			# Registrar via AGOT — cria story cycle correta com os valores acima
+			agot_dragon_transfer_vars_to_story_cycle_effect = { DRAGON = this }
+		}
+		else = {
+			# Caso B: dragão JÁ está na story cycle — aplicar piso de tamanho por idade
+			# Regra: só AUMENTA, nunca diminui. Se AGOT já setou maior, mantém.
+
+			# 1. Aplicar piso no var do personagem do dragão
+			if = {
+				limit = { age >= 80 OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 175 } }
+				set_variable = { name = dragon_size_base value = 175 }
+			}
+			else_if = {
+				limit = { age >= 60 OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 150 } }
+				set_variable = { name = dragon_size_base value = 150 }
+			}
+			else_if = {
+				limit = { age >= 45 OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 120 } }
+				set_variable = { name = dragon_size_base value = 120 }
+			}
+			else_if = {
+				limit = { age >= 30 OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 90 } }
+				set_variable = { name = dragon_size_base value = 90 }
+			}
+			else_if = {
+				limit = { age >= 20 OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 60 } }
+				set_variable = { name = dragon_size_base value = 60 }
+			}
+			else_if = {
+				limit = { age >= 15 OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 40 } }
+				set_variable = { name = dragon_size_base value = 40 }
+			}
+			else_if = {
+				limit = { age >= 10 OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 30 } }
+				set_variable = { name = dragon_size_base value = 30 }
+			}
+			else_if = {
+				limit = { age >= 5 OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 15 } }
+				set_variable = { name = dragon_size_base value = 15 }
+			}
+			else_if = {
+				limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 5 } }
+				set_variable = { name = dragon_size_base value = 5 }
+			}
+
+			# 2. Propagar o valor corrigido para a story cycle
+			every_in_global_list = {
+				variable = gl_dragon_variable_storage
+				limit = { var:dragon_id ?= scope:dob_load_check_dragon }
+				if = {
+					limit = { var:dragon_size_base < scope:dob_load_check_dragon.var:dragon_size_base }
+					set_variable = { name = dragon_size_base value = scope:dob_load_check_dragon.var:dragon_size_base }
+				}
+			}
+
+			# 3. Atualizar modifier do rider imediatamente
+			if = {
+				limit = { has_variable = current_rider exists = var:current_rider }
+				var:current_rider = {
+					if = {
+						limit = { exists = var:current_dragon }
+						var:current_dragon = { dob_update_dragon_power_modifier = yes }
+					}
+					dob_update_rider_dragon_modifier = yes
+				}
+			}
+		}
+	}
+}
+
 # Conserta TODOS os dragões vivos com dragon_size 0 na story.
 # Scope: o player (chamado da decisão)
 dob_fix_all_broken_dragons = {

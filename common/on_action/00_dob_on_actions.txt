@@ -229,6 +229,11 @@ dob_on_game_start = {
 			limit = { has_trait = dragonwidowed }
 			remove_trait = dragonwidowed
 		}
+		# ── FIX ON LOAD: corrigir tamanho de todos os dragões vivos ─────────────────────
+		# Aplica piso de tamanho mínimo por idade imediatamente ao carregar o save.
+		# Corrige dragões que estavam bugados (size menor que o esperado pela idade)
+		# sem precisar esperar o próximo aniversário do dragão.
+		dob_correct_all_dragon_sizes_on_load = yes
 		# Aplicar modifiers de poder do dragão em todos os riders
 		# Usa is_current_dragonrider (relação AGOT, não var) para pegar riders válidos.
 		# Não usa exists = var:current_dragon pois falha para dragões ghost/inválidos.
