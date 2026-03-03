@@ -1,35 +1,37 @@
-# Dragon on Battle — AGOT Addon
-### Mod para CK3 + A Game of Thrones (AGOT) | v0.2
+﻿# Dragon on Battle — AGOT Addon
+### Mod para CK3 + A Game of Thrones (AGOT) | v0.3
+
+> **Requer:** A Game of Thrones (AGOT) 0.4.27+ | CK3 1.18.3+
+> **Compatível com:** More Dragon Eggs (MDE) — com fixes incluídos
 
 ---
 
 ## O que esse mod faz
 
-Adiciona **visibilidade completa ao sistema de dragões em batalha** do AGOT, com eventos, notificações, títulos e feedback de aliados e inimigos.
+Adiciona **visibilidade completa ao sistema de dragões em batalha** do AGOT, com eventos, notificações, títulos permanentes e um painel de relatório de batalha.
 
 | Recurso | Descrição |
 |---|---|
-| 🔔 Guerra declarada por você | Notificação com poder do seu dragão |
-| 🛡️ Guerra declarada contra você | Notificação: seu dragão se prepara para defender |
-| 🏆 Vitória ofensiva com dragão | Evento com prestígio ganho |
-| 🏆 Vitória defensiva com dragão | Evento específico de defesa do território |
-| 💀 Derrota ofensiva com dragão | Evento de derrota em ataque |
-| 💀 Derrota defensiva com dragão | Evento de derrota defendendo suas terras |
+| 🔔 War started — você ataca | Notificação com poder do seu dragão |
+| 🛡️ War started — você defende | Notificação: seu dragão se prepara para defender |
+| 🤝 Aliado declara guerra com dragão | Evento informativo |
+| 🏆 Vitória ofensiva | Evento com prestígio ganho |
+| 🏆 Vitória defensiva | Evento específico de defesa do território |
+| 💀 Derrota ofensiva | Evento de derrota em ataque |
+| 💀 Derrota defensiva | Evento de derrota defendendo suas terras |
 | 🐉 Dragão morto na vitória (1%) | Evento raro — vitória cara demais |
 | 🐉 Dragão morto na derrota (20%) | Evento catastrófico de perda |
 | 🩸 Dragão ferido (10–35%) | Evento de sobrevivência com cicatrizes |
-| 🤝 Relatório: dragão aliado | Situação do dragão do aliado 2 dias após a batalha |
-| ⚔️ Relatório: dragão inimigo | Situação do dragão do inimigo 3 dias após |
+| 🤝 Relatório: dragão aliado | Situação do dragão do aliado 2 dias após |
+| ⚔️ Relatório: dragão inimigo | Situação do dragão inimigo 3 dias após |
 | 🏅 Modifier de prestígio (30 dias) | Fama de vencer com dragão (3 tiers) |
 | 🛡️ **Títulos defensivos permanentes** | Field Guardian → Army Defender → Shield of the Realm |
-| 📊 Battle Tier na janela do dragão | Indica o tier de poder (0–10) baseado no `dragon_size` do AGOT |
-| 🛠️ **FIX: More Dragon Eggs crash** | Previne crash `Failed to fetch variable for 'current_rider'` |
-| 🛠️ **FIX: Battle Tier 0/10** | Pasta `script_values` (sem 'd') carregada corretamente |
-
-### O que o AGOT já faz (nosso mod NÃO duplica):
-- **Bonuses de batalha** (advantage, combat_roll, casualty reduction) → AGOT aplica `base_dragon_army_modifier_1-10` automaticamente via story cycle
-- **Dragons aliados** no mesmo exército (via `every_knight`) → AGOT já processa
-- **Dragon combat events** (dragão vs dragão, vs scorpions) → sistema próprio do AGOT
+| ⚔️ **Títulos ofensivos permanentes** | The Warbringer → The Realmforged → The Worldbreaker |
+| 📊 **Battle Report GUI** | Painel de dragões aliados e inimigos na tela de vitória |
+| 📊 Battle Tier na janela do dragão | Tier de poder (0–10) baseado no `dragon_size` |
+| 🛠️ **FIX: MDE crash** | Previne crash `Failed to fetch variable for 'current_rider'` |
+| 🛠️ **FIX: Tamanho de dragões** | Corrige `dragon_size` bugado ao entrar no jogo |
+| 🛠️ **FIX: Compatibilidade MDE** | Eventos e títulos funcionam com dragões do MDE |
 
 ---
 
@@ -37,55 +39,175 @@ Adiciona **visibilidade completa ao sistema de dragões em batalha** do AGOT, co
 
 ```
 Dia 0  — Declaração de guerra
-           → Se você é o ATACANTE:  evento 001 (seu dragão parte para a guerra)
-           → Se você é o DEFENSOR:  evento 008 (seu dragão se prepara para defender)
-           → Se um ALIADO IA declara guerra com dragão: evento 004
+           → Você ataca com dragão:   evento 001
+           → Você defende com dragão: evento 008
+           → Aliado IA com dragão:    evento 004
 
-Dia 1  — Resultado da batalha (seus dragões)
-           → Vitória ofensiva:      evento 002
-           → Vitória defensiva:     evento 009
-           → Derrota ofensiva:      evento 003
-           → Derrota defensiva:     evento 010
-           → Dragão morto vitória:  evento 005 (ofensivo) / 011 (defensivo)  [1%]
-           → Dragão morto derrota:  evento 006 (ofensivo) / 012 (defensivo)  [20%]
+Dia 1  — Resultado da batalha
+           → Vitória ofensiva:        evento 002
+           → Vitória defensiva:       evento 009
+           → Derrota ofensiva:        evento 003
+           → Derrota defensiva:       evento 010
+           → Dragão morto na vitória: evento 005 (ofensivo) / 011 (defensivo) [1%]
+           → Dragão morto na derrota: evento 006 (ofensivo) / 012 (defensivo) [20%]
 
-Dia 2  — Ferimento + relatório aliados
-           → Dragão ferido sobreviveu: evento 007 (ofensivo) / 013 (defensivo) [10%]
-           → Para cada dragão ALIADO:  evento 014 (morto / ferido / vivo)
+Dia 2  — Ferimento + relatório aliados + títulos defensivos
+           → Dragão ferido sobreviveu:   evento 007 / 013 [10–35%]
+           → Dragão aliado IA:           evento 014
+           → Título defensivo ganho:     evento 019
+
+Dia 2–4 — Títulos ofensivos (1 evento por título, dias diferentes)
+           → The Warbringer ganho:    evento 020 (dia 2)
+           → The Realmforged ganho:   evento 021 (dia 3)
+           → The Worldbreaker ganho:  evento 022 (dia 4)
 
 Dia 3  — Relatório inimigos
-           → Para cada dragão INIMIGO: evento 015 (morto / ferido / vivo)
+           → Dragão inimigo:          evento 015
 ```
 
 ---
 
-## Títulos defensivos permanentes no dragão
+## Títulos defensivos permanentes
 
-Cada vitória defensiva tem **15% de chance** de conceder o próximo título ao dragão. São permanentes, não expiram, e progridem em ordem:
+Ganhos em **vitórias defensivas** — 15% de chance por vitória. Progridem em ordem, o dragão não pode repetir o mesmo.
 
-| Título | Ícone | Prowess | Prestígio mensal | Bônus extra |
+| Título | Prowess | Prestígio/mês | Bônus extra |
+|---|---|---|---|
+| **Field Guardian** | +5 | +0.15 | — |
+| **Army Defender** | +8 | +0.25 | — |
+| **Shield of the Realm** | +12 | +0.40 | stress −5% |
+
+---
+
+## Títulos ofensivos permanentes
+
+Ganhos em **vitórias ofensivas** — cada um tem roll independente por batalha:
+
+| Título | Chance | Prowess | Prestígio/mês | Bônus extra |
 |---|---|---|---|---|
-| **Field Guardian** | martial_positive | +5 | +0.15 | — |
-| **Army Defender** | prowess_positive | +8 | +0.25 | — |
-| **Shield of the Realm** | prestige_positive | +12 | +0.40 | stress −5% |
+| **The Warbringer** | 55% | +3 | +0.10 | — |
+| **The Realmforged** | 40% | +6 | +0.20 | baixas inimigas +5% |
+| **The Worldbreaker** | 5% | +15 | +0.60 | baixas inimigas +10%, stress −10% |
 
-O dragão só pode ter cada título uma vez. Quando tem os três, não ganha mais.
+> Os rolls são **independentes**: um dragão pode ganhar Warbringer e Realmforged na mesma batalha. Cada título pode ser ganho apenas uma vez.
+
+---
+
+## Tamanho de dragão × Idade (piso mínimo)
+
+O mod aplica automaticamente ao entrar no jogo um piso mínimo de `dragon_size_base` baseado na idade. Isso corrige dragões MDE que ficaram com tamanho abaixo do esperado.
+
+| Idade | `dragon_size_base` mínimo | Dragon Tier equivalente |
+|---|---|---|
+| < 5 anos | 5 | — |
+| 5–9 anos | 15 | — |
+| 10–14 anos | 30 | Tier 1 |
+| 15–19 anos | 40 | Tier 1–2 |
+| 20–29 anos | 60 | Tier 2–3 |
+| 30–44 anos | 90 | Tier 4 |
+| 45–59 anos | 120 | Tier 7 |
+| 60–79 anos | 150 | Tier 9 |
+| 80+ anos | 175 | Tier 10 |
+
+> O tamanho **nunca é reduzido** — se o AGOT já registrou um valor maior, ele é mantido.
+
+---
+
+## Battle Report GUI
+
+Ao abrir a tela de resumo/detalhes de uma batalha, um painel extra exibe até 3 dragões de cada lado:
+
+- **Nome** do dragão e **rider** (rider mostrado abaixo, em cinza)
+- Ícone de 💀 morto ou 🩸 ferido quando aplicável
+- Fundo vermelho (morto) ou amarelo (ferido)
+
+Funciona tanto para vitórias quanto para derrotas. Visível apenas quando ao menos um dragão participou.
+
+---
+
+## Compatibilidade com More Dragon Eggs (MDE)
+
+Dragões criados pelo MDE não usam o sistema de registro padrão do AGOT, o que causa:
+- `is_current_dragonrider = yes` retorna `false` para dragões MDE
+- `dragon_size` retorna `0` mesmo para dragões adultos
+- Eventos e títulos nunca disparam
+
+**Fixes incluídos neste mod:**
+
+| Fix | Como funciona |
+|---|---|
+| `on_game_start`: registra dragões sem story cycle | `agot_dragon_transfer_vars_to_story_cycle_effect` |
+| Piso de tamanho por idade no load | Corrige `dragon_size` bugado sem esperar o birthday |
+| OR fallback nos triggers de guerra | Usa `var:current_dragon` quando `is_current_dragonrider` falha |
+| Remoção de `has_trait = dragonrider` dos loops | MDE não aplica esse trait |
+| `every_side_knight` incluído nos loops | Captura riders de dragão que são knights, não commanders |
+
+> **⚠️ Nota:** A decisão "Ride Dragon" do MDE **pode crashar** o jogo se o MDE estiver desatualizado (versão 1.16, incompatível com CK3 1.18). Isso não é causado por este mod.
+
+---
+
+## Como instalar
+
+### ⚠️ IMPORTANTE: UTF-8 BOM
+
+**O jogo NÃO abre arquivos sem UTF-8 BOM!**
+
+1. **Execute** `!FIX_ENCODING_UTF8_BOM.bat` na pasta do mod
+2. Copie a pasta para:
+   - **Windows:** `%USERPROFILE%\Documents\Paradox Interactive\Crusader Kings III\mod\`
+3. Verifique que `dragon_on_battle.mod` aponta para o caminho correto
+
+### Ordem de carregamento obrigatória
+
+```
+1. A Game of Thrones (AGOT)    ← base
+2. More Dragon Eggs (MDE)      ← se usar
+3. Dragon on Battle            ← SEMPRE por último
+```
+
+**⚠️ Ordem errada = crash ao carregar o jogo.**
+
+---
+
+## 🐛 Troubleshooting
+
+### Dragão não aparece no Battle Report
+
+1. Verifique se o `dragon_size` do dragão é > 10 (abra a janela do dragão, olhe o Battle Tier)
+2. Se for 0, use a decisão **"Restore Dragon Records"** (em Decisões) — ela corrige dragões MDE com size 0
+3. O fix automático roda ao carregar o save, mas só funciona se o dragão já tem `dragon_age` definido
+
+### Battle Tier mostrando 0
+
+1. Execute `!FIX_ENCODING_UTF8_BOM.bat`
+2. Delete a pasta antiga do mod e copie a nova versão
+3. Feche o jogo completamente (não apenas F5), reabra e carregue o save
+
+### Títulos defensivos/ofensivos não aparecem no dragão
+
+- Os títulos são aplicados no **dragão** como `character_modifier`, visíveis na ficha do dragão
+- Para o player, um evento dispara notificando o ganho
+- Para dragões de AI: titre aplicado silenciosamente, sem evento
+
+### Jogo crasha usando "Ride Dragon" (decisão do MDE)
+
+Problema no MDE 1.16 — incompatível com CK3 1.18 e AGOT 0.4.27. Não há fix possível sem atualizar o MDE. Evite usar essa decisão específica.
 
 ---
 
 ## Descobertas técnicas (AGOT 0.4.27)
 
-### Hook correto para fim de batalha:
+### Hooks corretos de fim de batalha
 ```
-on_combat_end_winner   ← NÃO on_battle_end_winner!
-on_combat_end_loser    ← NÃO on_battle_end_loser!
+on_combat_end_winner   ← NÃO on_battle_end_winner
+on_combat_end_loser    ← NÃO on_battle_end_loser
 ```
-Root nesses scopes = `combat_side` (não character). Acesso via:
-- `every_side_commander` → itera todos os commanders do lado
-- `side_primary_participant` → ruler/dono do exército
-- `enemy_side` → acessa o lado oposto
+`root` nesses scopes = `combat_side` (não character).
+- `every_side_commander` → itera commanders do lado
+- `every_side_knight` → itera cavaleiros (inclui dragonriders que não são commanders)
+- `enemy_side { every_side_commander }` → lado oposto
 
-### Detecção de batalha ofensiva vs defensiva:
+### Detecção ofensiva vs defensiva
 ```
 any_character_war = {
     any_war_defender = { this = scope:dob_rider }
@@ -93,139 +215,92 @@ any_character_war = {
 ```
 Se `true` → rider é defensor. Caso contrário → atacante.
 
-### Pasta correta para script values no CK3:
+### Sistema de storage do AGOT
+`dragon_size_base` é armazenado em **dois lugares**: no personagem do dragão (`var:dragon_size_base`) e na story cycle (`gl_dragon_variable_storage`). O AGOT **lê da story cycle**. Qualquer fix de tamanho deve propagar para lá também:
 ```
-common/script_values/    ← CORRETO (sem 'd')
+every_in_global_list = {
+    variable = gl_dragon_variable_storage
+    limit = { var:dragon_id ?= scope:meu_dragon }
+    set_variable = { name = dragon_size_base value = scope:meu_dragon.var:dragon_size_base }
+}
+```
+
+### Incompatibilidade MDE — fallback correto
+```
+OR = {
+    is_current_dragonrider = yes
+    AND = {
+        has_variable = current_dragon
+        exists = var:current_dragon
+        var:current_dragon = { is_alive = yes has_trait = dragon }
+    }
+}
+```
+
+### Pasta correta para script values
+```
+common/script_values/    ← CORRETO
 common/scripted_values/  ← ERRADO (jogo ignora completamente)
 ```
-
-### Sistema de dragões em batalha do AGOT:
-- `dragon_army_modifier_calculation` → chamado da story cycle do dragão a cada 2 dias
-- Itera o comandante + knights dragonriders no mesmo exército
-- Aplica `base_dragon_army_modifier_1-10` com `days = 2` (refresh constante)
-- Modifiers usam `min/max_combat_roll` e `enemy_hard_casualty_modifier`
-
----
-
-## Como instalar
-
-### ⚠️ IMPORTANTE: Converter para UTF-8 BOM
-
-**O jogo NÃO VAI ABRIR se os arquivos não estiverem em UTF-8 BOM!**
-
-1. **Execute o arquivo `!FIX_ENCODING_UTF8_BOM.bat`** na pasta do mod
-   - Isso converte todos os `.txt` e `.yml` para UTF-8 BOM
-   - Obrigatório para o CK3 aceitar os arquivos
-
-2. Copie a pasta `AGOT - Dragon on battle` para:
-   - **Windows:** `%USERPROFILE%\Documents\Paradox Interactive\Crusader Kings III\mod\`
-   - **Linux:** `~/.local/share/Paradox Interactive/Crusader Kings III/mod/`
-   
-3. Crie um arquivo `dragon_on_battle.mod` na pasta `mod/` com:
-   ```
-   name = "Dragon on Battle - AGOT Addon"
-   path = "mod/AGOT - Dragon on battle"
-   ```
-   
-4. **IMPORTANTE:** Ordem de carregamento no Launcher:
-   ```
-   1. A Game of Thrones (AGOT)         ← Base obrigatória
-   2. AGOT More Dragon Eggs           ← DEVE vir ANTES do Dragon on Battle
-   3. [Outros mods AGOT...]
-   4. Dragon on Battle                ← Sempre por ÚLTIMO
-   ```
-   **⚠️ Se carregar na ordem errada, o jogo pode crashar!**
-
----
-
-## 🛠️ Fix para Crash do More Dragon Eggs
-
-**Problema resolvido:**
-```
-Error: Failed to fetch variable for 'current_rider' due to not being set
-```
-
-Este mod inclui um fix automático que previne crashs quando o More Dragon Eggs (ou outros mods) tentam acessar `var:current_rider` em dragões sem verificar se a variável existe.
-
-**Como funciona:**
-- Anualmente, o mod verifica todos os dragões do seu realm
-- Dragões órfãos/selvagens sem `current_rider` recebem um valor padrão
-- Previne crash sem afetar a gameplay
-
-📄 Detalhes técnicos: [MORE_DRAGON_EGGS_FIX.md](MORE_DRAGON_EGGS_FIX.md)
 
 ---
 
 ## Estrutura de arquivos
 
 ```
-AGOT - Dragon on battle/
+AGOT-Dragon-on-battle/
+├── !FIX_ENCODING_UTF8_BOM.bat
 ├── descriptor.mod
 ├── README.md
 ├── common/
-│   ├── scripted_triggers/
-│   │   └── 00_dob_dragon_triggers.txt
-│   ├── script_values/                              ← sem 'd' (padrão CK3)
-│   │   └── 00_dob_dragon_values.txt               ← dob_dragon_battle_tier, dob_dragon_battle_bonus_display, etc.
-│   ├── scripted_effects/
-│   │   └── 00_dob_dragon_post_combat_effects.txt  ← winner/loser + notificações aliados/inimigos
+│   ├── decisions/
+│   │   ├── 00_dob_fix_dragons_decision.txt       ← "Restore Dragon Records"
+│   │   └── 00_dob_release_dragon_decision.txt    ← "Sever Dragon Bond"
 │   ├── modifiers/
-│   │   └── 00_dob_dragon_modifiers.txt            ← prestígio + títulos defensivos permanentes
-│   └── on_action/
-│       └── 00_dob_on_actions.txt                  ← on_combat_end_winner/loser + on_war_started
+│   │   └── 00_dob_dragon_modifiers.txt           ← prestígio, títulos defensivos e ofensivos
+│   ├── on_action/
+│   │   └── 00_dob_on_actions.txt                 ← war started, combat end, birthday, game start
+│   ├── script_values/
+│   │   └── 00_dob_dragon_values.txt              ← dob_dragon_battle_bonus, prestige gain, etc.
+│   ├── scripted_effects/
+│   │   ├── 00_dob_dragon_post_combat_effects.txt ← winner/loser effects + battle report
+│   │   └── 00_dob_fix_mde_dragons.txt            ← fix de tamanho e registro de dragões MDE
+│   ├── scripted_guis/
+│   │   ├── 00_dob_battle_report_gui.txt          ← ScriptedGUIs do painel de batalha
+│   │   └── 00_dob_release_dragon.txt
+│   └── scripted_triggers/
+│       └── 00_dob_dragon_triggers.txt
 ├── events/
-│   └── dragon_battle_events.txt                   ← eventos 001–015
+│   └── dragon_battle_events.txt                  ← eventos 001–022
+├── gui/
+│   ├── window_battle_summary.gui                 ← override com painel de dragões
+│   └── custom_gui/
+│       └── agot_dragon_character_window.gui      ← janela do dragão com Battle Tier
 └── localization/
     └── english/
-        └── dragon_battle_l_english.yml            ← UTF-8 BOM obrigatório
+        └── dragon_battle_l_english.yml           ← UTF-8 BOM obrigatório
 ```
-
----
-
-## Verificar erros
-```
-~/.local/share/Paradox Interactive/Crusader Kings III/logs/error.log
-```
-
----
-
-## 🐛 Troubleshooting
-
-### Battle Tier mostrando 0/10
-
-Problema histórico já resolvido: a pasta estava nomeada como `scripted_values` (com 'd'), que o CK3 ignora completamente. Corrigida para `script_values`.
-
-Se ainda aparecer 0/10:
-1. **Execute** `!FIX_ENCODING_UTF8_BOM.bat`
-2. **DELETE** a pasta antiga do mod e copie a nova
-3. **Feche** o jogo COMPLETAMENTE (não basta F5!)
-4. **Reabra** o launcher e carregue o save
-
-📄 Detalhes: [FIX_BATTLE_TIER_ZERO.md](FIX_BATTLE_TIER_ZERO.md)
-
-### Jogo crasha ao carregar
-
-**Causa mais comum:** Ordem de carregamento errada no launcher.
-
-**Solução:**
-1. More Dragon Eggs deve vir ANTES do Dragon on Battle
-2. Dragon on Battle deve ser o ÚLTIMO mod AGOT
-
-📄 Detalhes: [ORDEM_DE_LOAD.txt](ORDEM_DE_LOAD.txt)
 
 ---
 
 ## Changelog
 
+### v0.3
+- **Títulos ofensivos permanentes**: The Warbringer (55%), The Realmforged (40%), The Worldbreaker (5%)
+- **Eventos 019–022**: notificações quando dragão ganha título defensivo ou ofensivo
+- **Battle Report GUI**: painel de dragões aliados/inimigos na tela de vitória
+- **FIX on load**: tamanho de todos os dragões vivos corrigido ao entrar no jogo (sem esperar birthday)
+- **FIX MDE**: removido `has_trait = dragonrider` de todos os loops — dragões MDE agora funcionam
+- **FIX MDE**: `every_side_knight` incluído no battle report
+- **FIX MDE**: threshold `dragon_size >= 30` reduzido para `>= 10`
+- **FIX MDE**: fallback `var:current_dragon` nos triggers de guerra e join war
+
 ### v0.2
-- Eventos de guerra **defensiva** (008–013): notificação ao ser atacado, vitória/derrota/morte/ferimento defendendo
-- **Relatório de dragões aliados** (evento 014): situação do dragão do aliado 2 dias após a batalha
-- **Relatório de dragões inimigos** (evento 015): situação do dragão inimigo 3 dias após
-- **Títulos defensivos permanentes** no dragão (Field Guardian / Army Defender / Shield of the Realm)
-- Ferimento na derrota (35% chance, 180 dias) — antes inexistente
-- Evento 006 (dragão morto em derrota ofensiva) agora disparado corretamente
-- **FIX:** pasta renomeada de `scripted_values` → `script_values` (causa raiz do Battle Tier 0/10)
-- **FIX:** `dob_dragon_battle_tier` e `dob_dragon_battle_bonus_display` com valores reais (thresholds do AGOT)
+- Eventos de guerra defensiva (008–013)
+- Relatório de dragões aliados (evento 014) e inimigos (evento 015)
+- Títulos defensivos permanentes: Field Guardian / Army Defender / Shield of the Realm
+- Ferimento na derrota (35% chance, 180 dias)
+- FIX: pasta `scripted_values` → `script_values` (causa raiz do Battle Tier 0/10)
 
 ### v0.1
 - Notificações ao declarar guerra, vitória e derrota com dragão
@@ -233,174 +308,3 @@ Se ainda aparecer 0/10:
 - Chance de morte do dragão (20% perdedor, 1% vencedor)
 - Battle Tier e Combat Effectiveness na janela do dragão
 - FIX: crash do More Dragon Eggs (`var:current_rider`)
-
-
----
-
-## O que esse mod faz
-
-Adiciona **visibilidade ao sistema de dragões em batalha** do AGOT:
-
-| Recurso | Descrição |
-|---|---|
-| 🔔 Notificação ao declarar guerra | Mostra o poder do seu dragão |
-| 🏆 Evento de vitória | Mostra quanto o dragão contribuiu |
-| 💀 Evento de derrota | Idem para derrotas |
-| 🏅 Modifier de prestígio (30 dias) | Fama de vencer com dragão (não duplica AGOT) |
-| 🛠️ **FIX: More Dragon Eggs crash** | Previne crash `Failed to fetch variable for 'current_rider'` |
-
-### O que o AGOT já faz (nosso mod NÃO duplica):
-- **Bonuses de batalha** (advantage, combat_roll, casualty reduction) → AGOT aplica `base_dragon_army_modifier_1-10` automaticamente via story cycle
-- **Dragons aliados** no mesmo exército (via `every_knight`) → AGOT já processa
-- **Dragon combat events** (dragão vs dragão, vs scorpions) → sistema próprio do AGOT
-
----
-
-## Descobertas técnicas (AGOT 0.4.27)
-
-### Hook correto para fim de batalha:
-```
-on_combat_end_winner   ← NÃO on_battle_end_winner!
-on_combat_end_loser    ← NÃO on_battle_end_loser!
-```
-Root nesses scopes = `combat_side` (não character). Acesso via:
-- `side_commander` → comandante principal
-- `side_primary_participant` → ruler/dono do exército
-
-### Sistema de dragões em batalha do AGOT:
-- `dragon_army_modifier_calculation` → chamado da story cycle do dragão a cada 2 dias
-- Itera o comandante + knights dragonriders no mesmo exército
-- Aplica `base_dragon_army_modifier_1-10` com `days = 2` (refresh constante)
-- Modifiers usam `min/max_combat_roll` e `enemy_hard_casualty_modifier`
-
----
-
-## Como instalar
-
-### ⚠️ IMPORTANTE: Converter para UTF-8 BOM
-
-**O jogo NÃO VAI ABRIR se os arquivos não estiverem em UTF-8 BOM!**
-
-1. **Execute o arquivo `!FIX_ENCODING_UTF8_BOM.bat`** na pasta do mod
-   - Isso converte todos os `.txt` e `.yml` para UTF-8 BOM
-   - Obrigatório para o CK3 aceitar os arquivos
-
-2. Copie a pasta `AGOT - Dragon on battle` para:
-   - **Windows:** `%USERPROFILE%\Documents\Paradox Interactive\Crusader Kings III\mod\`
-   - **Linux:** `~/.local/share/Paradox Interactive/Crusader Kings III/mod/`
-   
-3. Crie um arquivo `dragon_on_battle.mod` na pasta `mod/` com:
-   ```
-   name = "Dragon on Battle - AGOT Addon"
-   path = "mod/AGOT - Dragon on battle"
-   ```
-   
-4. **IMPORTANTE:** Ordem de carregamento no Launcher:
-   ```
-   1. A Game of Thrones (AGOT)         ← Base obrigatória
-   2. AGOT More Dragon Eggs           ← DEVE vir ANTES do Dragon on Battle
-   3. [Outros mods AGOT...]
-   4. Dragon on Battle                ← Sempre por ÚLTIMO
-   ```
-   **⚠️ Se carregar na ordem errada, o jogo pode crashar!**
-
----
-
-## 🛠️ Fix para Crash do More Dragon Eggs
-
-**Problema resolvido:**
-```
-Error: Failed to fetch variable for 'current_rider' due to not being set
-```
-
-Este mod inclui um fix automático que previne crashs quando o More Dragon Eggs (ou outros mods) tentam acessar `var:current_rider` em dragões sem verificar se a variável existe.
-
-**⚠️ ORDEM CRÍTICA:**
-O More Dragon Eggs DEVE ser carregado ANTES do Dragon on Battle. Se estiver tendo crashes ao carregar o jogo, verifique a ordem no launcher!
-
-**Como funciona:**
-- Anualmente, o mod verifica todos os dragões do seu realm
-- Dragões órfãos/selvagens sem `current_rider` recebem um valor padrão
-- Previne crash sem afetar a gameplay
-
-**Ordem de load recomendada:**
-1. A Game of Thrones (AGOT)
-2. AGOT More Dragon Eggs
-3. **Dragon on Battle** ← aplica o fix
-
-📄 Detalhes técnicos: [MORE_DRAGON_EGGS_FIX.md](MORE_DRAGON_EGGS_FIX.md)
-
----
-
-## Estrutura de arquivos
-
-```
-AGOT - Dragon on battle/
-├── descriptor.mod
-├── README.md
-├── common/
-│   ├── scripted_triggers/
-│   │   └── 00_dob_dragon_triggers.txt     ← usa is_current_dragonrider_warfare
-│   ├── scripted_values/
-│   │   └── 00_dob_dragon_values.txt       ← usa var:current_dragon.dragon_size + dob_dragon_prestige_gain
-│   ├── scripted_effects/
-│   │   └── 00_dob_dragon_post_combat_effects.txt  ← lógica principal (winner/loser/morte)
-│   ├── modifiers/
-│   │   └── 00_dob_dragon_modifiers.txt    ← prestígio pós-batalha (não duplica AGOT)
-│   └── on_action/
-│       └── 00_dob_on_actions.txt          ← on_combat_end_winner/loser + on_war_started
-├── events/
-│   └── dragon_battle_events.txt
-└── localization/
-    └── english/
-        └── dragon_battle_l_english.yml    ← UTF-8 BOM obrigatório
-```
-
----
-
-## Verificar erros
-```
-~/.local/share/Paradox Interactive/Crusader Kings III/logs/error.log
-```
-
----
-
-## 🐛 Troubleshooting
-
-### Battle Tier mostrando 0/10
-
-Se o ícone de Battle Tier na janela do dragão mostrar 0/10 para todos os dragões:
-
-1. **Execute** `!FIX_ENCODING_UTF8_BOM.bat` (converte arquivos para UTF-8 BOM)
-2. **DELETE** a pasta antiga do mod
-3. **Copie** a nova pasta convertida
-4. **Feche** o jogo COMPLETAMENTE (não basta F5!)
-5. **Reabra** o launcher e carregue o save
-
-O valor correto deve ser **1-10** baseado no tamanho do dragão:
-- Size 17-33: Tier 1
-- Size 68-84: Tier 4
-- Size 136-152: Tier 8
-- Size 170+: Tier 10
-
-📄 Detalhes: [FIX_BATTLE_TIER_ZERO.md](FIX_BATTLE_TIER_ZERO.md)
-
-### Jogo crasha ao carregar
-
-**Causa mais comum:** Ordem de carregamento errada no launcher.
-
-**Solução:**
-1. More Dragon Eggs deve vir ANTES do Dragon on Battle
-2. Dragon on Battle deve ser o ÚLTIMO mod AGOT
-
-📄 Detalhes: [ORDEM_DE_LOAD.txt](ORDEM_DE_LOAD.txt)
-
----
-
-## Roadmap futuro
-- [x] v0.1: Notificações de guerra, vitória e derrota com dragão
-- [x] v0.1: Modifier de prestígio pós-batalha (3 tiers por size)
-- [x] v0.1: Chance de morte do dragão pós-batalha (20% perdedor, 1% vencedor)
-- [ ] v0.2: Notificação quando dragão inimigo vai à batalha contra você
-- [ ] v0.3: Ícone de dragão no resumo de batalha (GUI)
-- [ ] v0.4: Integração com `dragon_army_modifier_calculation` do AGOT para exibir tier real
