@@ -206,6 +206,13 @@ dob_dragon_winner_effect = {
 			}
 		}
 	}
+
+	# ── Gravar participantes dragões para o Battle Report GUI ────────────────────────
+	# Só roda se o player está neste lado (winner side)
+	if = {
+		limit = { any_side_commander = { is_ai = no } }
+		dob_record_battle_dragons_effect = yes
+	}
 }
 
 # ── Efeito para o lado PERDEDOR ─────────────────────────────────────────────────
@@ -291,8 +298,17 @@ dob_dragon_loser_effect = {
 			}
 		}
 	}
+
+	# ── Gravar participantes dragões para o Battle Report GUI ────────────────────────
+	# Só roda se o player está neste lado (loser side)
+	if = {
+		limit = { any_side_commander = { is_ai = no } }
+		dob_record_battle_dragons_effect = yes
+	}
 }
 
+# ── Efeito para o lado PERDEDOR — adicionar chamada ao Battle Report GUI ───────────
+# (inserido dentro de dob_dragon_loser_effect, após o bloco de eventos do player)
 # ── Notificações de aliados e inimigos no lado PERDEDOR ──────────────────────────
 # Chamado de on_combat_end_loser após os efeitos mecânicos acima
 dob_dragon_loser_notifications = {
@@ -511,4 +527,112 @@ dob_release_dragon_effect = {
 	if = { limit = { has_variable = dob_prestige_gained } remove_variable = dob_prestige_gained }
 	if = { limit = { has_variable = dob_ally_status } remove_variable = dob_ally_status }
 	if = { limit = { has_variable = dob_enemy_status } remove_variable = dob_enemy_status }
+}
+
+# ── Gravar dragões de todos os participantes da batalha ────────────────────────────
+# Root = combat_side (player's side — winner ou loser)
+# Preenche até 3 slots ally + 3 slots enemy no player character
+# Status: 0 = vivo, 1 = ferido, 2 = morto
+# Usado pelo painel Dragon Report na window_battle_summary.gui
+dob_record_battle_dragons_effect = {
+	# ── Clear: remover dados da batalha anterior ──────────────────────────────────
+	every_player = {
+		set_variable = { name = dob_bd_has_battle value = 1 }
+		set_variable = { name = dob_bd_ally_count value = 0 }
+		set_variable = { name = dob_bd_enemy_count value = 0 }
+		# Ally slots
+		if = { limit = { has_variable = dob_bd_ally_1 }        clear_variable = dob_bd_ally_1 }
+		if = { limit = { has_variable = dob_bd_ally_1_rider }  clear_variable = dob_bd_ally_1_rider }
+		if = { limit = { has_variable = dob_bd_ally_1_status } clear_variable = dob_bd_ally_1_status }
+		if = { limit = { has_variable = dob_bd_ally_2 }        clear_variable = dob_bd_ally_2 }
+		if = { limit = { has_variable = dob_bd_ally_2_rider }  clear_variable = dob_bd_ally_2_rider }
+		if = { limit = { has_variable = dob_bd_ally_2_status } clear_variable = dob_bd_ally_2_status }
+		if = { limit = { has_variable = dob_bd_ally_3 }        clear_variable = dob_bd_ally_3 }
+		if = { limit = { has_variable = dob_bd_ally_3_rider }  clear_variable = dob_bd_ally_3_rider }
+		if = { limit = { has_variable = dob_bd_ally_3_status } clear_variable = dob_bd_ally_3_status }
+		# Enemy slots
+		if = { limit = { has_variable = dob_bd_enemy_1 }        clear_variable = dob_bd_enemy_1 }
+		if = { limit = { has_variable = dob_bd_enemy_1_rider }  clear_variable = dob_bd_enemy_1_rider }
+		if = { limit = { has_variable = dob_bd_enemy_1_status } clear_variable = dob_bd_enemy_1_status }
+		if = { limit = { has_variable = dob_bd_enemy_2 }        clear_variable = dob_bd_enemy_2 }
+		if = { limit = { has_variable = dob_bd_enemy_2_rider }  clear_variable = dob_bd_enemy_2_rider }
+		if = { limit = { has_variable = dob_bd_enemy_2_status } clear_variable = dob_bd_enemy_2_status }
+		if = { limit = { has_variable = dob_bd_enemy_3 }        clear_variable = dob_bd_enemy_3 }
+		if = { limit = { has_variable = dob_bd_enemy_3_rider }  clear_variable = dob_bd_enemy_3_rider }
+		if = { limit = { has_variable = dob_bd_enemy_3_status } clear_variable = dob_bd_enemy_3_status }
+	}
+
+	# ── Gravar dragões ALIADOS (player's side = root) ─────────────────────────────
+	every_side_commander = {
+		limit = { has_trait = dragonrider; has_variable = current_dragon }
+		save_scope_as = dob_rec_rider
+		var:current_dragon = { save_scope_as = dob_rec_dragon }
+		every_player = {
+			if = {
+				limit = { var:dob_bd_ally_count = 0 }
+				change_variable = { name = dob_bd_ally_count add = 1 }
+				set_variable = { name = dob_bd_ally_1 value = scope:dob_rec_dragon }
+				set_variable = { name = dob_bd_ally_1_rider value = scope:dob_rec_rider }
+				if      = { limit = { scope:dob_rec_dragon = { NOT = { is_alive = yes } } }          set_variable = { name = dob_bd_ally_1_status value = 2 } }
+				else_if = { limit = { scope:dob_rec_dragon = { has_character_modifier = dob_dragon_wounded } } set_variable = { name = dob_bd_ally_1_status value = 1 } }
+				else    = { set_variable = { name = dob_bd_ally_1_status value = 0 } }
+			}
+			else_if = {
+				limit = { var:dob_bd_ally_count = 1 }
+				change_variable = { name = dob_bd_ally_count add = 1 }
+				set_variable = { name = dob_bd_ally_2 value = scope:dob_rec_dragon }
+				set_variable = { name = dob_bd_ally_2_rider value = scope:dob_rec_rider }
+				if      = { limit = { scope:dob_rec_dragon = { NOT = { is_alive = yes } } }          set_variable = { name = dob_bd_ally_2_status value = 2 } }
+				else_if = { limit = { scope:dob_rec_dragon = { has_character_modifier = dob_dragon_wounded } } set_variable = { name = dob_bd_ally_2_status value = 1 } }
+				else    = { set_variable = { name = dob_bd_ally_2_status value = 0 } }
+			}
+			else_if = {
+				limit = { var:dob_bd_ally_count = 2 }
+				change_variable = { name = dob_bd_ally_count add = 1 }
+				set_variable = { name = dob_bd_ally_3 value = scope:dob_rec_dragon }
+				set_variable = { name = dob_bd_ally_3_rider value = scope:dob_rec_rider }
+				if      = { limit = { scope:dob_rec_dragon = { NOT = { is_alive = yes } } }          set_variable = { name = dob_bd_ally_3_status value = 2 } }
+				else_if = { limit = { scope:dob_rec_dragon = { has_character_modifier = dob_dragon_wounded } } set_variable = { name = dob_bd_ally_3_status value = 1 } }
+				else    = { set_variable = { name = dob_bd_ally_3_status value = 0 } }
+			}
+		}
+	}
+
+	# ── Gravar dragões INIMIGOS (enemy_side = opposite side) ──────────────────────
+	enemy_side = {
+		every_side_commander = {
+			limit = { has_trait = dragonrider; has_variable = current_dragon }
+			save_scope_as = dob_rec_rider
+			var:current_dragon = { save_scope_as = dob_rec_dragon }
+			every_player = {
+				if = {
+					limit = { var:dob_bd_enemy_count = 0 }
+					change_variable = { name = dob_bd_enemy_count add = 1 }
+					set_variable = { name = dob_bd_enemy_1 value = scope:dob_rec_dragon }
+					set_variable = { name = dob_bd_enemy_1_rider value = scope:dob_rec_rider }
+					if      = { limit = { scope:dob_rec_dragon = { NOT = { is_alive = yes } } }          set_variable = { name = dob_bd_enemy_1_status value = 2 } }
+					else_if = { limit = { scope:dob_rec_dragon = { has_character_modifier = dob_dragon_wounded } } set_variable = { name = dob_bd_enemy_1_status value = 1 } }
+					else    = { set_variable = { name = dob_bd_enemy_1_status value = 0 } }
+				}
+				else_if = {
+					limit = { var:dob_bd_enemy_count = 1 }
+					change_variable = { name = dob_bd_enemy_count add = 1 }
+					set_variable = { name = dob_bd_enemy_2 value = scope:dob_rec_dragon }
+					set_variable = { name = dob_bd_enemy_2_rider value = scope:dob_rec_rider }
+					if      = { limit = { scope:dob_rec_dragon = { NOT = { is_alive = yes } } }          set_variable = { name = dob_bd_enemy_2_status value = 2 } }
+					else_if = { limit = { scope:dob_rec_dragon = { has_character_modifier = dob_dragon_wounded } } set_variable = { name = dob_bd_enemy_2_status value = 1 } }
+					else    = { set_variable = { name = dob_bd_enemy_2_status value = 0 } }
+				}
+				else_if = {
+					limit = { var:dob_bd_enemy_count = 2 }
+					change_variable = { name = dob_bd_enemy_count add = 1 }
+					set_variable = { name = dob_bd_enemy_3 value = scope:dob_rec_dragon }
+					set_variable = { name = dob_bd_enemy_3_rider value = scope:dob_rec_rider }
+					if      = { limit = { scope:dob_rec_dragon = { NOT = { is_alive = yes } } }          set_variable = { name = dob_bd_enemy_3_status value = 2 } }
+					else_if = { limit = { scope:dob_rec_dragon = { has_character_modifier = dob_dragon_wounded } } set_variable = { name = dob_bd_enemy_3_status value = 1 } }
+					else    = { set_variable = { name = dob_bd_enemy_3_status value = 0 } }
+				}
+			}
+		}
+	}
 }
