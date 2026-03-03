@@ -103,7 +103,9 @@ dob_dragon_winner_effect = {
 						remove_variable = dob_dragon_was_wounded
 					}
 					# 15% chance de ganhar título defensivo permanente no dragão
+					# FIX: dispara evento 019 ao player quando habilidade é adquirida
 					scope:dob_event_dragon = {
+						save_scope_as = dob_skillup_dragon
 						random = {
 							chance = 15
 							modifier = {
@@ -115,25 +117,86 @@ dob_dragon_winner_effect = {
 							if = {
 								limit = { NOT = { has_character_modifier = dob_dragon_field_guardian } }
 								add_character_modifier = dob_dragon_field_guardian
+								scope:dob_rider = {
+									set_variable = { name = dob_skillup_dragon value = scope:dob_skillup_dragon }
+									trigger_event = { id = dragon_battle.019 days = 2 }
+								}
 							}
 							else_if = {
 								limit = { NOT = { has_character_modifier = dob_dragon_army_defender } }
 								add_character_modifier = dob_dragon_army_defender
+								scope:dob_rider = {
+									set_variable = { name = dob_skillup_dragon value = scope:dob_skillup_dragon }
+									trigger_event = { id = dragon_battle.019 days = 2 }
+								}
 							}
 							else_if = {
 								limit = { NOT = { has_character_modifier = dob_dragon_shield_realm } }
 								add_character_modifier = dob_dragon_shield_realm
+								scope:dob_rider = {
+									set_variable = { name = dob_skillup_dragon value = scope:dob_skillup_dragon }
+									trigger_event = { id = dragon_battle.019 days = 2 }
+								}
 							}
 						}
 					}
 				}
 				else = {
-					# ── VITÓRIA OFENSIVA ─────────────────────────────────────────────
+					# ── VITÓRIA OFENSIVA ──────────────────────────────────
 					trigger_event = { id = dragon_battle.002 days = 1 }
 					if = {
 						limit = { has_variable = dob_dragon_was_wounded }
 						trigger_event = { id = dragon_battle.007 days = 2 }
 						remove_variable = dob_dragon_was_wounded
+					}
+					# Títulos ofensivos — rolls independentes, cada um dispara seu próprio evento
+					# The Warbringer: 55% — fácil, bônus pequeno
+					scope:dob_event_dragon = {
+						random = {
+							chance = 55
+							modifier = { factor = 0 has_character_modifier = dob_dragon_the_warbringer }
+							if = {
+								limit = { NOT = { has_character_modifier = dob_dragon_the_warbringer } }
+								add_character_modifier = dob_dragon_the_warbringer
+								save_scope_as = dob_skillup_off_dragon
+								scope:dob_rider = {
+									set_variable = { name = dob_skillup_dragon value = scope:dob_skillup_off_dragon }
+									trigger_event = { id = dragon_battle.020 days = 2 }
+								}
+							}
+						}
+					}
+					# The Realmforged: 40% — médio
+					scope:dob_event_dragon = {
+						random = {
+							chance = 40
+							modifier = { factor = 0 has_character_modifier = dob_dragon_the_realmforged }
+							if = {
+								limit = { NOT = { has_character_modifier = dob_dragon_the_realmforged } }
+								add_character_modifier = dob_dragon_the_realmforged
+								save_scope_as = dob_skillup_off_dragon
+								scope:dob_rider = {
+									set_variable = { name = dob_skillup_dragon value = scope:dob_skillup_off_dragon }
+									trigger_event = { id = dragon_battle.021 days = 3 }
+								}
+							}
+						}
+					}
+					# The Worldbreaker: 5% — lendário, difícil, bônus muito alto
+					scope:dob_event_dragon = {
+						random = {
+							chance = 5
+							modifier = { factor = 0 has_character_modifier = dob_dragon_the_worldbreaker }
+							if = {
+								limit = { NOT = { has_character_modifier = dob_dragon_the_worldbreaker } }
+								add_character_modifier = dob_dragon_the_worldbreaker
+								save_scope_as = dob_skillup_off_dragon
+								scope:dob_rider = {
+									set_variable = { name = dob_skillup_dragon value = scope:dob_skillup_off_dragon }
+									trigger_event = { id = dragon_battle.022 days = 4 }
+								}
+							}
+						}
 					}
 				}
 			}
@@ -151,6 +214,87 @@ dob_dragon_winner_effect = {
 			}
 			else = {
 				trigger_event = { id = dragon_battle.005 days = 1 }
+			}
+		}
+		# ── Habilidades defensivas para dragões de IA (defensores) ────────────────────
+		# FIX: o bloco is_ai = no acima não cobre IA. Este roda para TODOS os
+		# dragões de IA que estavam defendendo — só modifier, sem evento.
+		if = {
+			limit = {
+				is_ai = yes
+				scope:dob_event_dragon = { is_alive = yes }
+				any_character_war = {
+					any_war_defender = { this = scope:dob_rider }
+				}
+			}
+			scope:dob_event_dragon = {
+				random = {
+					chance = 15
+					modifier = {
+						factor = 0
+						has_character_modifier = dob_dragon_field_guardian
+						has_character_modifier = dob_dragon_army_defender
+						has_character_modifier = dob_dragon_shield_realm
+					}
+					if = {
+						limit = { NOT = { has_character_modifier = dob_dragon_field_guardian } }
+						add_character_modifier = dob_dragon_field_guardian
+					}
+					else_if = {
+						limit = { NOT = { has_character_modifier = dob_dragon_army_defender } }
+						add_character_modifier = dob_dragon_army_defender
+					}
+					else_if = {
+						limit = { NOT = { has_character_modifier = dob_dragon_shield_realm } }
+						add_character_modifier = dob_dragon_shield_realm
+					}
+				}
+			}
+		}
+		# ── Habilidades OFENSIVAS para dragões de IA (atacantes) ─────────────────────
+		# Rolls independentes, sem evento (IA não tem tela de notificação)
+		if = {
+			limit = {
+				is_ai = yes
+				scope:dob_event_dragon = { is_alive = yes }
+				NOT = {
+					any_character_war = {
+						any_war_defender = { this = scope:dob_rider }
+					}
+				}
+			}
+			# Warbringer — 55%
+			scope:dob_event_dragon = {
+				random = {
+					chance = 55
+					modifier = { factor = 0 has_character_modifier = dob_dragon_the_warbringer }
+					if = {
+						limit = { NOT = { has_character_modifier = dob_dragon_the_warbringer } }
+						add_character_modifier = dob_dragon_the_warbringer
+					}
+				}
+			}
+			# Realmforged — 40%
+			scope:dob_event_dragon = {
+				random = {
+					chance = 40
+					modifier = { factor = 0 has_character_modifier = dob_dragon_the_realmforged }
+					if = {
+						limit = { NOT = { has_character_modifier = dob_dragon_the_realmforged } }
+						add_character_modifier = dob_dragon_the_realmforged
+					}
+				}
+			}
+			# Worldbreaker — 5%
+			scope:dob_event_dragon = {
+				random = {
+					chance = 5
+					modifier = { factor = 0 has_character_modifier = dob_dragon_the_worldbreaker }
+					if = {
+						limit = { NOT = { has_character_modifier = dob_dragon_the_worldbreaker } }
+						add_character_modifier = dob_dragon_the_worldbreaker
+					}
+				}
 			}
 		}
 	}
@@ -506,6 +650,14 @@ dob_release_dragon_effect = {
 			remove_character_modifier = dob_dragon_power_great
 			remove_character_modifier = dob_dragon_battle_hardened
 			remove_character_modifier = dob_dragon_wounded
+			# Títulos defensivos permanentes
+			remove_character_modifier = dob_dragon_field_guardian
+			remove_character_modifier = dob_dragon_army_defender
+			remove_character_modifier = dob_dragon_shield_realm
+			# Títulos ofensivos permanentes
+			remove_character_modifier = dob_dragon_the_warbringer
+			remove_character_modifier = dob_dragon_the_realmforged
+			remove_character_modifier = dob_dragon_the_worldbreaker
 			if = { limit = { has_variable = dob_battle_tier } remove_variable = dob_battle_tier }
 			# Severar referência: remove current_rider no lado do dragão
 			# Usa has_variable (não exists) para limpar mesmo se rider for ghost
@@ -563,8 +715,53 @@ dob_record_battle_dragons_effect = {
 	}
 
 	# ── Gravar dragões ALIADOS (player's side = root) ─────────────────────────────
+	# FIX: removido has_trait = dragonrider (dragões MDE não têm esse trait)
+	# FIX: adicionado every_side_knight para capturar cavaleiros com dragão (não só commanders)
 	every_side_commander = {
-		limit = { has_trait = dragonrider; has_variable = current_dragon }
+		limit = {
+			has_variable = current_dragon
+			exists = var:current_dragon
+			var:current_dragon = { dragon_size >= 30 }
+		}
+		save_scope_as = dob_rec_rider
+		var:current_dragon = { save_scope_as = dob_rec_dragon }
+		every_player = {
+			if = {
+				limit = { var:dob_bd_ally_count = 0 }
+				change_variable = { name = dob_bd_ally_count add = 1 }
+				set_variable = { name = dob_bd_ally_1 value = scope:dob_rec_dragon }
+				set_variable = { name = dob_bd_ally_1_rider value = scope:dob_rec_rider }
+				if      = { limit = { scope:dob_rec_dragon = { NOT = { is_alive = yes } } }          set_variable = { name = dob_bd_ally_1_status value = 2 } }
+				else_if = { limit = { scope:dob_rec_dragon = { has_character_modifier = dob_dragon_wounded } } set_variable = { name = dob_bd_ally_1_status value = 1 } }
+				else    = { set_variable = { name = dob_bd_ally_1_status value = 0 } }
+			}
+			else_if = {
+				limit = { var:dob_bd_ally_count = 1 }
+				change_variable = { name = dob_bd_ally_count add = 1 }
+				set_variable = { name = dob_bd_ally_2 value = scope:dob_rec_dragon }
+				set_variable = { name = dob_bd_ally_2_rider value = scope:dob_rec_rider }
+				if      = { limit = { scope:dob_rec_dragon = { NOT = { is_alive = yes } } }          set_variable = { name = dob_bd_ally_2_status value = 2 } }
+				else_if = { limit = { scope:dob_rec_dragon = { has_character_modifier = dob_dragon_wounded } } set_variable = { name = dob_bd_ally_2_status value = 1 } }
+				else    = { set_variable = { name = dob_bd_ally_2_status value = 0 } }
+			}
+			else_if = {
+				limit = { var:dob_bd_ally_count = 2 }
+				change_variable = { name = dob_bd_ally_count add = 1 }
+				set_variable = { name = dob_bd_ally_3 value = scope:dob_rec_dragon }
+				set_variable = { name = dob_bd_ally_3_rider value = scope:dob_rec_rider }
+				if      = { limit = { scope:dob_rec_dragon = { NOT = { is_alive = yes } } }          set_variable = { name = dob_bd_ally_3_status value = 2 } }
+				else_if = { limit = { scope:dob_rec_dragon = { has_character_modifier = dob_dragon_wounded } } set_variable = { name = dob_bd_ally_3_status value = 1 } }
+				else    = { set_variable = { name = dob_bd_ally_3_status value = 0 } }
+			}
+		}
+	}
+	# Mesma lógica para CAVALEIROS aliados (knights não são side_commanders)
+	every_side_knight = {
+		limit = {
+			has_variable = current_dragon
+			exists = var:current_dragon
+			var:current_dragon = { dragon_size >= 30 }
+		}
 		save_scope_as = dob_rec_rider
 		var:current_dragon = { save_scope_as = dob_rec_dragon }
 		every_player = {
@@ -599,9 +796,53 @@ dob_record_battle_dragons_effect = {
 	}
 
 	# ── Gravar dragões INIMIGOS (enemy_side = opposite side) ──────────────────────
+	# FIX: removido has_trait = dragonrider + adicionado every_side_knight
 	enemy_side = {
 		every_side_commander = {
-			limit = { has_trait = dragonrider; has_variable = current_dragon }
+			limit = {
+				has_variable = current_dragon
+				exists = var:current_dragon
+				var:current_dragon = { dragon_size >= 30 }
+			}
+			save_scope_as = dob_rec_rider
+			var:current_dragon = { save_scope_as = dob_rec_dragon }
+			every_player = {
+				if = {
+					limit = { var:dob_bd_enemy_count = 0 }
+					change_variable = { name = dob_bd_enemy_count add = 1 }
+					set_variable = { name = dob_bd_enemy_1 value = scope:dob_rec_dragon }
+					set_variable = { name = dob_bd_enemy_1_rider value = scope:dob_rec_rider }
+					if      = { limit = { scope:dob_rec_dragon = { NOT = { is_alive = yes } } }          set_variable = { name = dob_bd_enemy_1_status value = 2 } }
+					else_if = { limit = { scope:dob_rec_dragon = { has_character_modifier = dob_dragon_wounded } } set_variable = { name = dob_bd_enemy_1_status value = 1 } }
+					else    = { set_variable = { name = dob_bd_enemy_1_status value = 0 } }
+				}
+				else_if = {
+					limit = { var:dob_bd_enemy_count = 1 }
+					change_variable = { name = dob_bd_enemy_count add = 1 }
+					set_variable = { name = dob_bd_enemy_2 value = scope:dob_rec_dragon }
+					set_variable = { name = dob_bd_enemy_2_rider value = scope:dob_rec_rider }
+					if      = { limit = { scope:dob_rec_dragon = { NOT = { is_alive = yes } } }          set_variable = { name = dob_bd_enemy_2_status value = 2 } }
+					else_if = { limit = { scope:dob_rec_dragon = { has_character_modifier = dob_dragon_wounded } } set_variable = { name = dob_bd_enemy_2_status value = 1 } }
+					else    = { set_variable = { name = dob_bd_enemy_2_status value = 0 } }
+				}
+				else_if = {
+					limit = { var:dob_bd_enemy_count = 2 }
+					change_variable = { name = dob_bd_enemy_count add = 1 }
+					set_variable = { name = dob_bd_enemy_3 value = scope:dob_rec_dragon }
+					set_variable = { name = dob_bd_enemy_3_rider value = scope:dob_rec_rider }
+					if      = { limit = { scope:dob_rec_dragon = { NOT = { is_alive = yes } } }          set_variable = { name = dob_bd_enemy_3_status value = 2 } }
+					else_if = { limit = { scope:dob_rec_dragon = { has_character_modifier = dob_dragon_wounded } } set_variable = { name = dob_bd_enemy_3_status value = 1 } }
+					else    = { set_variable = { name = dob_bd_enemy_3_status value = 0 } }
+				}
+			}
+		}
+		# Cavaleiros inimigos com dragão
+		every_side_knight = {
+			limit = {
+				has_variable = current_dragon
+				exists = var:current_dragon
+				var:current_dragon = { dragon_size >= 30 }
+			}
 			save_scope_as = dob_rec_rider
 			var:current_dragon = { save_scope_as = dob_rec_dragon }
 			every_player = {

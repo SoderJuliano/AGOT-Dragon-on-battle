@@ -131,3 +131,36 @@ dob_dragon_shield_realm = {
 	monthly_prestige = 0.4
 	stress_gain_mult = -0.05
 }
+
+# ============================================================
+# TÍTULOS OFENSIVOS — permanentes no dragão
+# Ganhos em vitórias OFENSIVAS (dragão estava no lado atacante)
+# Warbringer: 55% chance — tier 1, bônus pequeno (fama de entrar em combate)
+# Realmforged: 40% chance — tier 2, bônus médio (vencedor de campanhas)
+# Worldbreaker: 5% chance — tier 3, lendário, bônus muito alto
+# Cumulativos entre si e com títulos defensivos
+# ============================================================
+
+# Tier 1 ofensivo — estreia como dragão de guerra
+dob_dragon_the_warbringer = {
+	icon = martial_positive
+	prowess = 3
+	monthly_prestige = 0.1
+}
+
+# Tier 2 ofensivo — forjado nas campanhas de conquista
+dob_dragon_the_realmforged = {
+	icon = commander
+	prowess = 6
+	monthly_prestige = 0.2
+	enemy_hard_casualty_modifier = 0.05
+}
+
+# Tier 3 ofensivo — o terror dos campos de batalha, lenda viva
+dob_dragon_the_worldbreaker = {
+	icon = dread_positive
+	prowess = 15
+	monthly_prestige = 0.6
+	enemy_hard_casualty_modifier = 0.10
+	stress_gain_mult = -0.10
+}

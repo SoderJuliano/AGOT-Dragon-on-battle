@@ -19,13 +19,19 @@ on_war_started = {
 dob_on_war_started = {
 	effect = {
 		# Caso 1: O PLAYER declarou guerra e tem um dragão vivo
-		# (sem exigir 'Use dragon in warfare' ativado no menu AGOT)
+		# FIX: OR com var:current_dragon como fallback para dragões do MDE que não possuem
+		# a relation AGOT configurada (is_current_dragonrider falha nesses casos)
 		if = {
 			limit = {
 				is_ai = no
-				has_trait = dragonrider
-				exists = var:current_dragon
-				var:current_dragon = { is_alive = yes }
+				OR = {
+					is_current_dragonrider = yes
+					AND = {
+						has_variable = current_dragon
+						exists = var:current_dragon
+						var:current_dragon = { is_alive = yes has_trait = dragon }
+					}
+				}
 			}
 			set_variable = {
 				name = dob_dragon_power
@@ -41,12 +47,18 @@ dob_on_war_started = {
 			}
 		}
 		# Caso 2: IA (familiar/aliada) declarou guerra com dragão → notifica o player
+		# FIX: OR com var:current_dragon como fallback para dragões do MDE
 		else_if = {
 			limit = {
 				is_ai = yes
-				has_trait = dragonrider
-				exists = var:current_dragon
-				var:current_dragon = { is_alive = yes }
+				OR = {
+					is_current_dragonrider = yes
+					AND = {
+						has_variable = current_dragon
+						exists = var:current_dragon
+						var:current_dragon = { is_alive = yes has_trait = dragon }
+					}
+				}
 			}
 			set_variable = {
 				name = dob_dragon_size
@@ -74,13 +86,12 @@ dob_on_war_started = {
 
 		# Caso 3: Player está sendo ATACADO (é o DEFENSOR) e tem dragão
 		# scope:defender é o defensor da guerra (root = atacante)
+		# FIX: usa is_current_dragonrider para consistência e robustez
 		if = {
 			limit = {
 				scope:defender = {
 					is_ai = no
-					has_trait = dragonrider
-					exists = var:current_dragon
-					var:current_dragon = { is_alive = yes }
+					is_current_dragonrider = yes
 				}
 			}
 			scope:defender = {
@@ -139,12 +150,18 @@ on_join_war_as_secondary = {
 dob_on_join_war_as_secondary = {
 	effect = {
 		# Caso 1: Player entrou no lado atacante com dragão
+		# FIX: OR com var:current_dragon como fallback para dragões do MDE
 		if = {
 			limit = {
 				is_ai = no
-				has_trait = dragonrider
-				exists = var:current_dragon
-				var:current_dragon = { is_alive = yes }
+				OR = {
+					is_current_dragonrider = yes
+					AND = {
+						has_variable = current_dragon
+						exists = var:current_dragon
+						var:current_dragon = { is_alive = yes has_trait = dragon }
+					}
+				}
 				scope:war = { is_attacker = root }
 			}
 			set_variable = { name = dob_dragon_power value = dob_dragon_battle_bonus }
@@ -152,12 +169,18 @@ dob_on_join_war_as_secondary = {
 			trigger_event = { id = dragon_battle.001 days = 1 }
 		}
 		# Caso 2: Player entrou no lado defensor com dragão
+		# FIX: OR com var:current_dragon como fallback para dragões do MDE
 		else_if = {
 			limit = {
 				is_ai = no
-				has_trait = dragonrider
-				exists = var:current_dragon
-				var:current_dragon = { is_alive = yes }
+				OR = {
+					is_current_dragonrider = yes
+					AND = {
+						has_variable = current_dragon
+						exists = var:current_dragon
+						var:current_dragon = { is_alive = yes has_trait = dragon }
+					}
+				}
 				NOT = { scope:war = { is_attacker = root } }
 			}
 			set_variable = { name = dob_dragon_power value = dob_dragon_battle_bonus }
@@ -394,9 +417,126 @@ dob_on_dragon_birthday = {
 			agot_dragon_transfer_vars_to_story_cycle_effect = { DRAGON = this }
 		}
 		else = {
-			# Log de crescimento normal para acompanhar o progresso
+			# Dragão já está na lista com size_base > 0 → crescimento normal AGOT
+			# FIX CRÍTICO: se a story_cycle do AGOT estiver quebrada (erros de gene_dragon_*
+			# ou dragon_var_story_val no log), agot_apply_dragon_aging_effect não incrementa
+			# dragon_size_base. Aplica um piso mínimo por idade para garantir crescimento contínuo.
+			# Regra: só AUMENTA nunca diminui (se AGOT já setou valor maior, mantém).
 			if = {
 				limit = { has_trait = dragon }
+				if = {
+					limit = {
+						age >= 80
+						OR = {
+							NOT = { has_variable = dragon_size_base }
+							var:dragon_size_base < 175
+						}
+					}
+					set_variable = { name = dragon_size_base value = 175 }
+				}
+				else_if = {
+					limit = {
+						age >= 60
+						OR = {
+							NOT = { has_variable = dragon_size_base }
+							var:dragon_size_base < 150
+						}
+					}
+					set_variable = { name = dragon_size_base value = 150 }
+				}
+				else_if = {
+					limit = {
+						age >= 45
+						OR = {
+							NOT = { has_variable = dragon_size_base }
+							var:dragon_size_base < 120
+						}
+					}
+					set_variable = { name = dragon_size_base value = 120 }
+				}
+				else_if = {
+					limit = {
+						age >= 30
+						OR = {
+							NOT = { has_variable = dragon_size_base }
+							var:dragon_size_base < 90
+						}
+					}
+					set_variable = { name = dragon_size_base value = 90 }
+				}
+				else_if = {
+					limit = {
+						age >= 20
+						OR = {
+							NOT = { has_variable = dragon_size_base }
+							var:dragon_size_base < 60
+						}
+					}
+					set_variable = { name = dragon_size_base value = 60 }
+				}
+				else_if = {
+					limit = {
+						age >= 15
+						OR = {
+							NOT = { has_variable = dragon_size_base }
+							var:dragon_size_base < 40
+						}
+					}
+					set_variable = { name = dragon_size_base value = 40 }
+				}
+				else_if = {
+					limit = {
+						age >= 10
+						OR = {
+							NOT = { has_variable = dragon_size_base }
+							var:dragon_size_base < 30
+						}
+					}
+					set_variable = { name = dragon_size_base value = 30 }
+				}
+				else_if = {
+					limit = {
+						age >= 5
+						OR = {
+							NOT = { has_variable = dragon_size_base }
+							var:dragon_size_base < 15
+						}
+					}
+					set_variable = { name = dragon_size_base value = 15 }
+				}
+				else_if = {
+					limit = {
+						OR = {
+							NOT = { has_variable = dragon_size_base }
+							var:dragon_size_base < 5
+						}
+					}
+					set_variable = { name = dragon_size_base value = 5 }
+				}
+				# FIX CRÍTICO: Propagar dragon_size_base atualizado para a story cycle.
+				# O AGOT lê dragon_size da story (gl_dragon_variable_storage), não do character.
+				# Sem essa sync, o tamanho não muda visualmente mesmo que o var do char esteja certo.
+				save_temporary_scope_as = dob_bday_sync_dragon
+				every_in_global_list = {
+					variable = gl_dragon_variable_storage
+					limit = { var:dragon_id ?= scope:dob_bday_sync_dragon }
+					if = {
+						limit = { var:dragon_size_base < scope:dob_bday_sync_dragon.var:dragon_size_base }
+						set_variable = { name = dragon_size_base value = scope:dob_bday_sync_dragon.var:dragon_size_base }
+					}
+				}
+				# Após garantir dragon_size_base correto, atualizar modifier do rider
+				# (rider pode estar cachando o valor antigo)
+				if = {
+					limit = { has_variable = current_rider exists = var:current_rider }
+					var:current_rider = {
+						if = {
+							limit = { exists = var:current_dragon }
+							var:current_dragon = { dob_update_dragon_power_modifier = yes }
+						}
+						dob_update_rider_dragon_modifier = yes
+					}
+				}
 			}
 		}
 	}

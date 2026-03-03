@@ -138,8 +138,40 @@
 
  # ── Evento 018: Player comandando pessoalmente na batalha ─────
  dragon_battle.018.t: "Your Dragon Enters the Fray!"
+
+ # ── Evento 019: Dragão ganhou habilidade defensiva (premio) ───
+ dragon_battle.019.t: "Your Dragon Has Earned a Title!"
+ dragon_battle.019.desc_shield: "Your dragon has become a legend of the realm's defense.\n\nTime and again it has answered the call — standing between your enemies and everything you hold dear. The armies that march against you do so knowing a great beast waits at the gates.\n\n#bold [dob_skillup_dragon.GetFirstName] has earned the title: #T Shield of the Realm #!#!\n\n#weak Bards already sing of the great beast that would not yield. Warriors speak its name with a mixture of reverence and dread.#!"
+ dragon_battle.019.desc_defender: "Your dragon has proven itself a veteran of defensive warfare.\n\nMore than once it has stood between an invading army and the realm it protects — and prevailed. The soldiers beneath its shadow fight with greater courage knowing they are not alone.\n\n#bold [dob_skillup_dragon.GetFirstName] has earned the title: #T Army Defender #!#!\n\n#weak Those who serve under your banner take heart. Those who march against it know fear.#!"
+ dragon_battle.019.desc_guardian: "Your dragon has proven itself in open field defense.\n\nWhen your lands were threatened, it answered the call — holding the line and sharpening its instincts in the fire of true defensive battle.\n\n#bold [dob_skillup_dragon.GetFirstName] has earned the title: #T Field Guardian #!#!\n\n#weak The experience of defending that which matters has left its mark on the creature. It will not forget.#!"
+ dragon_battle.019.a: "Well earned. May this title be the first of many."
  dragon_battle.018.desc: "A battle is underway — and you are commanding your forces personally on the field.\n\n[scope:dob_event_dragon.GetFirstNameNoTooltip] fights at your side, and the enemy will feel the wrath of dragonfire firsthand.\n\n#bold Dragon Size:#! [ROOT.GetVariable('dob_dragon_size')|0]\n#bold Battle Power:#! +[ROOT.GetVariable('dob_dragon_power')|0]\n\n#weak Victory or defeat — your dragon's fate depends on this battle. Post-combat events will follow.#!"
  dragon_battle.018.a: "Drive them back — with fire and blood!"
+
+ # ── Títulos OFENSIVOS (modifiers no dragão) ───────────────────────────────
+ dob_dragon_the_warbringer: "The Warbringer"
+ dob_dragon_the_warbringer_desc: "A dragon proven in offensive warfare. It has thrown itself into enemy lines, routed formations and set banners aflame. Those who ride to battle beneath this creature know they carry the first dagger of conquest."
+
+ dob_dragon_the_realmforged: "The Realmforged"
+ dob_dragon_the_realmforged_desc: "A campaign veteran of conquest. This dragon has fought across multiple offensive engagements — charging into enemy hosts, breaking shield walls and reducing fortifications to ash. Its experience of sustained assault has carved it into an instrument of war."
+
+ dob_dragon_the_worldbreaker: "The Worldbreaker"
+ dob_dragon_the_worldbreaker_desc: "The rarest honor an offensive dragon can earn. This creature does not fight — it ends wars. Kingdoms have fallen at its passing, armies dissolved before its breath. The name alone is enough to break enemy morale. There are those who whisper it rivals the great wyrms of old Valyria."
+
+ # ── Evento 020: The Warbringer conquistado ───────────────────────────────
+ dragon_battle.020.t: "Your Dragon Has Earned a Battle Title!"
+ dragon_battle.020.desc: "Your dragon charged into the enemy line and did not falter.\n\nFor the first time, it has proven itself not as a creature of fear — but as a true weapon of conquest. The soldiers who rode against you today will speak of nothing else.\n\n#bold [dob_skillup_dragon.GetFirstName] has earned the title: #T The Warbringer #!#!\n\n#weak A small but real mark. The beginning of a warrior's legend — if there are more battles to come.#!"
+ dragon_battle.020.a: "The Warbringer. A fitting name for what we do."
+
+ # ── Evento 021: The Realmforged conquistado ──────────────────────────────
+ dragon_battle.021.t: "Your Dragon Has Risen to a New Title!"
+ dragon_battle.021.desc: "Another victory. Another enemy host broken.\n\n[dob_skillup_dragon.GetFirstName] has fought across campaigns now — not once, but many times. Its attacks have grown more precise, its aggression more controlled. It does not merely burn — it conquers.\n\n#bold [dob_skillup_dragon.GetFirstName] has earned the title: #T The Realmforged #!#!\n\n#weak Captains speak of it before sieges begin. Enemies count their soldiers twice when they hear it is coming.#!"
+ dragon_battle.021.a: "Realmforged in blood and fire. As it should be."
+
+ # ── Evento 022: The Worldbreaker conquistado ─────────────────────────────
+ dragon_battle.022.t: "A Legend Is Born — The Worldbreaker!"
+ dragon_battle.022.desc: "This does not happen in a single battle. It does not happen in a single campaign.\n\nThe dragons of old Valyria were forged in dragonfire across centuries — and today, a shadow of that legacy has returned. What [dob_skillup_dragon.GetFirstName] has done on the field of battle goes beyond war. It has broken something larger: the certainty that any host can stand against it.\n\n#bold [dob_skillup_dragon.GetFirstName] has earned the title: #T The Worldbreaker #!#!\n\n#T Bards will carry this name to every corner of the known world. Rulers who have never seen your dragon will fear it by reputation alone.#!"
+ dragon_battle.022.a: "Let the world know the name of my dragon."
 
  # ── Evento 017: resultado do fix ─────────────────────────────
  dragon_battle.017.t: "Dragon Records — Ritual Complete"

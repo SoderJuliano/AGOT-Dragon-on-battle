@@ -506,3 +506,115 @@ dragon_battle.017 = {
 		name = dragon_battle.017.a
 	}
 }
+
+# ── Evento 019: Dragão ganhou habilidade defensiva ────────────────────────────────
+# Root = rider (player). var:dob_skillup_dragon = o dragão que ganhou a habilidade.
+# Dispara 2 dias após a vitória defensiva, somente quando a rolagem de 15% sucede.
+dragon_battle.019 = {
+	type = character_event
+	title = dragon_battle.019.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:dob_skillup_dragon = { has_character_modifier = dob_dragon_shield_realm } }
+				desc = dragon_battle.019.desc_shield
+			}
+			triggered_desc = {
+				trigger = { var:dob_skillup_dragon = { has_character_modifier = dob_dragon_army_defender } }
+				desc = dragon_battle.019.desc_defender
+			}
+			desc = dragon_battle.019.desc_guardian
+		}
+	}
+	theme = battle
+
+	left_portrait = {
+		character = root
+		animation = war_attacker
+	}
+	right_portrait = {
+		character = var:dob_skillup_dragon
+		animation = personality_bold
+	}
+
+	option = {
+		name = dragon_battle.019.a
+		highlight = yes
+		if = { limit = { has_variable = dob_skillup_dragon } remove_variable = dob_skillup_dragon }
+	}
+}
+
+# ── Evento 020: The Warbringer conquistado ────────────────────────────────────────
+# Root = rider (player). var:dob_skillup_dragon = o dragão que ganhou o título.
+# Dispara 2 dias após vitória ofensiva com 55% de sucesso (1ª vez).
+dragon_battle.020 = {
+	type = character_event
+	title = dragon_battle.020.t
+	desc = dragon_battle.020.desc
+	theme = battle
+
+	left_portrait = {
+		character = root
+		animation = aggressive_sword
+	}
+	right_portrait = {
+		character = var:dob_skillup_dragon
+		animation = personality_bold
+	}
+
+	option = {
+		name = dragon_battle.020.a
+		highlight = yes
+		if = { limit = { has_variable = dob_skillup_dragon } remove_variable = dob_skillup_dragon }
+	}
+}
+
+# ── Evento 021: The Realmforged conquistado ───────────────────────────────────────
+# Root = rider (player). var:dob_skillup_dragon = o dragão que ganhou o título.
+# Dispara 3 dias após vitória ofensiva com 40% de sucesso (1ª vez).
+dragon_battle.021 = {
+	type = character_event
+	title = dragon_battle.021.t
+	desc = dragon_battle.021.desc
+	theme = battle
+
+	left_portrait = {
+		character = root
+		animation = war_attacker
+	}
+	right_portrait = {
+		character = var:dob_skillup_dragon
+		animation = personality_bold
+	}
+
+	option = {
+		name = dragon_battle.021.a
+		highlight = yes
+		if = { limit = { has_variable = dob_skillup_dragon } remove_variable = dob_skillup_dragon }
+	}
+}
+
+# ── Evento 022: The Worldbreaker conquistado ──────────────────────────────────────
+# Root = rider (player). var:dob_skillup_dragon = o dragão que ganhou o título.
+# Dispara 4 dias após vitória ofensiva com 5% de sucesso (1ª vez). Muito raro.
+dragon_battle.022 = {
+	type = character_event
+	title = dragon_battle.022.t
+	desc = dragon_battle.022.desc
+	theme = battle
+
+	left_portrait = {
+		character = root
+		animation = war_attacker
+	}
+	right_portrait = {
+		character = var:dob_skillup_dragon
+		animation = personality_bold
+	}
+
+	option = {
+		name = dragon_battle.022.a
+		highlight = yes
+		if = { limit = { has_variable = dob_skillup_dragon } remove_variable = dob_skillup_dragon }
+	}
+}
