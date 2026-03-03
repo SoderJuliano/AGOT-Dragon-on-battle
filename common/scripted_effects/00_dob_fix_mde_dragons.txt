@@ -1,4 +1,4 @@
-# ============================================================
+﻿# ============================================================
 # DRAGON ON BATTLE - Fix MDE Broken Dragons
 # Conserta dragões criados pelo More Dragon Eggs que não foram
 # registrados no sistema de armazenamento do AGOT (gl_dragon_variable_storage).

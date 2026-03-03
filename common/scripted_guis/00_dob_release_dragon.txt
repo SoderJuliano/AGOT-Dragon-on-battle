@@ -1,4 +1,4 @@
-# ============================================================
+﻿# ============================================================
 # DRAGON ON BATTLE - Scripted GUI: Release Dragon
 # Aparece como botão na janela do dragão (tela do personagem)
 # Scope da GUI: root = dragão sendo visualizado

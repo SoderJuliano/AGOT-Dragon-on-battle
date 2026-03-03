@@ -1,4 +1,4 @@
-# ============================================================
+﻿# ============================================================
 # DRAGON ON BATTLE - Decisão: Liberar Dragão
 # Acessível direto do menu de decisões do player
 # Funciona mesmo se o dragão for um ghost/inválido (size=0 bug)

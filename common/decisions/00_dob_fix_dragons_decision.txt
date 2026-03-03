@@ -1,4 +1,4 @@
-# ============================================================
+﻿# ============================================================
 # DRAGON ON BATTLE - Decisão: Consertar Dragões Quebrados (MDE Fix)
 # Conserta todos os dragões que não foram registrados no storage
 # system do AGOT (problema do More Dragon Eggs).

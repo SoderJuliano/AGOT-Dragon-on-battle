@@ -1,4 +1,4 @@
-# ============================================================
+﻿# ============================================================
 # DRAGON ON BATTLE - Scripted Triggers
 # Mod: Dragon on Battle (AGOT Addon) v0.1
 # Nomes verificados contra AGOT 0.4.27

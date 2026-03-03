@@ -1,4 +1,4 @@
-# ============================================================
+﻿# ============================================================
 # DRAGON ON BATTLE - Scripted GUIs: Battle Dragon Report
 # Usados na window_battle_summary para mostrar dragões da batalha
 # GuiScope.SetRoot(GetPlayer.MakeScope) = player character scope

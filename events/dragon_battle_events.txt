@@ -1,4 +1,4 @@
-# ============================================================
+﻿# ============================================================
 # DRAGON ON BATTLE - Events (Eventos de notificação)
 # Mod: Dragon on Battle (AGOT Addon) v0.1
 # ============================================================
@@ -443,7 +443,7 @@ dragon_battle.016 = {
 	type = character_event
 	title = dragon_battle.016.t
 	desc = dragon_battle.016.desc
-	theme = diplomacy_neutral
+	theme = diplomacy
 
 	left_portrait = {
 		character = root
