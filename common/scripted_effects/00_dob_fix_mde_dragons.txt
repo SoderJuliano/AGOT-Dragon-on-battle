@@ -213,12 +213,26 @@ dob_correct_all_dragon_sizes_on_load = {
 			}
 
 			# 2. Propagar o valor corrigido para a story cycle
+			# AGOT: a story tem DOIS vars: dragon_size_base (armazenado) e dragon_size (exibido).
+			# Precisamos atualizar AMBOS — AGOT exibe dragon_size, não dragon_size_base.
 			every_in_global_list = {
 				variable = gl_dragon_variable_storage
 				limit = { var:dragon_id ?= scope:dob_load_check_dragon }
+				# Atualizar dragon_size_base se abaixo do valor correto
 				if = {
 					limit = { var:dragon_size_base < scope:dob_load_check_dragon.var:dragon_size_base }
 					set_variable = { name = dragon_size_base value = scope:dob_load_check_dragon.var:dragon_size_base }
+				}
+				# CRÍTICO: também atualizar dragon_size (valor exibido pelo AGOT)
+				# Sem isso, a janela do dragão continua mostrando o valor antigo.
+				if = {
+					limit = {
+						OR = {
+							NOT = { has_variable = dragon_size }
+							var:dragon_size < scope:dob_load_check_dragon.var:dragon_size_base
+						}
+					}
+					set_variable = { name = dragon_size value = scope:dob_load_check_dragon.var:dragon_size_base }
 				}
 			}
 
