@@ -745,7 +745,7 @@ dob_record_battle_dragons_effect = {
 		limit = {
 			has_variable = current_dragon
 			exists = var:current_dragon
-			var:current_dragon = { dragon_size >= 10 }
+			var:current_dragon = { dragon_size >= 1 }
 		}
 		save_scope_as = dob_rec_rider
 		var:current_dragon = { save_scope_as = dob_rec_dragon }
@@ -784,7 +784,7 @@ dob_record_battle_dragons_effect = {
 		limit = {
 			has_variable = current_dragon
 			exists = var:current_dragon
-			var:current_dragon = { dragon_size >= 10 }
+			var:current_dragon = { dragon_size >= 1 }
 		}
 		save_scope_as = dob_rec_rider
 		var:current_dragon = { save_scope_as = dob_rec_dragon }
@@ -826,7 +826,7 @@ dob_record_battle_dragons_effect = {
 			limit = {
 				has_variable = current_dragon
 				exists = var:current_dragon
-				var:current_dragon = { dragon_size >= 10 }
+				var:current_dragon = { dragon_size >= 1 }
 			}
 			save_scope_as = dob_rec_rider
 			var:current_dragon = { save_scope_as = dob_rec_dragon }
@@ -865,7 +865,7 @@ dob_record_battle_dragons_effect = {
 			limit = {
 				has_variable = current_dragon
 				exists = var:current_dragon
-				var:current_dragon = { dragon_size >= 10 }
+				var:current_dragon = { dragon_size >= 1 }
 			}
 			save_scope_as = dob_rec_rider
 			var:current_dragon = { save_scope_as = dob_rec_dragon }
