@@ -281,9 +281,21 @@ dob_on_monthly_pulse = {
 		# on_monthly_pulse dispara para CADA personagem vivo como root. Sem is_ai = no,
 		# dob_correct_all_dragon_sizes_on_load rodaria milhares de vezes no mesmo mês.
 		# is_ai = no garante que o gatilho seja puxado UMA vez (pelo player).
-		# O efeito interno usa every_living_character { has_trait = dragon } e corrige
-		# TODOS os dragões do mundo. Roda todo mês mas é barato: internamente só
-		# aumenta tamanho se abaixo do mínimo e só gera gene vars se ausentes.
+		#
+		# FIX COMPLETO (a cada 60 dias): dob_fix_all_broken_dragons faz delete+recreate
+		# da story cycle — necessário porque dob_correct_all_dragon_sizes_on_load sozinho
+		# não resolve dragões cuja story cycle foi recriada pelo AGOT com valores errados.
+		# Na prática, roda no primeiro mês após qualquer carregamento (flag inexistente)
+		# e depois a cada ~60 dias como garantia.
+		if = {
+			limit = {
+				is_ai = no
+				NOT = { has_character_flag = dob_fix_all_ran_recently }
+			}
+			add_character_flag = { flag = dob_fix_all_ran_recently days = 60 }
+			dob_fix_all_broken_dragons = yes
+		}
+
 		if = {
 			limit = { is_ai = no }
 			dob_correct_all_dragon_sizes_on_load = yes
