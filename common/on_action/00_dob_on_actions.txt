@@ -228,12 +228,9 @@ dob_on_game_start = {
 			limit = { has_trait = dragonwidowed }
 			remove_trait = dragonwidowed
 		}
-		# Resetar flag de sessão para que o pulso mensal rode a correção logo em seguida
-		# (on_game_start_after_lobby só dispara via lobby — o monthly_pulse cobre reloads diretos)
-		if = {
-			limit = { has_character_flag = dob_sizes_corrected }
-			remove_character_flag = dob_sizes_corrected
-		}
+		# Rodar a correção de dragões imediatamente ao carregar via lobby
+		# (o monthly_pulse cobre reloads diretos — complementar)
+		dob_correct_all_dragon_sizes_on_load = yes
 		# Aplicar modifiers de poder do dragão em todos os riders
 		every_living_character = {
 			limit = { is_current_dragonrider = yes }
@@ -290,22 +287,16 @@ dob_on_yearly_pulse = {
 
 dob_on_monthly_pulse = {
 	effect = {
-		# ── FIX ON LOAD (uma vez por sessão, só para o player) ──────────────────────────
+		# ── FIX ON LOAD (todo mês, só para o player) ───────────────────────────────────
 		# on_monthly_pulse dispara para CADA personagem vivo como root. Sem is_ai = no,
 		# dob_correct_all_dragon_sizes_on_load rodaria milhares de vezes no mesmo mês.
 		# is_ai = no garante que o gatilho seja puxado UMA vez (pelo player).
-		# O efeito interno usa every_living_character { has_trait = dragon } e ainda
-		# corrige TODOS os dragões do mundo — o is_ai aqui só controla quem chama.
+		# O efeito interno usa every_living_character { has_trait = dragon } e corrige
+		# TODOS os dragões do mundo. Roda todo mês mas é barato: internamente só
+		# aumenta tamanho se abaixo do mínimo e só gera gene vars se ausentes.
 		if = {
-			limit = {
-				is_ai = no
-				NOT = { has_character_flag = dob_sizes_corrected }
-			}
+			limit = { is_ai = no }
 			dob_correct_all_dragon_sizes_on_load = yes
-			add_character_flag = {
-				flag = dob_sizes_corrected
-				years = 1
-			}
 		}
 
 		# ── Player: atualiza modifier do dragão na ficha do rider ──────────────────────
