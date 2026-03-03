@@ -290,12 +290,17 @@ dob_on_yearly_pulse = {
 
 dob_on_monthly_pulse = {
 	effect = {
-		# ── FIX ON LOAD (uma vez por sessão) ────────────────────────────────────────────
-		# Roda assim que o jogador começa a jogar, independente de ter carregado via lobby
-		# ou reload direto de save. A flag dob_sizes_corrected dura 1 ano in-game;
-		# on_game_start_after_lobby remove ela para garantir re-execução em cada carga.
+		# ── FIX ON LOAD (uma vez por sessão, só para o player) ──────────────────────────
+		# on_monthly_pulse dispara para CADA personagem vivo como root. Sem is_ai = no,
+		# dob_correct_all_dragon_sizes_on_load rodaria milhares de vezes no mesmo mês.
+		# is_ai = no garante que o gatilho seja puxado UMA vez (pelo player).
+		# O efeito interno usa every_living_character { has_trait = dragon } e ainda
+		# corrige TODOS os dragões do mundo — o is_ai aqui só controla quem chama.
 		if = {
-			limit = { NOT = { has_character_flag = dob_sizes_corrected } }
+			limit = {
+				is_ai = no
+				NOT = { has_character_flag = dob_sizes_corrected }
+			}
 			dob_correct_all_dragon_sizes_on_load = yes
 			add_character_flag = {
 				flag = dob_sizes_corrected
