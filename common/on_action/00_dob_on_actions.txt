@@ -228,9 +228,12 @@ dob_on_game_start = {
 			limit = { has_trait = dragonwidowed }
 			remove_trait = dragonwidowed
 		}
-		# Rodar a correção de dragões imediatamente ao carregar via lobby
-		# (o monthly_pulse cobre reloads diretos — complementar)
-		dob_correct_all_dragon_sizes_on_load = yes
+		# NÃO chamar dob_correct_all_dragon_sizes_on_load aqui!
+		# on_game_start_after_lobby dispara enquanto o mundo ainda está sendo
+		# inicializado — agot_dragon_transfer_vars_to_story_cycle_effect crasha
+		# nesse contexto porque o story cycle system ainda não está pronto.
+		# O monthly_pulse (is_ai = no) já roda o fix todo mês — cobre ambos
+		# os casos (lobby e resume) dentro do primeiro mês de jogo.
 		# Aplicar modifiers de poder do dragão em todos os riders
 		every_living_character = {
 			limit = { is_current_dragonrider = yes }
