@@ -223,26 +223,13 @@ on_game_start_after_lobby = {
 
 dob_on_game_start = {
 	effect = {
-		# Remover dragonwidowed de todos os personagens ao carregar o save
-		every_living_character = {
-			limit = { has_trait = dragonwidowed }
-			remove_trait = dragonwidowed
-		}
-		# NÃO chamar dob_correct_all_dragon_sizes_on_load aqui!
-		# on_game_start_after_lobby dispara enquanto o mundo ainda está sendo
-		# inicializado — agot_dragon_transfer_vars_to_story_cycle_effect crasha
-		# nesse contexto porque o story cycle system ainda não está pronto.
-		# O monthly_pulse (is_ai = no) já roda o fix todo mês — cobre ambos
-		# os casos (lobby e resume) dentro do primeiro mês de jogo.
-		# Aplicar modifiers de poder do dragão em todos os riders
-		every_living_character = {
-			limit = { is_current_dragonrider = yes }
-			if = {
-				limit = { exists = var:current_dragon }
-				var:current_dragon = { dob_update_dragon_power_modifier = yes }
-			}
-			dob_update_rider_dragon_modifier = yes
-		}
+		# NADA aqui intencionalmente.
+		# on_game_start_after_lobby dispara DURANTE a inicialização do mundo,
+		# antes de gl_dragon_variable_storage e story cycles estarem prontos.
+		# Qualquer acesso a dragon_size, agot_dragon_transfer_vars ou global lists
+		# nesse contexto causa crash imediato.
+		# O on_monthly_pulse (is_ai = no) já cobre tudo: fix de tamanho, gene vars,
+		# modifiers de rider/dragão — dentro do primeiro mês após carregar.
 	}
 }
 
