@@ -42,6 +42,9 @@ dob_fix_all_dragons_decision = {
 		# Consertar todos os dragões vivos com story corrompida
 		dob_fix_all_broken_dragons = yes
 
+		# Corrigir tamanho e gene vars de retrato de TODOS os dragões
+		# (inclui dragões já registrados mas com size ou genes errados)
+		dob_correct_all_dragon_sizes_on_load = yes
 
 		# Evento que mostra o resultado com contagem de dragões corrigidos
 		trigger_event = { id = dragon_battle.017 }

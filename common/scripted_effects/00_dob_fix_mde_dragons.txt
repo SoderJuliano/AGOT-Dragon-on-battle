@@ -181,41 +181,42 @@ dob_correct_all_dragon_sizes_on_load = {
 			# Regra: só AUMENTA, nunca diminui. Se AGOT já setou maior, mantém.
 
 			# 1. Aplicar piso no var do personagem do dragão
+			# Lógica CORRETA: primeiro verifica o bracket de IDADE, DEPOIS verifica se o
+			# tamanho atual está abaixo do mínimo → só aumenta, nunca diminui.
 			if = {
-				limit = { age >= 80 OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 175 } }
-				set_variable = { name = dragon_size_base value = 175 }
+				limit = { age >= 80 }
+				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 175 } } set_variable = { name = dragon_size_base value = 175 } }
 			}
 			else_if = {
-				limit = { age >= 60 OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 150 } }
-				set_variable = { name = dragon_size_base value = 150 }
+				limit = { age >= 60 }
+				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 150 } } set_variable = { name = dragon_size_base value = 150 } }
 			}
 			else_if = {
-				limit = { age >= 45 OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 120 } }
-				set_variable = { name = dragon_size_base value = 120 }
+				limit = { age >= 45 }
+				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 120 } } set_variable = { name = dragon_size_base value = 120 } }
 			}
 			else_if = {
-				limit = { age >= 30 OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 90 } }
-				set_variable = { name = dragon_size_base value = 90 }
+				limit = { age >= 30 }
+				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 90 } } set_variable = { name = dragon_size_base value = 90 } }
 			}
 			else_if = {
-				limit = { age >= 20 OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 60 } }
-				set_variable = { name = dragon_size_base value = 60 }
+				limit = { age >= 20 }
+				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 60 } } set_variable = { name = dragon_size_base value = 60 } }
 			}
 			else_if = {
-				limit = { age >= 15 OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 40 } }
-				set_variable = { name = dragon_size_base value = 40 }
+				limit = { age >= 15 }
+				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 40 } } set_variable = { name = dragon_size_base value = 40 } }
 			}
 			else_if = {
-				limit = { age >= 10 OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 30 } }
-				set_variable = { name = dragon_size_base value = 30 }
+				limit = { age >= 10 }
+				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 30 } } set_variable = { name = dragon_size_base value = 30 } }
 			}
 			else_if = {
-				limit = { age >= 5 OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 15 } }
-				set_variable = { name = dragon_size_base value = 15 }
+				limit = { age >= 5 }
+				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 15 } } set_variable = { name = dragon_size_base value = 15 } }
 			}
-			else_if = {
-				limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 5 } }
-				set_variable = { name = dragon_size_base value = 5 }
+			else = {
+				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 5 } } set_variable = { name = dragon_size_base value = 5 } }
 			}
 
 			# 2. Propagar o valor corrigido para a story cycle
