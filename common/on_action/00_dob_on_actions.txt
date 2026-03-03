@@ -580,9 +580,9 @@ dob_on_dragon_birthday = {
 					}
 					set_variable = { name = dragon_size_base value = 5 }
 				}
-				# FIX CRÍTICO: Propagar dragon_size_base atualizado para a story cycle.
+				# FIX CRÍTICO: Propagar dragon_size_base E dragon_size para a story cycle.
 				# O AGOT lê dragon_size da story (gl_dragon_variable_storage), não do character.
-				# Sem essa sync, o tamanho não muda visualmente mesmo que o var do char esteja certo.
+				# Sem atualizar dragon_size (não só dragon_size_base), o tier visível não muda.
 				save_temporary_scope_as = dob_bday_sync_dragon
 				every_in_global_list = {
 					variable = gl_dragon_variable_storage
@@ -591,8 +591,18 @@ dob_on_dragon_birthday = {
 						limit = { var:dragon_size_base < scope:dob_bday_sync_dragon.var:dragon_size_base }
 						set_variable = { name = dragon_size_base value = scope:dob_bday_sync_dragon.var:dragon_size_base }
 					}
+					# CRÍTICO: também atualizar dragon_size (valor lido pelo script value dragon_size)
+					if = {
+						limit = {
+							OR = {
+								NOT = { has_variable = dragon_size }
+								var:dragon_size < scope:dob_bday_sync_dragon.var:dragon_size_base
+							}
+						}
+						set_variable = { name = dragon_size value = scope:dob_bday_sync_dragon.var:dragon_size_base }
+					}
 				}
-				# Após garantir dragon_size_base correto, atualizar modifier do rider
+				# Após garantir dragon_size_base e dragon_size corretos, atualizar modifier do rider
 				# (rider pode estar cachando o valor antigo)
 				if = {
 					limit = { has_variable = current_rider exists = var:current_rider }
