@@ -713,6 +713,20 @@ types CharacterWindow
 									}
 								}
 
+								# Divider
+								spacer = {
+									size = { 4 4 }
+								}
+
+								divider_light = {
+									layoutpolicy_vertical = expanding
+									visible = "[Not(Character.IsDeadAndValid)]"
+								}
+
+								spacer = {
+									size = { 4 4 }
+								}
+
 								# Draconic dread
 								vbox = {
 									tooltip = "[draconic_dread|E]"
