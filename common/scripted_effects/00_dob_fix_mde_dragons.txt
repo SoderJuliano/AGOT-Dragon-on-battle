@@ -163,62 +163,72 @@ dob_fix_single_dragon_delete_recreate = {
 # Scope: nenhum (chamado de dob_on_game_start via every_living_character)
 # ─────────────────────────────────────────────────────────────────────────────
 dob_correct_all_dragon_sizes_on_load = {
-	# Itera story nodes. Para cada um: salva a story como scope nomeado e entra no dragão.
-	# Dentro do dragão: compara age e referencia scope:dob_sn para ler/setar dragon_size_base.
-	# Padrão robusto: sem dependência de var:X = { trigger } em limit de effect block.
-	every_in_global_list = {
-		variable = gl_dragon_variable_storage
-		limit = { exists = var:dragon_id }
-		save_temporary_scope_as = dob_sn			# dob_sn = story node
-		var:dragon_id = {
-			# scope = dragão. scope:dob_sn = story node. Só AUMENTA nunca diminui.
-			if = {
-				limit = { age >= 80	scope:dob_sn = { var:dragon_size_base < 175 } }
-				scope:dob_sn = { set_variable = { name = dragon_size_base value = 175 } }
-			}
-			else_if = {
-				limit = { age >= 75	scope:dob_sn = { var:dragon_size_base < 150 } }
-				scope:dob_sn = { set_variable = { name = dragon_size_base value = 150 } }
-			}
-			else_if = {
-				limit = { age >= 60	scope:dob_sn = { var:dragon_size_base < 135 } }
-				scope:dob_sn = { set_variable = { name = dragon_size_base value = 135 } }
-			}
-			else_if = {
-				limit = { age >= 45	scope:dob_sn = { var:dragon_size_base < 120 } }
-				scope:dob_sn = { set_variable = { name = dragon_size_base value = 120 } }
-			}
-			else_if = {
-				limit = { age >= 40	scope:dob_sn = { var:dragon_size_base < 110 } }
-				scope:dob_sn = { set_variable = { name = dragon_size_base value = 110 } }
-			}
-			else_if = {
-				limit = { age >= 35	scope:dob_sn = { var:dragon_size_base < 95 } }
-				scope:dob_sn = { set_variable = { name = dragon_size_base value = 95 } }
-			}
-			else_if = {
-				limit = { age >= 30	scope:dob_sn = { var:dragon_size_base < 80 } }
-				scope:dob_sn = { set_variable = { name = dragon_size_base value = 80 } }
-			}
-			else_if = {
-				limit = { age >= 25	scope:dob_sn = { var:dragon_size_base < 65 } }
-				scope:dob_sn = { set_variable = { name = dragon_size_base value = 65 } }
-			}
-			else_if = {
-				limit = { age >= 20	scope:dob_sn = { var:dragon_size_base < 50 } }
-				scope:dob_sn = { set_variable = { name = dragon_size_base value = 50 } }
-			}
-			else_if = {
-				limit = { age >= 15	scope:dob_sn = { var:dragon_size_base < 40 } }
-				scope:dob_sn = { set_variable = { name = dragon_size_base value = 40 } }
-			}
-			else_if = {
-				limit = { age >= 10	scope:dob_sn = { var:dragon_size_base < 30 } }
-				scope:dob_sn = { set_variable = { name = dragon_size_base value = 30 } }
-			}
-			else_if = {
-				limit = { age >= 5	scope:dob_sn = { var:dragon_size_base < 15 } }
-				scope:dob_sn = { set_variable = { name = dragon_size_base value = 15 } }
+	# Padrão AGOT (idêntico ao change_dragon_size):
+	#   1. Para cada dragão vivo: salva dragão como scope nomeado (save_scope_as)
+	#   2. Dentro de every_in_global_list: salva story node como scope temporário
+	#   3. FORA do loop: usa scope:dob_sn para ler/escrever dragon_size_base
+	# Garante que scope:dob_sn está disponível no contexto correto.
+	every_living_dragon = {
+		limit = { is_alive = yes }
+		save_scope_as = dob_dtf					# dob_dtf = dragon to fix
+		every_in_global_list = {
+			variable = gl_dragon_variable_storage
+			limit = { var:dragon_id ?= scope:dob_dtf }
+			save_temporary_scope_as = dob_sn	# dob_sn = story node (padrão AGOT)
+		}
+		# Usa scope:dob_sn FORA do loop — exatamente como change_dragon_size faz
+		# scope:dob_dtf = dragão, scope:dob_sn = story node. Só AUMENTA nunca diminui.
+		if = {
+			limit = { exists = scope:dob_sn }
+			scope:dob_sn = {
+				if = {
+					limit = { scope:dob_dtf = { age >= 80 } var:dragon_size_base < 175 }
+					set_variable = { name = dragon_size_base value = 175 }
+				}
+				else_if = {
+					limit = { scope:dob_dtf = { age >= 75 } var:dragon_size_base < 150 }
+					set_variable = { name = dragon_size_base value = 150 }
+				}
+				else_if = {
+					limit = { scope:dob_dtf = { age >= 60 } var:dragon_size_base < 135 }
+					set_variable = { name = dragon_size_base value = 135 }
+				}
+				else_if = {
+					limit = { scope:dob_dtf = { age >= 45 } var:dragon_size_base < 120 }
+					set_variable = { name = dragon_size_base value = 120 }
+				}
+				else_if = {
+					limit = { scope:dob_dtf = { age >= 40 } var:dragon_size_base < 110 }
+					set_variable = { name = dragon_size_base value = 110 }
+				}
+				else_if = {
+					limit = { scope:dob_dtf = { age >= 35 } var:dragon_size_base < 95 }
+					set_variable = { name = dragon_size_base value = 95 }
+				}
+				else_if = {
+					limit = { scope:dob_dtf = { age >= 30 } var:dragon_size_base < 80 }
+					set_variable = { name = dragon_size_base value = 80 }
+				}
+				else_if = {
+					limit = { scope:dob_dtf = { age >= 25 } var:dragon_size_base < 65 }
+					set_variable = { name = dragon_size_base value = 65 }
+				}
+				else_if = {
+					limit = { scope:dob_dtf = { age >= 20 } var:dragon_size_base < 50 }
+					set_variable = { name = dragon_size_base value = 50 }
+				}
+				else_if = {
+					limit = { scope:dob_dtf = { age >= 15 } var:dragon_size_base < 40 }
+					set_variable = { name = dragon_size_base value = 40 }
+				}
+				else_if = {
+					limit = { scope:dob_dtf = { age >= 10 } var:dragon_size_base < 30 }
+					set_variable = { name = dragon_size_base value = 30 }
+				}
+				else_if = {
+					limit = { scope:dob_dtf = { age >= 5 } var:dragon_size_base < 15 }
+					set_variable = { name = dragon_size_base value = 15 }
+				}
 			}
 		}
 	}
