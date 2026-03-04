@@ -29,6 +29,7 @@ Adiciona **visibilidade completa ao sistema de dragões em batalha** do AGOT, co
 | ⚔️ **Títulos ofensivos permanentes** | The Warbringer → The Realmforged → The Worldbreaker |
 | 📊 **Battle Report GUI** | Painel de dragões aliados e inimigos na tela de vitória |
 | 📊 Battle Tier na janela do dragão | Tier de poder (0–10) baseado no `dragon_size` |
+| ★ **Skybreaker** | Habilidade permanente dada a todo dragão Tier 10 (size ≥ 170) |
 | 🛠️ **FIX: MDE crash** | Previne crash `Failed to fetch variable for 'current_rider'` |
 | 🛠️ **FIX: Tamanho de dragões** | Corrige `dragon_size` bugado ao entrar no jogo |
 | 🛠️ **FIX: Compatibilidade MDE** | Eventos e títulos funcionam com dragões do MDE |
@@ -293,6 +294,10 @@ AGOT-Dragon-on-battle/
 - **Títulos ofensivos permanentes**: The Warbringer (55%), The Realmforged (40%), The Worldbreaker (5%)
 - **Eventos 019–022**: notificações quando dragão ganha título defensivo ou ofensivo
 - **Battle Report GUI**: painel de dragões aliados/inimigos na tela de vitória
+- **Skybreaker**: habilidade permanente (+5 prowess, +0.5 prestígio/mês, +5% baixas) aplicada a todo dragão Tier 10 (size ≥ 170), no primeiro mês após carregar e no aniversário anual
+- **FIX notificações de batalha**: `on_combat_start` não detectava dragões MDE (`has_trait = dragonrider` → OR com fallback `var:current_dragon`)
+- **FIX eventos winner/loser**: threshold `dragon_size >= 10` no limite externo bloqueava TODOS os eventos para dragões com size < 10 — reduzido para `>= 1`
+- **FIX notificações de aliados e inimigos**: mesmo threshold corrigido em 4 blocos (aliado/inimigo no winner e loser)
 - **FIX on load**: tamanho de todos os dragões vivos corrigido ao entrar no jogo (sem esperar birthday)
 - **FIX MDE**: removido `has_trait = dragonrider` de todos os loops — dragões MDE agora funcionam
 - **FIX MDE**: `every_side_knight` incluído no battle report
@@ -300,6 +305,7 @@ AGOT-Dragon-on-battle/
 - **FIX MDE**: fallback `var:current_dragon` nos triggers de guerra e join war
 - **FIX Battle Report**: threshold de gravação baixado para `dragon_size >= 1` — dragões com size bugada aparecem no painel
 - **FIX progressão de tier**: faixas de idade divididas em intervalos de 5 anos (20–79) para cobrir todos os tiers sem saltos
+- **FIX birthday sync**: handler de aniversário agora sincroniza `dragon_size` além de `dragon_size_base` na story cycle — tier visual atualiza imediatamente
 
 ### v0.2
 - Eventos de guerra defensiva (008–013)

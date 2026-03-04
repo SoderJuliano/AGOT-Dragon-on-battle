@@ -164,3 +164,15 @@ dob_dragon_the_worldbreaker = {
 	enemy_hard_casualty_modifier = 0.10
 	stress_gain_mult = -0.10
 }
+
+# ============================================================
+# SKYBREAKER — habilidade permanente de dragões Tier 10 (size >= 170)
+# Aplicada automaticamente no primeiro mês e no aniversário do dragão
+# Não é removida automaticamente — representa o pico de poder do dragão
+# ============================================================
+dob_dragon_skybreaker = {
+	icon = prowess_positive
+	prowess = 5
+	monthly_prestige = 0.5
+	enemy_hard_casualty_modifier = 0.05
+}

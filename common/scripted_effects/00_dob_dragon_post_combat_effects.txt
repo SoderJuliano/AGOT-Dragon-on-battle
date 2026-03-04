@@ -42,7 +42,7 @@ dob_dragon_winner_effect = {
 			exists = var:current_dragon
 			var:current_dragon = {
 				is_alive = yes
-				dragon_size >= 10
+				dragon_size >= 1
 			}
 		}
 
@@ -315,7 +315,7 @@ dob_dragon_winner_effect = {
 				is_ai = yes
 				has_variable = current_dragon
 				exists = var:current_dragon
-				var:current_dragon = { dragon_size >= 10 }
+				var:current_dragon = { dragon_size >= 1 }
 			}
 			var:current_dragon = {
 				save_scope_as = dob_ally_dragon
@@ -343,7 +343,7 @@ dob_dragon_winner_effect = {
 				limit = {
 					has_variable = current_dragon
 					exists = var:current_dragon
-					var:current_dragon = { dragon_size >= 10 }
+				var:current_dragon = { dragon_size >= 1 }
 				}
 				save_scope_as = dob_enemy_rider_combat
 				var:current_dragon = { save_scope_as = dob_enemy_dragon }
@@ -387,7 +387,7 @@ dob_dragon_loser_effect = {
 			exists = var:current_dragon
 			var:current_dragon = {
 				is_alive = yes
-				dragon_size >= 10
+				dragon_size >= 1
 			}
 		}
 		# Estamos agora em character scope (o rider)
@@ -488,7 +488,7 @@ dob_dragon_loser_notifications = {
 				is_ai = yes
 				has_variable = current_dragon
 				exists = var:current_dragon
-				var:current_dragon = { dragon_size >= 10 }
+				var:current_dragon = { dragon_size >= 1 }
 			}
 			var:current_dragon = {
 				save_scope_as = dob_ally_dragon
@@ -515,7 +515,7 @@ dob_dragon_loser_notifications = {
 				limit = {
 					has_variable = current_dragon
 					exists = var:current_dragon
-					var:current_dragon = { dragon_size >= 10 }
+				var:current_dragon = { dragon_size >= 1 }
 				}
 				save_scope_as = dob_enemy_rider_combat
 				var:current_dragon = { save_scope_as = dob_enemy_dragon }
