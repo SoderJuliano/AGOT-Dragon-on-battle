@@ -113,40 +113,9 @@ dob_on_war_started = {
 }
 
 # ── Hook 1c: Início de batalha ─────────────────────────────────
-# Root = Combat (o objeto de combate, NÃO um personagem)
-# Itera os commanders de cada lado para encontrar o player
-on_combat_start = {
-	on_actions = { dob_on_combat_start }
-}
-
-dob_on_combat_start = {
-	effect = {
-		# Itera os dois lados do combate
-		every_side = {
-			every_side_commander = {
-				limit = {
-					is_ai = no
-					# FIX: MDE dragões não têm has_trait = dragonrider — usar OR fallback
-					OR = {
-						has_trait = dragonrider
-						AND = {
-							has_variable = current_dragon
-							exists = var:current_dragon
-							var:current_dragon = { is_alive = yes has_trait = dragon }
-						}
-					}
-					exists = var:current_dragon
-					var:current_dragon = { is_alive = yes }
-				}
-				# Aqui root = o personagem commander (o player)
-				var:current_dragon = { save_scope_as = dob_event_dragon }
-				set_variable = { name = dob_dragon_size  value = dob_dragon_size_value }
-				set_variable = { name = dob_dragon_power value = dob_dragon_battle_bonus }
-				trigger_event = { id = dragon_battle.018 }
-			}
-		}
-	}
-}
+# REMOVIDO: every_side causava falha de parse do arquivo inteiro (Unknown effect)
+# quando usado dentro de on_actions chain. O evento dragon_battle.018 não dispara
+# mais por esse hook — as notificações de batalha vêm de on_combat_end_winner/loser.
 
 # ── Hook 1b: Entrou em guerra como aliado/suporte ────────────
 # Root = o personagem que se juntou como secundário
