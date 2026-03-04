@@ -278,9 +278,8 @@ dob_on_monthly_pulse = {
 			dob_correct_all_dragon_sizes_on_load = yes
 		}
 
-		# ── Skybreaker: aplicar habilidade em dragões Tier 10 (size >= 170) ──────────────────
-		# FIX: iterar a gl_dragon_variable_storage (story nodes) diretamente—funciona de qualquer scope.
-		# var:dragon_size na story é atualizado diariamente pela story cycle (days=0 effect group).
+		# ── Skybreaker: aplicar habilidade em dragões Tier 10 ──────────────────
+		# Usa dragon_size SCRIPT VALUE no dragão (live, não var:dragon_size da story que pode estar stale).
 		# years=100: modifier fica visível em GetTimedModifiers no GUI do dragão.
 		if = {
 			limit = { is_ai = no }
@@ -288,8 +287,10 @@ dob_on_monthly_pulse = {
 				variable = gl_dragon_variable_storage
 				limit = {
 					exists = var:dragon_id
-					var:dragon_size >= 170
-					NOT = { var:dragon_id = { has_character_modifier = dob_dragon_skybreaker } }
+					var:dragon_id = {
+						dragon_size >= 170
+						NOT = { has_character_modifier = dob_dragon_skybreaker }
+					}
 				}
 				var:dragon_id = {
 					add_character_modifier = {
@@ -444,61 +445,65 @@ dob_on_dragon_birthday = {
 		}
 		else = {
 			# Dragão já está na lista com size_base > 0 → aplica piso mínimo no STORY NODE.
-			# scope (root) = o DRAGÃO. Dentro de every_in_global_list, root continua sendo o dragão,
-			# this = story node. Usamos root = { age >= X } no limit (padrão AGOT, sem temp scopes).
+			# scope (root) = o DRAGÃO no on_dragon_birthday.
+			# Padrão robusto: salva story node como scope:dob_sn, entra no dragão (root),
+			# compara age e usa scope:dob_sn para ler/setar dragon_size_base.
 			if = {
 				limit = { has_trait = dragon }
 				every_in_global_list = {
 					variable = gl_dragon_variable_storage
 					limit = { var:dragon_id ?= root }
-					# Aplica piso por idade — só aumenta, nunca diminui
-					if = {
-						limit = { root = { age >= 80 } var:dragon_size_base < 175 }
-						set_variable = { name = dragon_size_base value = 175 }
-					}
-					else_if = {
-						limit = { root = { age >= 75 } var:dragon_size_base < 150 }
-						set_variable = { name = dragon_size_base value = 150 }
-					}
-					else_if = {
-						limit = { root = { age >= 60 } var:dragon_size_base < 135 }
-						set_variable = { name = dragon_size_base value = 135 }
-					}
-					else_if = {
-						limit = { root = { age >= 45 } var:dragon_size_base < 120 }
-						set_variable = { name = dragon_size_base value = 120 }
-					}
-					else_if = {
-						limit = { root = { age >= 40 } var:dragon_size_base < 110 }
-						set_variable = { name = dragon_size_base value = 110 }
-					}
-					else_if = {
-						limit = { root = { age >= 35 } var:dragon_size_base < 95 }
-						set_variable = { name = dragon_size_base value = 95 }
-					}
-					else_if = {
-						limit = { root = { age >= 30 } var:dragon_size_base < 80 }
-						set_variable = { name = dragon_size_base value = 80 }
-					}
-					else_if = {
-						limit = { root = { age >= 25 } var:dragon_size_base < 65 }
-						set_variable = { name = dragon_size_base value = 65 }
-					}
-					else_if = {
-						limit = { root = { age >= 20 } var:dragon_size_base < 50 }
-						set_variable = { name = dragon_size_base value = 50 }
-					}
-					else_if = {
-						limit = { root = { age >= 15 } var:dragon_size_base < 40 }
-						set_variable = { name = dragon_size_base value = 40 }
-					}
-					else_if = {
-						limit = { root = { age >= 10 } var:dragon_size_base < 30 }
-						set_variable = { name = dragon_size_base value = 30 }
-					}
-					else_if = {
-						limit = { root = { age >= 5 } var:dragon_size_base < 15 }
-						set_variable = { name = dragon_size_base value = 15 }
+					save_temporary_scope_as = dob_sn		# dob_sn = story node
+					var:dragon_id = {
+						# scope = dragão, scope:dob_sn = story node. Só AUMENTA nunca diminui.
+						if = {
+							limit = { age >= 80	scope:dob_sn = { var:dragon_size_base < 175 } }
+							scope:dob_sn = { set_variable = { name = dragon_size_base value = 175 } }
+						}
+						else_if = {
+							limit = { age >= 75	scope:dob_sn = { var:dragon_size_base < 150 } }
+							scope:dob_sn = { set_variable = { name = dragon_size_base value = 150 } }
+						}
+						else_if = {
+							limit = { age >= 60	scope:dob_sn = { var:dragon_size_base < 135 } }
+							scope:dob_sn = { set_variable = { name = dragon_size_base value = 135 } }
+						}
+						else_if = {
+							limit = { age >= 45	scope:dob_sn = { var:dragon_size_base < 120 } }
+							scope:dob_sn = { set_variable = { name = dragon_size_base value = 120 } }
+						}
+						else_if = {
+							limit = { age >= 40	scope:dob_sn = { var:dragon_size_base < 110 } }
+							scope:dob_sn = { set_variable = { name = dragon_size_base value = 110 } }
+						}
+						else_if = {
+							limit = { age >= 35	scope:dob_sn = { var:dragon_size_base < 95 } }
+							scope:dob_sn = { set_variable = { name = dragon_size_base value = 95 } }
+						}
+						else_if = {
+							limit = { age >= 30	scope:dob_sn = { var:dragon_size_base < 80 } }
+							scope:dob_sn = { set_variable = { name = dragon_size_base value = 80 } }
+						}
+						else_if = {
+							limit = { age >= 25	scope:dob_sn = { var:dragon_size_base < 65 } }
+							scope:dob_sn = { set_variable = { name = dragon_size_base value = 65 } }
+						}
+						else_if = {
+							limit = { age >= 20	scope:dob_sn = { var:dragon_size_base < 50 } }
+							scope:dob_sn = { set_variable = { name = dragon_size_base value = 50 } }
+						}
+						else_if = {
+							limit = { age >= 15	scope:dob_sn = { var:dragon_size_base < 40 } }
+							scope:dob_sn = { set_variable = { name = dragon_size_base value = 40 } }
+						}
+						else_if = {
+							limit = { age >= 10	scope:dob_sn = { var:dragon_size_base < 30 } }
+							scope:dob_sn = { set_variable = { name = dragon_size_base value = 30 } }
+						}
+						else_if = {
+							limit = { age >= 5	scope:dob_sn = { var:dragon_size_base < 15 } }
+							scope:dob_sn = { set_variable = { name = dragon_size_base value = 15 } }
+						}
 					}
 				}
 				# Atualizar modifier do rider após garantir story node correto
