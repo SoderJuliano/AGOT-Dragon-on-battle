@@ -172,6 +172,24 @@ dob_fix_single_dragon_delete_recreate = {
 # Scope: nenhum (chamado de dob_on_game_start via every_living_character)
 # ─────────────────────────────────────────────────────────────────────────────
 dob_correct_all_dragon_sizes_on_load = {
+	# Passo 0: remover story nodes de dragões mortos/inválidos.
+	# Necessário porque AGOT itera gl_dragon_variable_storage para eventos de manutenção
+	# (bond schemes etc.) e crasheia quando tenta abrir o GUI para personagens mortos.
+	every_in_global_list = {
+		variable = gl_dragon_variable_storage
+		limit = {
+			OR = {
+				NOT = { exists = var:dragon_id }
+				var:dragon_id = { is_alive = no }
+			}
+		}
+		remove_list_global_variable = {
+			name = gl_dragon_variable_storage
+			target = this
+		}
+		end_story = yes
+	}
+
 	# Abordagem simplificada: iterar story nodes diretamente.
 	# "this" já é o story node → var:dragon_id = dragão, var:dragon_size_base = base size.
 	# Sem complexidade de save_scope_as aninhado. Só AUMENTA, nunca diminui.
@@ -265,6 +283,24 @@ dob_fix_all_broken_dragons = {
 	# Salva o player como scope nomeado para o contador
 	save_scope_as = dob_fix_caller
 	set_variable = { name = dob_fix_count value = 0 }
+
+	# Caso 0: LIMPAR story nodes de dragões mortos/inválidos da gl_dragon_variable_storage.
+	# Dragões mortos na lista fazem o AGOT tentar processar eventos para personagens inválidos
+	# → crash no GUI (dragon_character_event não encontrado). Remover a story e encerrar o ciclo.
+	every_in_global_list = {
+		variable = gl_dragon_variable_storage
+		limit = {
+			OR = {
+				NOT = { exists = var:dragon_id }
+				var:dragon_id = { is_alive = no }
+			}
+		}
+		remove_list_global_variable = {
+			name = gl_dragon_variable_storage
+			target = this
+		}
+		end_story = yes
+	}
 
 	# FIX: iterate story nodes directly — funciona de qualquer scope
 	# Caso 1: dragões na story com size_base = 0 → recriar
