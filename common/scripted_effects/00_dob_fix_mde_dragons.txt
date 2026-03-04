@@ -163,192 +163,85 @@ dob_fix_single_dragon_delete_recreate = {
 # Scope: nenhum (chamado de dob_on_game_start via every_living_character)
 # ─────────────────────────────────────────────────────────────────────────────
 dob_correct_all_dragon_sizes_on_load = {
-	every_living_dragon = {
-		save_temporary_scope_as = dob_load_check_dragon
-
+	# FIX: every_living_dragon can fail from character scope (monthly pulse).
+	# Approach: iterate gl_dragon_variable_storage (story nodes) directly — works from ANY scope.
+	# Inside each story node: check the dragon's age via var:dragon_id, apply floor to var:dragon_size_base.
+	every_in_global_list = {
+		variable = gl_dragon_variable_storage
 		if = {
-			# Caso A: dragão totalmente fora da story cycle → registrar do zero
-			limit = {
-				NOT = {
-					any_in_global_list = {
-						variable = gl_dragon_variable_storage
-						var:dragon_id ?= scope:dob_load_check_dragon
-					}
-				}
-			}
-			# Estimar size pela idade antes de registrar
-			dob_estimate_dragon_size_from_age = yes
+			limit = { exists = var:dragon_id }
+			var:dragon_id = { save_temporary_scope_as = dob_sc_dragon }
+			# Apply age floor directly on the story node — only INCREASE, never decrease
 			if = {
-				limit = { NOT = { has_variable = dragon_age } }
-				set_variable = { name = dragon_age value = { value = 0 add = age } }
+				limit = { scope:dob_sc_dragon = { age >= 80 } var:dragon_size_base < 175 }
+				set_variable = { name = dragon_size_base value = 175 }
 			}
-			# Gerar gene vars de retrato ausentes antes de registrar na story cycle
-			# (MDE não chama agot_gen_appearance_variables → portrait mostra erros no log)
-			if = {
-				limit = { NOT = { has_variable = gene_dragon_body_shading_template } }
-				agot_gen_appearance_variables = yes
+			else_if = {
+				limit = { scope:dob_sc_dragon = { age >= 75 } var:dragon_size_base < 150 }
+				set_variable = { name = dragon_size_base value = 150 }
 			}
-			# Registrar via AGOT — cria story cycle correta com os valores acima
-			agot_dragon_transfer_vars_to_story_cycle_effect = { DRAGON = this }
+			else_if = {
+				limit = { scope:dob_sc_dragon = { age >= 60 } var:dragon_size_base < 135 }
+				set_variable = { name = dragon_size_base value = 135 }
+			}
+			else_if = {
+				limit = { scope:dob_sc_dragon = { age >= 45 } var:dragon_size_base < 120 }
+				set_variable = { name = dragon_size_base value = 120 }
+			}
+			else_if = {
+				limit = { scope:dob_sc_dragon = { age >= 40 } var:dragon_size_base < 110 }
+				set_variable = { name = dragon_size_base value = 110 }
+			}
+			else_if = {
+				limit = { scope:dob_sc_dragon = { age >= 35 } var:dragon_size_base < 95 }
+				set_variable = { name = dragon_size_base value = 95 }
+			}
+			else_if = {
+				limit = { scope:dob_sc_dragon = { age >= 30 } var:dragon_size_base < 80 }
+				set_variable = { name = dragon_size_base value = 80 }
+			}
+			else_if = {
+				limit = { scope:dob_sc_dragon = { age >= 25 } var:dragon_size_base < 65 }
+				set_variable = { name = dragon_size_base value = 65 }
+			}
+			else_if = {
+				limit = { scope:dob_sc_dragon = { age >= 20 } var:dragon_size_base < 50 }
+				set_variable = { name = dragon_size_base value = 50 }
+			}
+			else_if = {
+				limit = { scope:dob_sc_dragon = { age >= 15 } var:dragon_size_base < 40 }
+				set_variable = { name = dragon_size_base value = 40 }
+			}
+			else_if = {
+				limit = { scope:dob_sc_dragon = { age >= 10 } var:dragon_size_base < 30 }
+				set_variable = { name = dragon_size_base value = 30 }
+			}
+			else_if = {
+				limit = { scope:dob_sc_dragon = { age >= 5 } var:dragon_size_base < 15 }
+				set_variable = { name = dragon_size_base value = 15 }
+			}
 		}
-		else = {
-			# Caso B: dragão JÁ está na story cycle — aplicar piso de tamanho por idade
-			# Regra: só AUMENTA, nunca diminui. Se AGOT já setou maior, mantém.
-
-			# 1. Aplicar piso no var do personagem do dragão
-			# Lógica CORRETA: primeiro verifica o bracket de IDADE, DEPOIS verifica se o
-			# tamanho atual está abaixo do mínimo → só aumenta, nunca diminui.
-			if = {
-				limit = { age >= 80 }
-				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 175 } } set_variable = { name = dragon_size_base value = 175 } }
-			}
-			else_if = {
-				limit = { age >= 75 }
-				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 150 } } set_variable = { name = dragon_size_base value = 150 } }
-			}
-			else_if = {
-				limit = { age >= 60 }
-				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 135 } } set_variable = { name = dragon_size_base value = 135 } }
-			}
-			else_if = {
-				limit = { age >= 45 }
-				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 120 } } set_variable = { name = dragon_size_base value = 120 } }
-			}
-			else_if = {
-				limit = { age >= 40 }
-				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 110 } } set_variable = { name = dragon_size_base value = 110 } }
-			}
-			else_if = {
-				limit = { age >= 35 }
-				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 95 } } set_variable = { name = dragon_size_base value = 95 } }
-			}
-			else_if = {
-				limit = { age >= 30 }
-				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 80 } } set_variable = { name = dragon_size_base value = 80 } }
-			}
-			else_if = {
-				limit = { age >= 25 }
-				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 65 } } set_variable = { name = dragon_size_base value = 65 } }
-			}
-			else_if = {
-				limit = { age >= 20 }
-				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 50 } } set_variable = { name = dragon_size_base value = 50 } }
-			}
-			else_if = {
-				limit = { age >= 15 }
-				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 40 } } set_variable = { name = dragon_size_base value = 40 } }
-			}
-			else_if = {
-				limit = { age >= 10 }
-				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 30 } } set_variable = { name = dragon_size_base value = 30 } }
-			}
-			else_if = {
-				limit = { age >= 5 }
-				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 15 } } set_variable = { name = dragon_size_base value = 15 } }
-			}
-			else = {
-				if = { limit = { OR = { NOT = { has_variable = dragon_size_base } var:dragon_size_base < 5 } } set_variable = { name = dragon_size_base value = 5 } }
-			}
-
-			# 2. Propagar o valor corrigido para a story cycle
-			# AGOT: a story tem DOIS vars: dragon_size_base (armazenado) e dragon_size (exibido).
-			# Precisamos atualizar AMBOS — AGOT exibe dragon_size, não dragon_size_base.
-			every_in_global_list = {
-				variable = gl_dragon_variable_storage
-				limit = { var:dragon_id ?= scope:dob_load_check_dragon }
-				# Atualizar dragon_size_base se abaixo do valor correto
-				if = {
-					limit = { var:dragon_size_base < scope:dob_load_check_dragon.var:dragon_size_base }
-					set_variable = { name = dragon_size_base value = scope:dob_load_check_dragon.var:dragon_size_base }
-				}
-				# CRÍTICO: também atualizar dragon_size (valor exibido pelo AGOT)
-				# Sem isso, a janela do dragão continua mostrando o valor antigo.
-				if = {
-					limit = {
-						OR = {
-							NOT = { has_variable = dragon_size }
-							var:dragon_size < scope:dob_load_check_dragon.var:dragon_size_base
-						}
-					}
-					set_variable = { name = dragon_size value = scope:dob_load_check_dragon.var:dragon_size_base }
-				}
-			}
-
-			# 3. Atualizar modifier do rider imediatamente
-			if = {
-				limit = { has_variable = current_rider exists = var:current_rider }
-				var:current_rider = {
-					if = {
-						limit = { exists = var:current_dragon }
-						var:current_dragon = { dob_update_dragon_power_modifier = yes }
-					}
-					dob_update_rider_dragon_modifier = yes
-				}
-			}
-
-			# 4. Corrigir gene vars de retrato ausentes na story cycle existente
-			# MDE não chama agot_gen_appearance_variables → vars ausentes no personagem
-			# → story cycle criada sem elas → portrait mostra erros no log.
-			# Fix: gerar vars no personagem e propagar para a story existente.
-			if = {
-				limit = { NOT = { has_variable = gene_dragon_body_shading_template } }
-				agot_gen_appearance_variables = yes
-				every_in_global_list = {
+	}
+	# Caso A: dragões fora da story cycle (MDE sem registro) — usar every_living_dragon como fallback
+	every_living_dragon = {
+		limit = {
+			NOT = {
+				any_in_global_list = {
 					variable = gl_dragon_variable_storage
-					limit = { var:dragon_id ?= scope:dob_load_check_dragon }
-					# Cores primárias/secundárias/terciárias
-					set_variable = { name = gene_dragon_primary_color_hue          value = scope:dob_load_check_dragon.var:gene_dragon_primary_color_hue }
-					set_variable = { name = gene_dragon_primary_color_value        value = scope:dob_load_check_dragon.var:gene_dragon_primary_color_value }
-					set_variable = { name = gene_dragon_secondary_hue              value = scope:dob_load_check_dragon.var:gene_dragon_secondary_hue }
-					set_variable = { name = gene_dragon_secondary_value            value = scope:dob_load_check_dragon.var:gene_dragon_secondary_value }
-					set_variable = { name = gene_dragon_tertiary_hue               value = scope:dob_load_check_dragon.var:gene_dragon_tertiary_hue }
-					set_variable = { name = gene_dragon_tertiary_value             value = scope:dob_load_check_dragon.var:gene_dragon_tertiary_value }
-					# Olhos e chifres (cor)
-					set_variable = { name = gene_dragon_eye_color_hue              value = scope:dob_load_check_dragon.var:gene_dragon_eye_color_hue }
-					set_variable = { name = gene_dragon_eye_color_value            value = scope:dob_load_check_dragon.var:gene_dragon_eye_color_value }
-					set_variable = { name = gene_dragon_horn_color_hue             value = scope:dob_load_check_dragon.var:gene_dragon_horn_color_hue }
-					set_variable = { name = gene_dragon_horn_color_value           value = scope:dob_load_check_dragon.var:gene_dragon_horn_color_value }
-					# Forma do corpo / cabeça
-					set_variable = { name = gene_dragon_brow_width                 value = scope:dob_load_check_dragon.var:gene_dragon_brow_width }
-					set_variable = { name = gene_dragon_cheek_width                value = scope:dob_load_check_dragon.var:gene_dragon_cheek_width }
-					set_variable = { name = gene_dragon_chin_profile               value = scope:dob_load_check_dragon.var:gene_dragon_chin_profile }
-					set_variable = { name = gene_dragon_crest_depth                value = scope:dob_load_check_dragon.var:gene_dragon_crest_depth }
-					set_variable = { name = gene_dragon_head_roundness             value = scope:dob_load_check_dragon.var:gene_dragon_head_roundness }
-					set_variable = { name = gene_dragon_jaw_width                  value = scope:dob_load_check_dragon.var:gene_dragon_jaw_width }
-					set_variable = { name = gene_dragon_lower_jaw_height           value = scope:dob_load_check_dragon.var:gene_dragon_lower_jaw_height }
-					set_variable = { name = gene_dragon_lower_jaw_width            value = scope:dob_load_check_dragon.var:gene_dragon_lower_jaw_width }
-					set_variable = { name = gene_dragon_upper_jaw_width            value = scope:dob_load_check_dragon.var:gene_dragon_upper_jaw_width }
-					set_variable = { name = gene_dragon_outer_brow_height          value = scope:dob_load_check_dragon.var:gene_dragon_outer_brow_height }
-					# Focinho / snout
-					set_variable = { name = gene_dragon_snout_height               value = scope:dob_load_check_dragon.var:gene_dragon_snout_height }
-					set_variable = { name = gene_dragon_snout_length               value = scope:dob_load_check_dragon.var:gene_dragon_snout_length }
-					set_variable = { name = gene_dragon_snout_profile              value = scope:dob_load_check_dragon.var:gene_dragon_snout_profile }
-					set_variable = { name = gene_dragon_snout_width                value = scope:dob_load_check_dragon.var:gene_dragon_snout_width }
-					set_variable = { name = gene_dragon_snout_end_width            value = scope:dob_load_check_dragon.var:gene_dragon_snout_end_width }
-					# Chifres e cristas
-					set_variable = { name = gene_dragon_horns_eyebrow_length       value = scope:dob_load_check_dragon.var:gene_dragon_horns_eyebrow_length }
-					set_variable = { name = gene_dragon_horns_eyebrow              value = scope:dob_load_check_dragon.var:gene_dragon_horns_eyebrow }
-					set_variable = { name = gene_dragon_main_horn_shape_template   value = scope:dob_load_check_dragon.var:gene_dragon_main_horn_shape_template }
-					set_variable = { name = gene_dragon_main_horn_shape_value      value = scope:dob_load_check_dragon.var:gene_dragon_main_horn_shape_value }
-					# Sombreamento corpo e asas
-					set_variable = { name = gene_dragon_body_shading_template      value = scope:dob_load_check_dragon.var:gene_dragon_body_shading_template }
-					set_variable = { name = gene_dragon_body_shading_value         value = scope:dob_load_check_dragon.var:gene_dragon_body_shading_value }
-					set_variable = { name = gene_dragon_wings_shading_template     value = scope:dob_load_check_dragon.var:gene_dragon_wings_shading_template }
-					set_variable = { name = gene_dragon_wings_shading_value        value = scope:dob_load_check_dragon.var:gene_dragon_wings_shading_value }
-					# Espinhos, barbatanas, cauda, pescoço
-					set_variable = { name = gene_dragon_center_fin_size            value = scope:dob_load_check_dragon.var:gene_dragon_center_fin_size }
-					set_variable = { name = gene_dragon_back_spike_size            value = scope:dob_load_check_dragon.var:gene_dragon_back_spike_size }
-					set_variable = { name = gene_dragon_neck_spike_size            value = scope:dob_load_check_dragon.var:gene_dragon_neck_spike_size }
-					set_variable = { name = gene_dragon_side_fin_size              value = scope:dob_load_check_dragon.var:gene_dragon_side_fin_size }
-					set_variable = { name = gene_dragon_neck_length                value = scope:dob_load_check_dragon.var:gene_dragon_neck_length }
-					set_variable = { name = gene_dragon_old_neck                   value = scope:dob_load_check_dragon.var:gene_dragon_old_neck }
-					set_variable = { name = gene_dragon_tail_length                value = scope:dob_load_check_dragon.var:gene_dragon_tail_length }
-					# Escamas metálicas e ferimento
-					set_variable = { name = gene_dragon_metallic_scales_strength   value = scope:dob_load_check_dragon.var:gene_dragon_metallic_scales_strength }
-					set_variable = { name = gene_dragon_wounded                    value = scope:dob_load_check_dragon.var:gene_dragon_wounded }
+					var:dragon_id ?= root
 				}
 			}
 		}
+		dob_estimate_dragon_size_from_age = yes
+		if = {
+			limit = { NOT = { has_variable = dragon_age } }
+			set_variable = { name = dragon_age value = { value = 0 add = age } }
+		}
+		if = {
+			limit = { NOT = { has_variable = gene_dragon_body_shading_template } }
+			agot_gen_appearance_variables = yes
+		}
+		agot_dragon_transfer_vars_to_story_cycle_effect = { DRAGON = this }
 	}
 }
 
@@ -359,29 +252,26 @@ dob_fix_all_broken_dragons = {
 	save_scope_as = dob_fix_caller
 	set_variable = { name = dob_fix_count value = 0 }
 
+	# FIX: iterate story nodes directly — funciona de qualquer scope
+	# Caso 1: dragões na story com size_base = 0 → recriar
+	every_in_global_list = {
+		variable = gl_dragon_variable_storage
+		limit = {
+			exists = var:dragon_id
+			var:dragon_size_base <= 0
+		}
+		var:dragon_id = { dob_fix_single_dragon_delete_recreate = yes }
+	}
+	# Caso 2: dragões fora da story (MDE sem registro) → registrar
 	every_living_dragon = {
-		save_temporary_scope_as = current_dob_dragon_check
-		if = {
-			limit = {
-				OR = {
-					# Dragão está na lista com tamanho 0 na story
-					any_in_global_list = {
-						variable = gl_dragon_variable_storage
-						var:dragon_id ?= scope:current_dob_dragon_check
-						var:dragon_size_base <= 0
-					}
-					# Dragão não está na lista (mod sem registro)
-					NOT = {
-						any_in_global_list = {
-							variable = gl_dragon_variable_storage
-							var:dragon_id ?= scope:current_dob_dragon_check
-						}
-					}
+		limit = {
+			NOT = {
+				any_in_global_list = {
+					variable = gl_dragon_variable_storage
+					var:dragon_id ?= root
 				}
 			}
-			dob_fix_single_dragon_delete_recreate = yes
 		}
-		else = {
-		}
+		dob_fix_single_dragon_delete_recreate = yes
 	}
 }

@@ -310,17 +310,24 @@ dob_on_monthly_pulse = {
 		}
 
 		# ── Skybreaker: aplicar habilidade em dragões Tier 10 (size >= 170) ──────────────────
-		# Roda todo mês para o player, pegando dragões que cruzaram o tier 10
-		# O guard NOT = { has_character_modifier } garante que não há duplicários
-		# FIX: every_living_character NÃO inclui dragões — usar every_living_dragon
+		# FIX: iterar a gl_dragon_variable_storage (story nodes) diretamente—funciona de qualquer scope.
+		# var:dragon_size na story é atualizado diariamente pela story cycle (days=0 effect group).
+		# years=100: modifier fica visível em GetTimedModifiers no GUI do dragão.
 		if = {
 			limit = { is_ai = no }
-			every_living_dragon = {
+			every_in_global_list = {
+				variable = gl_dragon_variable_storage
 				limit = {
-					dragon_size >= 170
-					NOT = { has_character_modifier = dob_dragon_skybreaker }
+					exists = var:dragon_id
+					var:dragon_size >= 170
+					NOT = { var:dragon_id = { has_character_modifier = dob_dragon_skybreaker } }
 				}
-				add_character_modifier = dob_dragon_skybreaker
+				var:dragon_id = {
+					add_character_modifier = {
+						modifier = dob_dragon_skybreaker
+						years = 100
+					}
+				}
 			}
 		}
 
@@ -603,26 +610,60 @@ dob_on_dragon_birthday = {
 					}
 					set_variable = { name = dragon_size_base value = 5 }
 				}
-				# FIX CRÍTICO: Propagar dragon_size_base E dragon_size para a story cycle.
-				# O AGOT lê dragon_size da story (gl_dragon_variable_storage), não do character.
-				# Sem atualizar dragon_size (não só dragon_size_base), o tier visível não muda.
-				save_temporary_scope_as = dob_bday_sync_dragon
+				# FIX CRÍTICO: Propagar piso de tamanho diretamente para o story node.
+				# Abordagem direta: comparar cada bracket de IDADE com o var:dragon_size_base
+				# do story node. Não depende de ler var do personagem (que AGOT remove no on_setup).
+				save_temporary_scope_as = dob_bday_dragon
 				every_in_global_list = {
 					variable = gl_dragon_variable_storage
-					limit = { var:dragon_id ?= scope:dob_bday_sync_dragon }
+					limit = { var:dragon_id ?= scope:dob_bday_dragon }
 					if = {
-						limit = { var:dragon_size_base < scope:dob_bday_sync_dragon.var:dragon_size_base }
-						set_variable = { name = dragon_size_base value = scope:dob_bday_sync_dragon.var:dragon_size_base }
+						limit = { scope:dob_bday_dragon = { age >= 80 } var:dragon_size_base < 175 }
+						set_variable = { name = dragon_size_base value = 175 }
 					}
-					# CRÍTICO: também atualizar dragon_size (valor lido pelo script value dragon_size)
-					if = {
-						limit = {
-							OR = {
-								NOT = { has_variable = dragon_size }
-								var:dragon_size < scope:dob_bday_sync_dragon.var:dragon_size_base
-							}
-						}
-						set_variable = { name = dragon_size value = scope:dob_bday_sync_dragon.var:dragon_size_base }
+					else_if = {
+						limit = { scope:dob_bday_dragon = { age >= 75 } var:dragon_size_base < 150 }
+						set_variable = { name = dragon_size_base value = 150 }
+					}
+					else_if = {
+						limit = { scope:dob_bday_dragon = { age >= 60 } var:dragon_size_base < 135 }
+						set_variable = { name = dragon_size_base value = 135 }
+					}
+					else_if = {
+						limit = { scope:dob_bday_dragon = { age >= 45 } var:dragon_size_base < 120 }
+						set_variable = { name = dragon_size_base value = 120 }
+					}
+					else_if = {
+						limit = { scope:dob_bday_dragon = { age >= 40 } var:dragon_size_base < 110 }
+						set_variable = { name = dragon_size_base value = 110 }
+					}
+					else_if = {
+						limit = { scope:dob_bday_dragon = { age >= 35 } var:dragon_size_base < 95 }
+						set_variable = { name = dragon_size_base value = 95 }
+					}
+					else_if = {
+						limit = { scope:dob_bday_dragon = { age >= 30 } var:dragon_size_base < 80 }
+						set_variable = { name = dragon_size_base value = 80 }
+					}
+					else_if = {
+						limit = { scope:dob_bday_dragon = { age >= 25 } var:dragon_size_base < 65 }
+						set_variable = { name = dragon_size_base value = 65 }
+					}
+					else_if = {
+						limit = { scope:dob_bday_dragon = { age >= 20 } var:dragon_size_base < 50 }
+						set_variable = { name = dragon_size_base value = 50 }
+					}
+					else_if = {
+						limit = { scope:dob_bday_dragon = { age >= 15 } var:dragon_size_base < 40 }
+						set_variable = { name = dragon_size_base value = 40 }
+					}
+					else_if = {
+						limit = { scope:dob_bday_dragon = { age >= 10 } var:dragon_size_base < 30 }
+						set_variable = { name = dragon_size_base value = 30 }
+					}
+					else_if = {
+						limit = { scope:dob_bday_dragon = { age >= 5 } var:dragon_size_base < 15 }
+						set_variable = { name = dragon_size_base value = 15 }
 					}
 				}
 				# Após garantir dragon_size_base e dragon_size corretos, atualizar modifier do rider
@@ -640,12 +681,15 @@ dob_on_dragon_birthday = {
 			}
 		}
 		# ── Skybreaker: todo dragão que atingir Tier 10 ganha a habilidade ──────────
-		# Roda no aniversário de TODOS os dragões (scope: o dragão)
+		# Roda no aniversário (scope = o dragão). years=100 para aparecer no GetTimedModifiers.
 		if = {
 			limit = {
 				has_trait = dragon
 				dragon_size >= 170
 				NOT = { has_character_modifier = dob_dragon_skybreaker }
 			}
-			add_character_modifier = dob_dragon_skybreaker
+			add_character_modifier = {
+				modifier = dob_dragon_skybreaker
+				years = 100
+			}
 		}
