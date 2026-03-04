@@ -312,11 +312,11 @@ dob_on_monthly_pulse = {
 		# ── Skybreaker: aplicar habilidade em dragões Tier 10 (size >= 170) ──────────────────
 		# Roda todo mês para o player, pegando dragões que cruzaram o tier 10
 		# O guard NOT = { has_character_modifier } garante que não há duplicários
+		# FIX: every_living_character NÃO inclui dragões — usar every_living_dragon
 		if = {
 			limit = { is_ai = no }
-			every_living_character = {
+			every_living_dragon = {
 				limit = {
-					has_trait = dragon
 					dragon_size >= 170
 					NOT = { has_character_modifier = dob_dragon_skybreaker }
 				}

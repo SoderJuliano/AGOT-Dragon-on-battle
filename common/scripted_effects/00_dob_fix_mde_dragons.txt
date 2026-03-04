@@ -163,8 +163,7 @@ dob_fix_single_dragon_delete_recreate = {
 # Scope: nenhum (chamado de dob_on_game_start via every_living_character)
 # ─────────────────────────────────────────────────────────────────────────────
 dob_correct_all_dragon_sizes_on_load = {
-	every_living_character = {
-		limit = { has_trait = dragon }
+	every_living_dragon = {
 		save_temporary_scope_as = dob_load_check_dragon
 
 		if = {
@@ -360,8 +359,7 @@ dob_fix_all_broken_dragons = {
 	save_scope_as = dob_fix_caller
 	set_variable = { name = dob_fix_count value = 0 }
 
-	every_living_character = {
-		limit = { has_trait = dragon }
+	every_living_dragon = {
 		save_temporary_scope_as = current_dob_dragon_check
 		if = {
 			limit = {
