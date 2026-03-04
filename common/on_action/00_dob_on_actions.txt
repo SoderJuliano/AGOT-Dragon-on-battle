@@ -443,200 +443,65 @@ dob_on_dragon_birthday = {
 			agot_dragon_transfer_vars_to_story_cycle_effect = { DRAGON = this }
 		}
 		else = {
-			# Dragão já está na lista com size_base > 0 → crescimento normal AGOT
-			# FIX CRÍTICO: se a story_cycle do AGOT estiver quebrada (erros de gene_dragon_*
-			# ou dragon_var_story_val no log), agot_apply_dragon_aging_effect não incrementa
-			# dragon_size_base. Aplica um piso mínimo por idade para garantir crescimento contínuo.
-			# Regra: só AUMENTA nunca diminui (se AGOT já setou valor maior, mantém).
+			# Dragão já está na lista com size_base > 0 → aplica piso mínimo no STORY NODE.
+			# scope (root) = o DRAGÃO. Dentro de every_in_global_list, root continua sendo o dragão,
+			# this = story node. Usamos root = { age >= X } no limit (padrão AGOT, sem temp scopes).
 			if = {
 				limit = { has_trait = dragon }
-				if = {
-					limit = {
-						age >= 80
-						OR = {
-							NOT = { has_variable = dragon_size_base }
-							var:dragon_size_base < 175
-						}
-					}
-					set_variable = { name = dragon_size_base value = 175 }
-				}
-				else_if = {
-					limit = {
-						age >= 75
-						OR = {
-							NOT = { has_variable = dragon_size_base }
-							var:dragon_size_base < 150
-						}
-					}
-					set_variable = { name = dragon_size_base value = 150 }
-				}
-				else_if = {
-					limit = {
-						age >= 60
-						OR = {
-							NOT = { has_variable = dragon_size_base }
-							var:dragon_size_base < 135
-						}
-					}
-					set_variable = { name = dragon_size_base value = 135 }
-				}
-				else_if = {
-					limit = {
-						age >= 45
-						OR = {
-							NOT = { has_variable = dragon_size_base }
-							var:dragon_size_base < 120
-						}
-					}
-					set_variable = { name = dragon_size_base value = 120 }
-				}
-				else_if = {
-					limit = {
-						age >= 40
-						OR = {
-							NOT = { has_variable = dragon_size_base }
-							var:dragon_size_base < 110
-						}
-					}
-					set_variable = { name = dragon_size_base value = 110 }
-				}
-				else_if = {
-					limit = {
-						age >= 35
-						OR = {
-							NOT = { has_variable = dragon_size_base }
-							var:dragon_size_base < 95
-						}
-					}
-					set_variable = { name = dragon_size_base value = 95 }
-				}
-				else_if = {
-					limit = {
-						age >= 30
-						OR = {
-							NOT = { has_variable = dragon_size_base }
-							var:dragon_size_base < 80
-						}
-					}
-					set_variable = { name = dragon_size_base value = 80 }
-				}
-				else_if = {
-					limit = {
-						age >= 25
-						OR = {
-							NOT = { has_variable = dragon_size_base }
-							var:dragon_size_base < 65
-						}
-					}
-					set_variable = { name = dragon_size_base value = 65 }
-				}
-				else_if = {
-					limit = {
-						age >= 20
-						OR = {
-							NOT = { has_variable = dragon_size_base }
-							var:dragon_size_base < 50
-						}
-					}
-					set_variable = { name = dragon_size_base value = 50 }
-				}
-				else_if = {
-					limit = {
-						age >= 15
-						OR = {
-							NOT = { has_variable = dragon_size_base }
-							var:dragon_size_base < 40
-						}
-					}
-					set_variable = { name = dragon_size_base value = 40 }
-				}
-				else_if = {
-					limit = {
-						age >= 10
-						OR = {
-							NOT = { has_variable = dragon_size_base }
-							var:dragon_size_base < 30
-						}
-					}
-					set_variable = { name = dragon_size_base value = 30 }
-				}
-				else_if = {
-					limit = {
-						age >= 5
-						OR = {
-							NOT = { has_variable = dragon_size_base }
-							var:dragon_size_base < 15
-						}
-					}
-					set_variable = { name = dragon_size_base value = 15 }
-				}
-				else_if = {
-					limit = {
-						OR = {
-							NOT = { has_variable = dragon_size_base }
-							var:dragon_size_base < 5
-						}
-					}
-					set_variable = { name = dragon_size_base value = 5 }
-				}
-				# FIX CRÍTICO: Propagar piso de tamanho diretamente para o story node.
-				# Abordagem direta: comparar cada bracket de IDADE com o var:dragon_size_base
-				# do story node. Não depende de ler var do personagem (que AGOT remove no on_setup).
-				save_temporary_scope_as = dob_bday_dragon
 				every_in_global_list = {
 					variable = gl_dragon_variable_storage
-					limit = { var:dragon_id ?= scope:dob_bday_dragon }
+					limit = { var:dragon_id ?= root }
+					# Aplica piso por idade — só aumenta, nunca diminui
 					if = {
-						limit = { scope:dob_bday_dragon = { age >= 80 } var:dragon_size_base < 175 }
+						limit = { root = { age >= 80 } var:dragon_size_base < 175 }
 						set_variable = { name = dragon_size_base value = 175 }
 					}
 					else_if = {
-						limit = { scope:dob_bday_dragon = { age >= 75 } var:dragon_size_base < 150 }
+						limit = { root = { age >= 75 } var:dragon_size_base < 150 }
 						set_variable = { name = dragon_size_base value = 150 }
 					}
 					else_if = {
-						limit = { scope:dob_bday_dragon = { age >= 60 } var:dragon_size_base < 135 }
+						limit = { root = { age >= 60 } var:dragon_size_base < 135 }
 						set_variable = { name = dragon_size_base value = 135 }
 					}
 					else_if = {
-						limit = { scope:dob_bday_dragon = { age >= 45 } var:dragon_size_base < 120 }
+						limit = { root = { age >= 45 } var:dragon_size_base < 120 }
 						set_variable = { name = dragon_size_base value = 120 }
 					}
 					else_if = {
-						limit = { scope:dob_bday_dragon = { age >= 40 } var:dragon_size_base < 110 }
+						limit = { root = { age >= 40 } var:dragon_size_base < 110 }
 						set_variable = { name = dragon_size_base value = 110 }
 					}
 					else_if = {
-						limit = { scope:dob_bday_dragon = { age >= 35 } var:dragon_size_base < 95 }
+						limit = { root = { age >= 35 } var:dragon_size_base < 95 }
 						set_variable = { name = dragon_size_base value = 95 }
 					}
 					else_if = {
-						limit = { scope:dob_bday_dragon = { age >= 30 } var:dragon_size_base < 80 }
+						limit = { root = { age >= 30 } var:dragon_size_base < 80 }
 						set_variable = { name = dragon_size_base value = 80 }
 					}
 					else_if = {
-						limit = { scope:dob_bday_dragon = { age >= 25 } var:dragon_size_base < 65 }
+						limit = { root = { age >= 25 } var:dragon_size_base < 65 }
 						set_variable = { name = dragon_size_base value = 65 }
 					}
 					else_if = {
-						limit = { scope:dob_bday_dragon = { age >= 20 } var:dragon_size_base < 50 }
+						limit = { root = { age >= 20 } var:dragon_size_base < 50 }
 						set_variable = { name = dragon_size_base value = 50 }
 					}
 					else_if = {
-						limit = { scope:dob_bday_dragon = { age >= 15 } var:dragon_size_base < 40 }
+						limit = { root = { age >= 15 } var:dragon_size_base < 40 }
 						set_variable = { name = dragon_size_base value = 40 }
 					}
 					else_if = {
-						limit = { scope:dob_bday_dragon = { age >= 10 } var:dragon_size_base < 30 }
+						limit = { root = { age >= 10 } var:dragon_size_base < 30 }
 						set_variable = { name = dragon_size_base value = 30 }
 					}
 					else_if = {
-						limit = { scope:dob_bday_dragon = { age >= 5 } var:dragon_size_base < 15 }
+						limit = { root = { age >= 5 } var:dragon_size_base < 15 }
 						set_variable = { name = dragon_size_base value = 15 }
 					}
 				}
-				# Após garantir dragon_size_base e dragon_size corretos, atualizar modifier do rider
-				# (rider pode estar cachando o valor antigo)
+				# Atualizar modifier do rider após garantir story node correto
 				if = {
 					limit = { has_variable = current_rider exists = var:current_rider }
 					var:current_rider = {
