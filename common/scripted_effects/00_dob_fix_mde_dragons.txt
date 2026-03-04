@@ -23,57 +23,59 @@
 #   Age 11-15: +2 size/year (adolescent)
 #   Age 15+: +~1 size/year (adult, já crescido)
 # Valores aproximados, conservadores (sem traits de physique).
+# Tiers reais AGOT: 0=<30 | 1=30-60 | 2=60-90 | 3=90-120 | 4=120-150 | 5=150-180
+#               6=180-210 | 7=210-240 | 8=240-270 | 9=270-300 | 10=300+
 dob_estimate_dragon_size_from_age = {
 	if = {
 		limit = { age >= 80 }
-		set_variable = { name = dragon_size_base value = 175 }
+		set_variable = { name = dragon_size_base value = 300 }
 	}
 	else_if = {
 		limit = { age >= 75 }
-		set_variable = { name = dragon_size_base value = 150 }
+		set_variable = { name = dragon_size_base value = 270 }
 	}
 	else_if = {
 		limit = { age >= 60 }
-		set_variable = { name = dragon_size_base value = 135 }
+		set_variable = { name = dragon_size_base value = 240 }
 	}
 	else_if = {
 		limit = { age >= 45 }
-		set_variable = { name = dragon_size_base value = 120 }
+		set_variable = { name = dragon_size_base value = 210 }
 	}
 	else_if = {
 		limit = { age >= 40 }
-		set_variable = { name = dragon_size_base value = 110 }
+		set_variable = { name = dragon_size_base value = 180 }
 	}
 	else_if = {
 		limit = { age >= 35 }
-		set_variable = { name = dragon_size_base value = 95 }
+		set_variable = { name = dragon_size_base value = 150 }
 	}
 	else_if = {
 		limit = { age >= 30 }
-		set_variable = { name = dragon_size_base value = 80 }
+		set_variable = { name = dragon_size_base value = 120 }
 	}
 	else_if = {
 		limit = { age >= 25 }
-		set_variable = { name = dragon_size_base value = 65 }
+		set_variable = { name = dragon_size_base value = 90 }
 	}
 	else_if = {
 		limit = { age >= 20 }
-		set_variable = { name = dragon_size_base value = 50 }
+		set_variable = { name = dragon_size_base value = 75 }
 	}
 	else_if = {
 		limit = { age >= 15 }
-		set_variable = { name = dragon_size_base value = 40 }
+		set_variable = { name = dragon_size_base value = 60 }
 	}
 	else_if = {
 		limit = { age >= 10 }
-		set_variable = { name = dragon_size_base value = 30 }
+		set_variable = { name = dragon_size_base value = 40 }
 	}
 	else_if = {
 		limit = { age >= 5 }
-		set_variable = { name = dragon_size_base value = 15 }
+		set_variable = { name = dragon_size_base value = 30 }
 	}
 	else = {
-		set_variable = { name = dragon_size_base value = 5 }
+		set_variable = { name = dragon_size_base value = 10 }
 	}
 }
 
@@ -163,73 +165,64 @@ dob_fix_single_dragon_delete_recreate = {
 # Scope: nenhum (chamado de dob_on_game_start via every_living_character)
 # ─────────────────────────────────────────────────────────────────────────────
 dob_correct_all_dragon_sizes_on_load = {
-	# Padrão AGOT (idêntico ao change_dragon_size):
-	#   1. Para cada dragão vivo: salva dragão como scope nomeado (save_scope_as)
-	#   2. Dentro de every_in_global_list: salva story node como scope temporário
-	#   3. FORA do loop: usa scope:dob_sn para ler/escrever dragon_size_base
-	# Garante que scope:dob_sn está disponível no contexto correto.
-	every_living_dragon = {
-		limit = { is_alive = yes }
-		save_scope_as = dob_dtf					# dob_dtf = dragon to fix
-		every_in_global_list = {
-			variable = gl_dragon_variable_storage
-			limit = { var:dragon_id ?= scope:dob_dtf }
-			save_temporary_scope_as = dob_sn	# dob_sn = story node (padrão AGOT)
+	# Abordagem simplificada: iterar story nodes diretamente.
+	# "this" já é o story node → var:dragon_id = dragão, var:dragon_size_base = base size.
+	# Sem complexidade de save_scope_as aninhado. Só AUMENTA, nunca diminui.
+	# Tiers reais: 0=<30 | 1=30 | 2=60 | 3=90 | 4=120 | 5=150 | 6=180 | 7=210 | 8=240 | 9=270 | 10=300
+	every_in_global_list = {
+		variable = gl_dragon_variable_storage
+		limit = {
+			exists = var:dragon_id
+			var:dragon_id = { is_alive = yes }	# ignorar dragões mortos
 		}
-		# Usa scope:dob_sn FORA do loop — exatamente como change_dragon_size faz
-		# scope:dob_dtf = dragão, scope:dob_sn = story node. Só AUMENTA nunca diminui.
+		# this = story node; var:dragon_id = character do dragão; var:dragon_size_base = tamanho base
 		if = {
-			limit = { exists = scope:dob_sn }
-			scope:dob_sn = {
-				if = {
-					limit = { scope:dob_dtf = { age >= 80 } var:dragon_size_base < 175 }
-					set_variable = { name = dragon_size_base value = 175 }
-				}
-				else_if = {
-					limit = { scope:dob_dtf = { age >= 75 } var:dragon_size_base < 150 }
-					set_variable = { name = dragon_size_base value = 150 }
-				}
-				else_if = {
-					limit = { scope:dob_dtf = { age >= 60 } var:dragon_size_base < 135 }
-					set_variable = { name = dragon_size_base value = 135 }
-				}
-				else_if = {
-					limit = { scope:dob_dtf = { age >= 45 } var:dragon_size_base < 120 }
-					set_variable = { name = dragon_size_base value = 120 }
-				}
-				else_if = {
-					limit = { scope:dob_dtf = { age >= 40 } var:dragon_size_base < 110 }
-					set_variable = { name = dragon_size_base value = 110 }
-				}
-				else_if = {
-					limit = { scope:dob_dtf = { age >= 35 } var:dragon_size_base < 95 }
-					set_variable = { name = dragon_size_base value = 95 }
-				}
-				else_if = {
-					limit = { scope:dob_dtf = { age >= 30 } var:dragon_size_base < 80 }
-					set_variable = { name = dragon_size_base value = 80 }
-				}
-				else_if = {
-					limit = { scope:dob_dtf = { age >= 25 } var:dragon_size_base < 65 }
-					set_variable = { name = dragon_size_base value = 65 }
-				}
-				else_if = {
-					limit = { scope:dob_dtf = { age >= 20 } var:dragon_size_base < 50 }
-					set_variable = { name = dragon_size_base value = 50 }
-				}
-				else_if = {
-					limit = { scope:dob_dtf = { age >= 15 } var:dragon_size_base < 40 }
-					set_variable = { name = dragon_size_base value = 40 }
-				}
-				else_if = {
-					limit = { scope:dob_dtf = { age >= 10 } var:dragon_size_base < 30 }
-					set_variable = { name = dragon_size_base value = 30 }
-				}
-				else_if = {
-					limit = { scope:dob_dtf = { age >= 5 } var:dragon_size_base < 15 }
-					set_variable = { name = dragon_size_base value = 15 }
-				}
-			}
+			limit = { var:dragon_id = { age >= 80 } var:dragon_size_base < 300 }
+			set_variable = { name = dragon_size_base value = 300 }
+		}
+		else_if = {
+			limit = { var:dragon_id = { age >= 75 } var:dragon_size_base < 270 }
+			set_variable = { name = dragon_size_base value = 270 }
+		}
+		else_if = {
+			limit = { var:dragon_id = { age >= 60 } var:dragon_size_base < 240 }
+			set_variable = { name = dragon_size_base value = 240 }
+		}
+		else_if = {
+			limit = { var:dragon_id = { age >= 45 } var:dragon_size_base < 210 }
+			set_variable = { name = dragon_size_base value = 210 }
+		}
+		else_if = {
+			limit = { var:dragon_id = { age >= 40 } var:dragon_size_base < 180 }
+			set_variable = { name = dragon_size_base value = 180 }
+		}
+		else_if = {
+			limit = { var:dragon_id = { age >= 35 } var:dragon_size_base < 150 }
+			set_variable = { name = dragon_size_base value = 150 }
+		}
+		else_if = {
+			limit = { var:dragon_id = { age >= 30 } var:dragon_size_base < 120 }
+			set_variable = { name = dragon_size_base value = 120 }
+		}
+		else_if = {
+			limit = { var:dragon_id = { age >= 25 } var:dragon_size_base < 90 }
+			set_variable = { name = dragon_size_base value = 90 }
+		}
+		else_if = {
+			limit = { var:dragon_id = { age >= 20 } var:dragon_size_base < 75 }
+			set_variable = { name = dragon_size_base value = 75 }
+		}
+		else_if = {
+			limit = { var:dragon_id = { age >= 15 } var:dragon_size_base < 60 }
+			set_variable = { name = dragon_size_base value = 60 }
+		}
+		else_if = {
+			limit = { var:dragon_id = { age >= 10 } var:dragon_size_base < 40 }
+			set_variable = { name = dragon_size_base value = 40 }
+		}
+		else_if = {
+			limit = { var:dragon_id = { age >= 5 } var:dragon_size_base < 30 }
+			set_variable = { name = dragon_size_base value = 30 }
 		}
 	}
 	# Caso A: dragões fora da story cycle (MDE sem registro) — usar every_living_dragon como fallback
@@ -268,6 +261,7 @@ dob_fix_all_broken_dragons = {
 		variable = gl_dragon_variable_storage
 		limit = {
 			exists = var:dragon_id
+			var:dragon_id = { is_alive = yes }	# ignorar personagens mortos
 			var:dragon_size_base <= 0
 		}
 		var:dragon_id = { dob_fix_single_dragon_delete_recreate = yes }
