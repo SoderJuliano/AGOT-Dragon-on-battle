@@ -25,64 +25,65 @@
 # Valores aproximados, conservadores (sem traits de physique).
 # Tiers reais AGOT: 0=<30 | 1=30-60 | 2=60-90 | 3=90-120 | 4=120-150 | 5=150-180
 #               6=180-210 | 7=210-240 | 8=240-270 | 9=270-300 | 10=300+
-# Floors conservadores: garantem o PISO do tier por idade sem empurrar para tiers altos.
-# dragon_size = dragon_size_base * multiplicador de physique (max ~1.5x).
-# Ex: age=45 → base=180 (Tier6) * 1.0 = 180 (Tier6); * 1.5 = 270 (Tier9). Razoável.
+# Floors de EMERGÊNCIA: apenas para dragões quebrados (size=0 ou MDE não-registrado).
+# O AGOT cresce dragões naturalmente via birthday events. Esses pisos SÓ devem
+# interferir se o size_base for impossívelmente baixo para a idade.
+# Com physique_good_3 (x1.5): age80→90x1.5=135 (Tier4); age55→45x1.5=67 (Tier2).
 dob_estimate_dragon_size_from_age = {
 	if = {
-		limit = { age >= 80 }
-		set_variable = { name = dragon_size_base value = 300 }
+		limit = { age >= 150 }
+		set_variable = { name = dragon_size_base value = 200 }
 	}
 	else_if = {
-		limit = { age >= 75 }
-		set_variable = { name = dragon_size_base value = 270 }
-	}
-	else_if = {
-		limit = { age >= 65 }
-		set_variable = { name = dragon_size_base value = 240 }
-	}
-	else_if = {
-		limit = { age >= 55 }
-		set_variable = { name = dragon_size_base value = 210 }
-	}
-	else_if = {
-		limit = { age >= 45 }
-		set_variable = { name = dragon_size_base value = 180 }
-	}
-	else_if = {
-		limit = { age >= 40 }
+		limit = { age >= 120 }
 		set_variable = { name = dragon_size_base value = 150 }
 	}
 	else_if = {
-		limit = { age >= 35 }
+		limit = { age >= 100 }
 		set_variable = { name = dragon_size_base value = 120 }
 	}
 	else_if = {
-		limit = { age >= 30 }
+		limit = { age >= 80 }
 		set_variable = { name = dragon_size_base value = 90 }
 	}
 	else_if = {
-		limit = { age >= 25 }
-		set_variable = { name = dragon_size_base value = 75 }
-	}
-	else_if = {
-		limit = { age >= 20 }
+		limit = { age >= 65 }
 		set_variable = { name = dragon_size_base value = 60 }
 	}
 	else_if = {
-		limit = { age >= 15 }
-		set_variable = { name = dragon_size_base value = 40 }
+		limit = { age >= 55 }
+		set_variable = { name = dragon_size_base value = 45 }
 	}
 	else_if = {
-		limit = { age >= 10 }
+		limit = { age >= 45 }
 		set_variable = { name = dragon_size_base value = 30 }
 	}
 	else_if = {
-		limit = { age >= 5 }
+		limit = { age >= 35 }
+		set_variable = { name = dragon_size_base value = 20 }
+	}
+	else_if = {
+		limit = { age >= 25 }
 		set_variable = { name = dragon_size_base value = 15 }
 	}
+	else_if = {
+		limit = { age >= 20 }
+		set_variable = { name = dragon_size_base value = 10 }
+	}
+	else_if = {
+		limit = { age >= 15 }
+		set_variable = { name = dragon_size_base value = 6 }
+	}
+	else_if = {
+		limit = { age >= 10 }
+		set_variable = { name = dragon_size_base value = 3 }
+	}
+	else_if = {
+		limit = { age >= 5 }
+		set_variable = { name = dragon_size_base value = 2 }
+	}
 	else = {
-		set_variable = { name = dragon_size_base value = 5 }
+		set_variable = { name = dragon_size_base value = 1 }
 	}
 }
 
@@ -201,57 +202,55 @@ dob_correct_all_dragon_sizes_on_load = {
 			var:dragon_id = { is_alive = yes }	# ignorar dragões mortos
 		}
 		# this = story node; var:dragon_id = character do dragão; var:dragon_size_base = tamanho base
+		# Floors de EMERGÊNCIA — só interferem se size_base for impossívelmente baixo.
+		# Com physique_good_3 (x1.5): age150→200x1.5=300 (T10); age80→90x1.5=135 (T4); age55→45x1.5=67 (T2)
 		if = {
-			limit = { var:dragon_id = { age >= 80 } var:dragon_size_base < 300 }
-			set_variable = { name = dragon_size_base value = 300 }
+			limit = { var:dragon_id = { age >= 150 } var:dragon_size_base < 200 }
+			set_variable = { name = dragon_size_base value = 200 }
 		}
 		else_if = {
-			limit = { var:dragon_id = { age >= 75 } var:dragon_size_base < 270 }
-			set_variable = { name = dragon_size_base value = 270 }
-		}
-		else_if = {
-			limit = { var:dragon_id = { age >= 65 } var:dragon_size_base < 240 }
-			set_variable = { name = dragon_size_base value = 240 }
-		}
-		else_if = {
-			limit = { var:dragon_id = { age >= 55 } var:dragon_size_base < 210 }
-			set_variable = { name = dragon_size_base value = 210 }
-		}
-		else_if = {
-			limit = { var:dragon_id = { age >= 45 } var:dragon_size_base < 180 }
-			set_variable = { name = dragon_size_base value = 180 }
-		}
-		else_if = {
-			limit = { var:dragon_id = { age >= 40 } var:dragon_size_base < 150 }
+			limit = { var:dragon_id = { age >= 120 } var:dragon_size_base < 150 }
 			set_variable = { name = dragon_size_base value = 150 }
 		}
 		else_if = {
-			limit = { var:dragon_id = { age >= 35 } var:dragon_size_base < 120 }
+			limit = { var:dragon_id = { age >= 100 } var:dragon_size_base < 120 }
 			set_variable = { name = dragon_size_base value = 120 }
 		}
 		else_if = {
-			limit = { var:dragon_id = { age >= 30 } var:dragon_size_base < 90 }
+			limit = { var:dragon_id = { age >= 80 } var:dragon_size_base < 90 }
 			set_variable = { name = dragon_size_base value = 90 }
 		}
 		else_if = {
-			limit = { var:dragon_id = { age >= 25 } var:dragon_size_base < 75 }
-			set_variable = { name = dragon_size_base value = 75 }
-		}
-		else_if = {
-			limit = { var:dragon_id = { age >= 20 } var:dragon_size_base < 60 }
+			limit = { var:dragon_id = { age >= 65 } var:dragon_size_base < 60 }
 			set_variable = { name = dragon_size_base value = 60 }
 		}
 		else_if = {
-			limit = { var:dragon_id = { age >= 15 } var:dragon_size_base < 40 }
-			set_variable = { name = dragon_size_base value = 40 }
+			limit = { var:dragon_id = { age >= 55 } var:dragon_size_base < 45 }
+			set_variable = { name = dragon_size_base value = 45 }
 		}
 		else_if = {
-			limit = { var:dragon_id = { age >= 10 } var:dragon_size_base < 30 }
+			limit = { var:dragon_id = { age >= 45 } var:dragon_size_base < 30 }
 			set_variable = { name = dragon_size_base value = 30 }
 		}
 		else_if = {
-			limit = { var:dragon_id = { age >= 5 } var:dragon_size_base < 15 }
+			limit = { var:dragon_id = { age >= 35 } var:dragon_size_base < 20 }
+			set_variable = { name = dragon_size_base value = 20 }
+		}
+		else_if = {
+			limit = { var:dragon_id = { age >= 25 } var:dragon_size_base < 15 }
 			set_variable = { name = dragon_size_base value = 15 }
+		}
+		else_if = {
+			limit = { var:dragon_id = { age >= 20 } var:dragon_size_base < 10 }
+			set_variable = { name = dragon_size_base value = 10 }
+		}
+		else_if = {
+			limit = { var:dragon_id = { age >= 15 } var:dragon_size_base < 6 }
+			set_variable = { name = dragon_size_base value = 6 }
+		}
+		else_if = {
+			limit = { var:dragon_id = { age >= 5 } var:dragon_size_base < 3 }
+			set_variable = { name = dragon_size_base value = 3 }
 		}
 	}
 	# Caso A: dragões fora da story cycle (MDE sem registro) — usar every_living_dragon como fallback

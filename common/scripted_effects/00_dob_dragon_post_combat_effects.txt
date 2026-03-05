@@ -741,11 +741,12 @@ dob_record_battle_dragons_effect = {
 	# ── Gravar dragões ALIADOS (player's side = root) ─────────────────────────────
 	# FIX: removido has_trait = dragonrider (dragões MDE não têm esse trait)
 	# FIX: adicionado every_side_knight para capturar cavaleiros com dragão (não só commanders)
+	# FIX: removido dragon_size >= 1 — dragões sem story node registrado têm size=0 e eram ignorados
 	every_side_commander = {
 		limit = {
 			has_variable = current_dragon
 			exists = var:current_dragon
-			var:current_dragon = { dragon_size >= 1 }
+			var:current_dragon = { is_alive = yes has_trait = dragon }
 		}
 		save_scope_as = dob_rec_rider
 		var:current_dragon = { save_scope_as = dob_rec_dragon }
@@ -784,7 +785,7 @@ dob_record_battle_dragons_effect = {
 		limit = {
 			has_variable = current_dragon
 			exists = var:current_dragon
-			var:current_dragon = { dragon_size >= 1 }
+			var:current_dragon = { is_alive = yes has_trait = dragon }
 		}
 		save_scope_as = dob_rec_rider
 		var:current_dragon = { save_scope_as = dob_rec_dragon }
@@ -826,7 +827,7 @@ dob_record_battle_dragons_effect = {
 			limit = {
 				has_variable = current_dragon
 				exists = var:current_dragon
-				var:current_dragon = { dragon_size >= 1 }
+				var:current_dragon = { is_alive = yes has_trait = dragon }
 			}
 			save_scope_as = dob_rec_rider
 			var:current_dragon = { save_scope_as = dob_rec_dragon }
@@ -865,7 +866,7 @@ dob_record_battle_dragons_effect = {
 			limit = {
 				has_variable = current_dragon
 				exists = var:current_dragon
-				var:current_dragon = { dragon_size >= 1 }
+				var:current_dragon = { is_alive = yes has_trait = dragon }
 			}
 			save_scope_as = dob_rec_rider
 			var:current_dragon = { save_scope_as = dob_rec_dragon }
