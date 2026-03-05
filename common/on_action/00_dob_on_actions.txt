@@ -210,7 +210,48 @@ dob_on_game_start = {
 	}
 }
 
-# ── Hook 5b: Morte de personagem — limpa story node do dragão morto IMEDIATAMENTE ──
+# ── Hook 5b: Coroação / Sucessão — limpa story nodes ANTES do AGOT processar bond schemes ──
+# Root = personagem que ganhou o título.
+# AGOT dispara agot_dragon_maintenance.0101 (Bond Scheme) quando um novo rei é coroado.
+# Este hook tem PRIORIDADE sobre os hooks do AGOT porque nosso arquivo "00_dob_"
+# ordena alfabeticamente ANTES de "agot_" — logo o cleanup roda ANTES do bond scheme.
+# Isso resolve o crash quando um dragão morto (ex: char 287337) ainda está na lista.
+on_title_gain = {
+	on_actions = { dob_on_title_gain_cleanup }
+}
+
+on_new_holder = {
+	on_actions = { dob_on_title_gain_cleanup }
+}
+
+dob_on_title_gain_cleanup = {
+	effect = {
+		# Filtra apenas para reinos e impérios (onde bond schemes são ativados na coroação)
+		# Evita performance hit em cada condado/baronia que muda de dono
+		if = {
+			limit = {
+				OR = {
+					scope:title = { tier >= tier_kingdom }
+					# Fallback: sem scope:title disponível (on_new_holder pode não ter)
+					NOT = { exists = scope:title }
+				}
+			}
+			every_in_global_list = {
+				variable = gl_dragon_variable_storage
+				limit = {
+					OR = {
+						NOT = { exists = var:dragon_id }
+						var:dragon_id = { is_alive = no }
+					}
+				}
+				remove_list_global_variable = { name = gl_dragon_variable_storage target = this }
+				end_story = yes
+			}
+		}
+	}
+}
+
+# ── Hook 5c: Morte de personagem — limpa story node do dragão morto IMEDIATAMENTE ──
 # Root = personagem morto. Sem esse hook, o story node do dragão morto permanece em
 # gl_dragon_variable_storage e o AGOT's agot_dragon_maintenance.0101 continua a tentar
 # processar o dragão inválido, causando erros em cascata e crash
