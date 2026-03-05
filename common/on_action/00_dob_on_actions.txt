@@ -210,6 +210,37 @@ dob_on_game_start = {
 	}
 }
 
+# ── Hook 5b: Morte de personagem — limpa story node do dragão morto IMEDIATAMENTE ──
+# Root = personagem morto. Sem esse hook, o story node do dragão morto permanece em
+# gl_dragon_variable_storage e o AGOT's agot_dragon_maintenance.0101 continua a tentar
+# processar o dragão inválido, causando erros em cascata e crash
+# ("Could not find widget 'dragon_character_event'").
+on_character_death = {
+	on_actions = { dob_on_character_death }
+}
+
+dob_on_character_death = {
+	effect = {
+		# Só processa dragões — personagens normais não têm story node em gl_dragon_variable_storage
+		if = {
+			limit = { has_trait = dragon }
+			# Remove TODOS os story nodes de dragões mortos da lista global
+			# (cobre também outros dragões mortos que possam ter ficado por lá)
+			every_in_global_list = {
+				variable = gl_dragon_variable_storage
+				limit = {
+					OR = {
+						NOT = { exists = var:dragon_id }
+						var:dragon_id = { is_alive = no }
+					}
+				}
+				remove_list_global_variable = { name = gl_dragon_variable_storage target = this }
+				end_story = yes
+			}
+		}
+	}
+}
+
 # ── Hook 5: Pulso mensal — atualiza modifier de poder na ficha do rider e do dragão ──
 # Root = character. Mensal para aparecer logo após instalar o mod em save existente.
 # - Dragonrider com dragão vivo: aplica/atualiza modifiers no rider E no dragão
