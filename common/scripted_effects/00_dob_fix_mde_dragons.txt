@@ -118,7 +118,8 @@ dob_fix_single_dragon_delete_recreate = {
 			name = gl_dragon_variable_storage
 			target = this
 		}
-		end_story = yes
+		# NÃO chamar end_story aqui — AGOT pode já ter encerrado esta story
+		# (dragon morreu → AGOT faz end_story → nós fazemos end_story → crash double-free)
 	}
 
 	# Passo 3: registrar o dragão de forma direta, sem criar personagem temporário
@@ -176,6 +177,8 @@ dob_correct_all_dragon_sizes_on_load = {
 	# Passo 0: remover story nodes de dragões mortos/inválidos.
 	# Necessário porque AGOT itera gl_dragon_variable_storage para eventos de manutenção
 	# (bond schemes etc.) e crasheia quando tenta abrir o GUI para personagens mortos.
+	# NÃO chamar end_story aqui — AGOT pode já ter encerrado a story do dragão morto.
+	# Chamar end_story em story já encerrada = acesso a ponteiro inválido = crash.
 	every_in_global_list = {
 		variable = gl_dragon_variable_storage
 		limit = {
@@ -188,7 +191,6 @@ dob_correct_all_dragon_sizes_on_load = {
 			name = gl_dragon_variable_storage
 			target = this
 		}
-		end_story = yes
 	}
 
 	# Abordagem simplificada: iterar story nodes diretamente.
@@ -285,7 +287,8 @@ dob_fix_all_broken_dragons = {
 
 	# Caso 0: LIMPAR story nodes de dragões mortos/inválidos da gl_dragon_variable_storage.
 	# Dragões mortos na lista fazem o AGOT tentar processar eventos para personagens inválidos
-	# → crash no GUI (dragon_character_event não encontrado). Remover a story e encerrar o ciclo.
+	# → crash no GUI. Apenas remover da lista — NÃO chamar end_story.
+	# end_story em story já encerrada pelo AGOT = double-free = acesso a ponteiro inválido = crash.
 	every_in_global_list = {
 		variable = gl_dragon_variable_storage
 		limit = {
@@ -298,7 +301,6 @@ dob_fix_all_broken_dragons = {
 			name = gl_dragon_variable_storage
 			target = this
 		}
-		end_story = yes
 	}
 
 	# FIX: iterate story nodes directly — funciona de qualquer scope

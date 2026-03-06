@@ -244,8 +244,9 @@ dob_on_title_gain_cleanup = {
 						var:dragon_id = { is_alive = no }
 					}
 				}
+				# NÃO chamar end_story — AGOT pode já ter encerrado esta story (dragon morte)
+				# end_story em story já encerrada = ponteiro inválido = EXCEPTION_ACCESS_VIOLATION
 				remove_list_global_variable = { name = gl_dragon_variable_storage target = this }
-				end_story = yes
 			}
 		}
 	}
@@ -275,9 +276,41 @@ dob_on_character_death = {
 						var:dragon_id = { is_alive = no }
 					}
 				}
+				# NÃO chamar end_story — AGOT pode já ter encerrado esta story (sua morte)
+				# end_story em story já encerrada = double-free = EXCEPTION_ACCESS_VIOLATION
 				remove_list_global_variable = { name = gl_dragon_variable_storage target = this }
-				end_story = yes
 			}
+		}
+	}
+}
+
+# ── Hook 5d: Fim de guerra — limpa lista ANTES do AGOT iterar gl_dragon_variable_storage ──
+# AGOT dispara eventos de manutenção pós-guerra que ITERAM gl_dragon_variable_storage.
+# Se um dragão morreu em batalha E a guerra acabou, há uma corrida de eventos:
+# - AGOT enqueia evento pós-guerra que itera a lista
+# - nosso on_character_death pode já ter removido o dragão, MAS a ordem não é garantida
+# Solução: hook on_war_ended roda ANTES (arquivo 00_dob_ < agot_) e limpa a lista.
+# Root = personagem vencedor/perdedor. Scope = qualquer personagem ativo.
+on_war_ended_winner = {
+	on_actions = { dob_on_war_ended_cleanup }
+}
+
+on_war_ended_loser = {
+	on_actions = { dob_on_war_ended_cleanup }
+}
+
+dob_on_war_ended_cleanup = {
+	effect = {
+		every_in_global_list = {
+			variable = gl_dragon_variable_storage
+			limit = {
+				OR = {
+					NOT = { exists = var:dragon_id }
+					var:dragon_id = { is_alive = no }
+				}
+			}
+			# Apenas remove da lista — NÃO end_story (AGOT pode já ter encerrado)
+			remove_list_global_variable = { name = gl_dragon_variable_storage target = this }
 		}
 	}
 }
