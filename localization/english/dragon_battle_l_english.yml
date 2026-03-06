@@ -181,3 +181,30 @@
  dob_dragon_skybreaker: "Skybreaker"
  dob_dragon_skybreaker_desc: "This dragon has reached the apex of its kind. At Tier 10, its sheer mass and presence sunders the sky with every wingbeat, scattering banners and breaking formations before a single flame is drawn. There is no greater size a living dragon can achieve — those who face this creature on the battlefield choose between fleeing and ash."
 
+ # ── Dragon Power modifiers (visíveis na ficha do dragão) ─────
+ dob_dragon_power_young: "Young Flame"
+ dob_dragon_power_young_desc: "A young dragon, still growing into its power. Its fire is real and its claws are sharp — but it has yet to become the terror it will one day be. Those who dismiss it do so at their peril."
+
+ dob_dragon_power_mature: "Mature Dragon"
+ dob_dragon_power_mature_desc: "This dragon has grown well beyond its youth. It is large enough to tip the scales of battle, fierce enough to scatter cavalry, and experienced enough to direct its fury where it hurts most. A formidable beast by any measure."
+
+ dob_dragon_power_great: "Great Wyrm"
+ dob_dragon_power_great_desc: "A dragon of enormous size and terrible power. Few in history have seen a beast of this magnitude — fewer still have survived opposing one. Its presence alone reshapes the battlefield, and its fire does not merely burn: it erases."
+
+ # ── Rider Dragon modifiers (visíveis na ficha do rider) ───────
+ dob_rider_dragon_young: "Rider of a Young Dragon"
+ dob_rider_dragon_young_desc: "You ride a dragon — young, but real. The realm takes notice. A dragonrider, even of a small beast, commands a respect that no sword or title alone can match."
+
+ dob_rider_dragon_mature: "Dragonlord"
+ dob_rider_dragon_mature_desc: "Your dragon has grown into a formidable beast. You command something most rulers only dream of — a mature dragon that has proven itself on the field. Lords speak your name differently now."
+
+ dob_rider_dragon_great: "Rider of a Great Wyrm"
+ dob_rider_dragon_great_desc: "You ride one of the greatest dragons alive. This is not merely a title — it is a statement of power that reshapes how every ruler in the world calculates their position relative to yours. Fear and awe follow your shadow."
+
+ # ── Battle Hardened / Wounded ─────────────────────────────────
+ dob_dragon_battle_hardened: "Battle Hardened"
+ dob_dragon_battle_hardened_desc: "This dragon has fought in battle and emerged victorious. The experience of real combat — fire exchanged, wounds narrowly avoided, enemies routed — has sharpened its instincts and hardened its resolve. It is a more dangerous creature for having fought."
+
+ dob_dragon_wounded: "Battle Wounds"
+ dob_dragon_wounded_desc: "This dragon suffered wounds in battle. It fights on, but its injuries slow its movements and dull its reactions. With rest, it will recover — and what does not kill a dragon tends to make it fiercer."
+
