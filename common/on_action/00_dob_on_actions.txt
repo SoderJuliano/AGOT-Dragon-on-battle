@@ -359,6 +359,24 @@ dob_on_yearly_pulse = {
 
 dob_on_monthly_pulse = {
 	effect = {
+		# ── PURGE dead dragons from gl_dragon_variable_storage ─────────────────────────
+		# CRÍTICO: roda para TODOS os personagens (não só player) para garantir que a
+		# lista está limpa ANTES de qualquer evento de manutenção do AGOT neste mesmo tick.
+		# O arquivo 00_dob_on_actions.txt carrega antes de agot_* (ordem alfabética),
+		# portanto este hook roda ANTES dos story events do AGOT no mesmo on_monthly_pulse.
+		# Barato: só itera gl_dragon_variable_storage que normalmente está limpa.
+		# NÃO chama end_story (AGOT faz isso no seu próprio on_character_death handler).
+		every_in_global_list = {
+			variable = gl_dragon_variable_storage
+			limit = {
+				OR = {
+					NOT = { exists = var:dragon_id }
+					var:dragon_id = { is_alive = no }
+				}
+			}
+			remove_list_global_variable = { name = gl_dragon_variable_storage target = this }
+		}
+
 		# ── FIX ON LOAD (todo mês, só para o player) ───────────────────────────────────
 		# on_monthly_pulse dispara para CADA personagem vivo como root. Sem is_ai = no,
 		# dob_correct_all_dragon_sizes_on_load rodaria milhares de vezes no mesmo mês.
