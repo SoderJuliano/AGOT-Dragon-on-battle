@@ -1263,7 +1263,7 @@ window = {
 							text_single = { datacontext = "[GetPlayer.MakeScope.Var('dob_bd_ally_2').Char]" text = "[Character.GetNameNoTooltip]" layoutpolicy_horizontal = expanding fontsize = 13 } # dragon name
 							text_single = { text = "[Character.GetFirstNameNoTooltip]" default_format = "#weak" fontsize = 11 layoutpolicy_horizontal = expanding } # rider name
 						}
-						icon = { visible = "[GetScriptedGui('dob_bd_sgui_ally_2_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    using = Status_Bad     alpha = 0.45 }
+						icon = { visible = "[GetScriptedGui('dob_bd_sgui_ally_2_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    texture = "gfx/interface/icons/icon_dead.dds"    size = { 20 20 } tooltip = "DOB_BD_DEAD_TT" }
 						icon = { visible = "[GetScriptedGui('dob_bd_sgui_ally_2_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" texture = "gfx/interface/icons/icon_wounded.dds" size = { 20 20 } tooltip = "DOB_BD_WOUNDED_TT" }
 					}
 

@@ -29,21 +29,12 @@
 # ── Efeito para o lado VENCEDOR ─────────────────────────────────────────────────
 # Root = combat_side (winner)
 dob_dragon_winner_effect = {
+	# Cobre tanto commanders quanto knights — jogador pode estar em qualquer posição
 	every_side_commander = {
 		limit = {
-			OR = {
-				has_trait = dragonrider
-				AND = {
-					has_variable = current_dragon
-					exists = var:current_dragon
-					var:current_dragon = { is_alive = yes has_trait = dragon }
-				}
-			}
+			has_variable = current_dragon
 			exists = var:current_dragon
-			var:current_dragon = {
-				is_alive = yes
-				dragon_size >= 1
-			}
+			var:current_dragon = { is_alive = yes has_trait = dragon }
 		}
 
 		# Guardar scope do dragão ANTES de qualquer rolagem de morte
@@ -306,6 +297,75 @@ dob_dragon_winner_effect = {
 		}
 	}
 
+	# ── KNIGHT vencedor com dragão — mesmo comportamento que commander player ────────
+	# Cobre o caso em que o player serve como knight (não commander) na batalha
+	every_side_knight = {
+		limit = {
+			is_ai = no
+			has_variable = current_dragon
+			exists = var:current_dragon
+			var:current_dragon = { is_alive = yes has_trait = dragon }
+		}
+		var:current_dragon = { save_scope_as = dob_event_dragon }
+		save_scope_as = dob_rider
+
+		set_variable = { name = dob_dragon_size value = script_value:dob_dragon_size_value }
+		set_variable = { name = dob_prestige_gained value = script_value:dob_dragon_prestige_gain }
+		add_prestige = script_value:dob_dragon_prestige_gain
+
+		if = {
+			limit = { scope:dob_event_dragon = { is_alive = yes } }
+			scope:dob_event_dragon = {
+				remove_character_modifier = dob_dragon_battle_hardened
+				add_character_modifier = { modifier = dob_dragon_battle_hardened days = 730 }
+			}
+			random = {
+				chance = 10
+				scope:dob_event_dragon = {
+					remove_character_modifier = dob_dragon_wounded
+					add_character_modifier = { modifier = dob_dragon_wounded days = 90 }
+				}
+				set_variable = { name = dob_dragon_was_wounded value = 1 }
+			}
+			# Detectar vitória ofensiva ou defensiva para notificação
+			if = {
+				limit = {
+					any_character_war = {
+						any_war_defender = { this = scope:dob_rider }
+					}
+				}
+				trigger_event = { id = dragon_battle.009 days = 1 }
+				if = {
+					limit = { has_variable = dob_dragon_was_wounded }
+					trigger_event = { id = dragon_battle.013 days = 2 }
+					remove_variable = dob_dragon_was_wounded
+				}
+			}
+			else = {
+				trigger_event = { id = dragon_battle.002 days = 1 }
+				if = {
+					limit = { has_variable = dob_dragon_was_wounded }
+					trigger_event = { id = dragon_battle.007 days = 2 }
+					remove_variable = dob_dragon_was_wounded
+				}
+			}
+		}
+		else_if = {
+			limit = { is_ai = no }
+			if = {
+				limit = {
+					any_character_war = {
+						any_war_defender = { this = scope:dob_rider }
+					}
+				}
+				trigger_event = { id = dragon_battle.011 days = 1 }
+			}
+			else = {
+				trigger_event = { id = dragon_battle.005 days = 1 }
+			}
+		}
+	}
+
 	# ── Notificar player sobre dragões ALIADOS (mesma side, IA) ──────────────────────
 	# Roda apenas se há um player neste lado
 	if = {
@@ -315,7 +375,7 @@ dob_dragon_winner_effect = {
 				is_ai = yes
 				has_variable = current_dragon
 				exists = var:current_dragon
-				var:current_dragon = { dragon_size >= 1 }
+				var:current_dragon = { is_alive = yes has_trait = dragon }
 			}
 			var:current_dragon = {
 				save_scope_as = dob_ally_dragon
@@ -343,7 +403,7 @@ dob_dragon_winner_effect = {
 				limit = {
 					has_variable = current_dragon
 					exists = var:current_dragon
-				var:current_dragon = { dragon_size >= 1 }
+				var:current_dragon = { is_alive = yes has_trait = dragon }
 				}
 				save_scope_as = dob_enemy_rider_combat
 				var:current_dragon = { save_scope_as = dob_enemy_dragon }
@@ -376,19 +436,9 @@ dob_dragon_winner_effect = {
 dob_dragon_loser_effect = {
 	every_side_commander = {
 		limit = {
-			OR = {
-				has_trait = dragonrider
-				AND = {
-					has_variable = current_dragon
-					exists = var:current_dragon
-					var:current_dragon = { is_alive = yes has_trait = dragon }
-				}
-			}
+			has_variable = current_dragon
 			exists = var:current_dragon
-			var:current_dragon = {
-				is_alive = yes
-				dragon_size >= 1
-			}
+			var:current_dragon = { is_alive = yes has_trait = dragon }
 		}
 		# Estamos agora em character scope (o rider)
 
@@ -462,6 +512,66 @@ dob_dragon_loser_effect = {
 		}
 	}
 
+	# ── KNIGHT perdedor com dragão — mesmo comportamento que commander player ─────────
+	# Cobre o caso em que o player serve como knight (não commander) na batalha
+	every_side_knight = {
+		limit = {
+			is_ai = no
+			has_variable = current_dragon
+			exists = var:current_dragon
+			var:current_dragon = { is_alive = yes has_trait = dragon }
+		}
+		var:current_dragon = { save_scope_as = dob_event_dragon }
+		save_scope_as = dob_rider_loser
+
+		set_variable = { name = dob_dragon_size value = script_value:dob_dragon_size_value }
+		set_variable = { name = dob_dragon_power value = script_value:dob_dragon_battle_bonus }
+
+		# 20% chance de morte na derrota
+		random = {
+			chance = 20
+			add_prestige = -300
+			var:current_dragon = { kill = { death_reason = death_battle } }
+		}
+
+		# 35% chance de ferimento na derrota (se dragon sobreviveu)
+		if = {
+			limit = { scope:dob_event_dragon = { is_alive = yes } }
+			random = {
+				chance = 35
+				scope:dob_event_dragon = {
+					remove_character_modifier = dob_dragon_wounded
+					add_character_modifier = { modifier = dob_dragon_wounded days = 180 }
+				}
+			}
+		}
+
+		# Detectar derrota ofensiva ou defensiva para notificação
+		if = {
+			limit = {
+				any_character_war = {
+					any_war_defender = { this = scope:dob_rider_loser }
+				}
+			}
+			if = {
+				limit = { scope:dob_event_dragon = { is_alive = yes } }
+				trigger_event = { id = dragon_battle.010 days = 1 }
+			}
+			else = {
+				trigger_event = { id = dragon_battle.012 days = 1 }
+			}
+		}
+		else = {
+			if = {
+				limit = { scope:dob_event_dragon = { is_alive = yes } }
+				trigger_event = { id = dragon_battle.003 days = 1 }
+			}
+			else = {
+				trigger_event = { id = dragon_battle.006 days = 1 }
+			}
+		}
+	}
+
 	# ── Gravar participantes dragões para o Battle Report GUI ────────────────────────
 	# Roda se o player está neste lado como commander OU como knight
 	if = {
@@ -488,7 +598,7 @@ dob_dragon_loser_notifications = {
 				is_ai = yes
 				has_variable = current_dragon
 				exists = var:current_dragon
-				var:current_dragon = { dragon_size >= 1 }
+				var:current_dragon = { is_alive = yes has_trait = dragon }
 			}
 			var:current_dragon = {
 				save_scope_as = dob_ally_dragon
@@ -515,7 +625,7 @@ dob_dragon_loser_notifications = {
 				limit = {
 					has_variable = current_dragon
 					exists = var:current_dragon
-				var:current_dragon = { dragon_size >= 1 }
+				var:current_dragon = { is_alive = yes has_trait = dragon }
 				}
 				save_scope_as = dob_enemy_rider_combat
 				var:current_dragon = { save_scope_as = dob_enemy_dragon }
