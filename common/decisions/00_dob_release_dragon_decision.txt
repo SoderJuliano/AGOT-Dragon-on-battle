@@ -8,7 +8,6 @@ dob_release_dragon_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_dragons.dds"
 	}
-	major = no
 	ai_check_interval = 0  # IA nunca executa
 
 	# ── Quem pode ver a decisão ──────────────────────────────────────────────────

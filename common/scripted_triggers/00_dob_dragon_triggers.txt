@@ -18,9 +18,11 @@ dob_is_dragonrider = {
 # Scope: character (o rider)
 # FIX: removido exists = var:current_dragon (redundante — var:current_dragon = { } já retorna false para ghost)
 # is_current_dragonrider valida o bond via relação AGOT (não via var)
+# FIX: is_alive = yes added to guard against ghost/weak character references
 dob_has_adult_dragon = {
 	is_current_dragonrider = yes
 	var:current_dragon = {
+		is_alive = yes
 		dragon_size > 30
 	}
 }
@@ -29,9 +31,11 @@ dob_has_adult_dragon = {
 # Scope: character (o rider)
 # FIX: removido exists = var:current_dragon (redundante)
 # is_current_dragonrider_warfare já verifica: age >= 14 + is_current_dragonrider + NOT agot_not_using_dragon
+# FIX: is_alive = yes added to guard against ghost/weak character references
 dob_dragon_deployed_for_battle = {
 	is_current_dragonrider_warfare = yes
 	var:current_dragon = {
+		is_alive = yes
 		dragon_size > 30
 	}
 }

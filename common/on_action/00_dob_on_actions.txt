@@ -18,75 +18,81 @@ on_war_started = {
 
 dob_on_war_started = {
 	effect = {
-		# Caso 1: O PLAYER declarou guerra e tem um dragão vivo
-		# FIX: OR com var:current_dragon como fallback para dragões do MDE que não possuem
-		# a relation AGOT configurada (is_current_dragonrider falha nesses casos)
+		# FIX: on_war_started ROOT = casus_belli em CK3+AGOT, não character!
+		# Para acessar o atacante/defensor, usar scope:attacker e scope:defender.
+
+		# Caso 1: O PLAYER (atacante) declarou guerra e tem um dragão vivo
 		if = {
 			limit = {
-				is_ai = no
-				OR = {
-					is_current_dragonrider = yes
-					AND = {
-						has_variable = current_dragon
-						exists = var:current_dragon
-						var:current_dragon = { is_alive = yes has_trait = dragon }
+				scope:attacker = {
+					is_ai = no
+					OR = {
+						is_current_dragonrider = yes
+						AND = {
+							has_variable = current_dragon
+							exists = var:current_dragon
+							var:current_dragon = { is_alive = yes has_trait = dragon }
+						}
 					}
 				}
 			}
-			set_variable = {
-				name = dob_dragon_power
-				value = dob_dragon_battle_bonus
-			}
-			set_variable = {
-				name = dob_dragon_size
-				value = dob_dragon_size_value
-			}
-			trigger_event = {
-				id = dragon_battle.001
-				days = 1
+			scope:attacker = {
+				set_variable = {
+					name = dob_dragon_power
+					value = dob_dragon_battle_bonus
+				}
+				set_variable = {
+					name = dob_dragon_size
+					value = dob_dragon_size_value
+				}
+				trigger_event = {
+					id = dragon_battle.001
+					days = 1
+				}
 			}
 		}
-		# Caso 2: IA (familiar/aliada) declarou guerra com dragão → notifica o player
-		# FIX: OR com var:current_dragon como fallback para dragões do MDE
+		# Caso 2: IA (atacante) declarou guerra com dragão → notifica player familiar/liege
 		else_if = {
 			limit = {
-				is_ai = yes
-				OR = {
-					is_current_dragonrider = yes
-					AND = {
-						has_variable = current_dragon
-						exists = var:current_dragon
-						var:current_dragon = { is_alive = yes has_trait = dragon }
+				scope:attacker = {
+					is_ai = yes
+					OR = {
+						is_current_dragonrider = yes
+						AND = {
+							has_variable = current_dragon
+							exists = var:current_dragon
+							var:current_dragon = { is_alive = yes has_trait = dragon }
+						}
 					}
 				}
 			}
-			set_variable = {
-				name = dob_dragon_size
-				value = dob_dragon_size_value
-			}
-			set_variable = {
-				name = dob_dragon_power
-				value = dob_dragon_battle_bonus
-			}
-			save_scope_as = dob_ally_rider
-			every_close_family_member = {
-				limit = { is_ai = no }
-				trigger_event = { id = dragon_battle.004 }
-			}
-			if = {
-				limit = {
-					exists = liege
-					liege = { is_ai = no }
+			scope:attacker = {
+				set_variable = {
+					name = dob_dragon_size
+					value = dob_dragon_size_value
 				}
-				liege = {
+				set_variable = {
+					name = dob_dragon_power
+					value = dob_dragon_battle_bonus
+				}
+				save_scope_as = dob_ally_rider
+				every_close_family_member = {
+					limit = { is_ai = no }
 					trigger_event = { id = dragon_battle.004 }
+				}
+				if = {
+					limit = {
+						exists = liege
+						liege = { is_ai = no }
+					}
+					liege = {
+						trigger_event = { id = dragon_battle.004 }
+					}
 				}
 			}
 		}
 
 		# Caso 3: Player está sendo ATACADO (é o DEFENSOR) e tem dragão
-		# scope:defender é o defensor da guerra (root = atacante)
-		# FIX: usa is_current_dragonrider para consistência e robustez
 		if = {
 			limit = {
 				scope:defender = {
@@ -413,10 +419,7 @@ dob_on_monthly_pulse = {
 					dragon_size >= 300
 					NOT = { has_character_modifier = dob_dragon_skybreaker }
 				}
-				add_character_modifier = {
-					modifier = dob_dragon_skybreaker
-					permanent = yes
-				}
+				add_character_modifier = dob_dragon_skybreaker
 			}
 		}
 
@@ -429,7 +432,8 @@ dob_on_monthly_pulse = {
 			# Funciona mesmo quando var:current_dragon aponta para personagem ghost/inválido
 			limit = { is_current_dragonrider = yes }
 			if = {
-				limit = { exists = var:current_dragon }
+				# FIX: is_alive = yes guards against ghost/weak references where exists = yes but char is dead
+				limit = { exists = var:current_dragon  var:current_dragon = { is_alive = yes } }
 				var:current_dragon = { dob_update_dragon_power_modifier = yes }
 			}
 			dob_update_rider_dragon_modifier = yes
@@ -545,7 +549,8 @@ dob_on_dragon_birthday = {
 				limit = { has_variable = current_rider exists = var:current_rider }
 				var:current_rider = {
 					if = {
-						limit = { exists = var:current_dragon }
+						# FIX: is_alive = yes guards against ghost/weak references
+						limit = { exists = var:current_dragon  var:current_dragon = { is_alive = yes } }
 						var:current_dragon = { dob_update_dragon_power_modifier = yes }
 					}
 					dob_update_rider_dragon_modifier = yes
@@ -560,10 +565,7 @@ dob_on_dragon_birthday = {
 				dragon_size >= 300
 				NOT = { has_character_modifier = dob_dragon_skybreaker }
 			}
-			add_character_modifier = {
-				modifier = dob_dragon_skybreaker
-				permanent = yes
-			}
+			add_character_modifier = dob_dragon_skybreaker
 		}
 	}
 }

@@ -1,0 +1,100 @@
+﻿# ============================================================
+# DRAGON ON BATTLE - Eventos: Busca no Ninho de Dragão
+#
+# Disparado por: dob_search_dragon_nest_decision
+# Scope (root): player character (rider ou host da dragoa)
+# Scope nomeado: scope:dob_nest_dragon = a dragoa fêmea (para retrato)
+#
+# Resultado:
+#   50% → pelo menos 1 ovo encontrado
+#          └─ 40% adicional → segundo ovo encontrado
+#   50% → ninho vazio
+#
+# EFEITO DE OVO: agot_create_random_dragon_egg_artifact
+#   Efeito nativo do AGOT (00_agot_dragon_eggs_effects.txt).
+#   Chamado no scope do PLAYER (root), não do dragão.
+#   Parâmetro OWNER = root → ovo vai para o inventário do player.
+# ============================================================
+
+namespace = dragon_nest
+
+# ── Evento 001: Resultado da busca no ninho ─────────────────
+dragon_nest.001 = {
+	type = character_event
+	title = dragon_nest.001.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_variable = dob_nest_found_eggs
+					var:dob_nest_found_eggs >= 2
+				}
+				desc = dragon_nest.001.desc_found_two
+			}
+			triggered_desc = {
+				trigger = { has_variable = dob_nest_found_eggs }
+				desc = dragon_nest.001.desc_found_one
+			}
+			desc = dragon_nest.001.desc_empty
+		}
+	}
+	theme = dragon
+
+	left_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = { has_variable = dob_nest_found_eggs }
+			animation = personality_bold
+		}
+		triggered_animation = {
+			trigger = { NOT = { has_variable = dob_nest_found_eggs } }
+			animation = personality_melancholic
+		}
+	}
+	right_portrait = {
+		character = scope:dob_nest_dragon
+		triggered_animation = {
+			trigger = { has_variable = dob_nest_found_eggs }
+			animation = aggressive
+		}
+		triggered_animation = {
+			trigger = { NOT = { has_variable = dob_nest_found_eggs } }
+			animation = idle
+		}
+	}
+
+	immediate = {
+		# 60% de chance de achar ao menos um ovo (era 50% — aumentado para reduzir
+		# a frustração de sequências longas de ninhos vazios)
+		random = {
+			chance = 60
+
+			# Som de descoberta de dragão — igual ao que toca ao ver a maravilha de voo
+			play_music_cue = CK3AGOT_dragonflight_wonder
+
+			# Primeiro ovo diretamente no inventário do player
+			agot_create_random_dragon_egg_artifact = { OWNER = root }
+			set_variable = { name = dob_nest_found_eggs value = 1 }
+
+			# 40% de chance adicional de achar um segundo ovo
+			random = {
+				chance = 40
+				agot_create_random_dragon_egg_artifact = { OWNER = root }
+				change_variable = { name = dob_nest_found_eggs add = 1 }
+			}
+		}
+	}
+
+	# ── Opção: ovos encontrados ──────────────────────────────────────────────────
+	option = {
+		name = dragon_nest.001.a_found
+		trigger = { has_variable = dob_nest_found_eggs }
+		remove_variable = dob_nest_found_eggs
+	}
+
+	# ── Opção: ninho vazio ───────────────────────────────────────────────────────
+	option = {
+		name = dragon_nest.001.a_empty
+		trigger = { NOT = { has_variable = dob_nest_found_eggs } }
+	}
+}

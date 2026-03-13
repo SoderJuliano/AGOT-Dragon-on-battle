@@ -75,12 +75,21 @@ dob_rider_dragon_mature = {
 	prowess = 2					# Treino com dragão melhora habilidade
 }
 
-# Rider de dragão imenso (size 150+) — AGOT tier 7-10 (Vhagar, Balerion)
+# Rider de dragão imenso (size 150-169) — equivale a AGOT tier 7-9 (Meraxes, Vhagar)
 dob_rider_dragon_great = {
 	icon = dob_worldbreaker
 	monthly_prestige = 0.4		# Lenda viva: pilota um dos maiores dragões da história
 	prowess = 4					# Elite dos dragonriders
 	stress_gain_mult = -0.05	# Confiança de pilotar um deus
+}
+
+# Rider de dragão lendário (size 170+) — tier 10, o ápice do poder: Balerion, Syrax no auge
+dob_rider_dragon_tier10 = {
+	icon = dob_skybreaker
+	monthly_prestige = 0.6				# Lenda conhecida em todo o mundo
+	prowess = 6							# O rider de um deus-dragão
+	enemy_hard_casualty_modifier = 0.05	# Inimigos recuam antes mesmo de lutar
+	stress_gain_mult = -0.10			# Inabalável
 }
 
 # ============================================================

@@ -1219,140 +1219,151 @@ window = {
 				default_format = "#weak"
 			}
 
-			hbox = {
+			# ── Scrollable area: capped height so window never grows off-screen ──
+			scrollarea = {
 				layoutpolicy_horizontal = expanding
-				spacing = 8
+				size = { 0 155 }
+				scrollbarpolicy_horizontal = always_off
 
-				# ── ALLY SIDE ────────────────────────────────────────────────
-				vbox = {
-					layoutpolicy_horizontal = expanding
-					layoutstretchfactor_horizontal = 1
-					spacing = 3
+				scrollbar_vertical = { using = Scrollbar_Vertical }
 
-					text_single = { text = "DOB_BD_ALLY" default_format = "#T" fontsize = 13 }
-
-					# Slot 1 — portrait do RIDER (humano), nome do DRAGÃO abaixo
+				scrollwidget = {
 					hbox = {
-						visible = "[GetScriptedGui('dob_bd_sgui_ally_1').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-						datacontext = "[GetPlayer.MakeScope.Var('dob_bd_ally_1_rider').Char]"
 						layoutpolicy_horizontal = expanding
-						spacing = 4
-						background = { visible = "[GetScriptedGui('dob_bd_sgui_ally_1_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    using = Status_Bad     alpha = 0.45 }
-						background = { visible = "[GetScriptedGui('dob_bd_sgui_ally_1_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" using = Status_Warning alpha = 0.35 }
-						portrait_head_small = {} # rider portrait
+						spacing = 8
+
+						# ── ALLY SIDE ────────────────────────────────────────────────
 						vbox = {
 							layoutpolicy_horizontal = expanding
-							text_single = { datacontext = "[GetPlayer.MakeScope.Var('dob_bd_ally_1').Char]" text = "[Character.GetNameNoTooltip]" layoutpolicy_horizontal = expanding fontsize = 13 } # dragon name
-							text_single = { text = "[Character.GetFirstNameNoTooltip]" default_format = "#weak" fontsize = 11 layoutpolicy_horizontal = expanding } # rider name
-						}
-						icon = { visible = "[GetScriptedGui('dob_bd_sgui_ally_1_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    texture = "gfx/interface/icons/icon_dead.dds"    size = { 20 20 } tooltip = "DOB_BD_DEAD_TT" }
-						icon = { visible = "[GetScriptedGui('dob_bd_sgui_ally_1_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" texture = "gfx/interface/icons/icon_wounded.dds" size = { 20 20 } tooltip = "DOB_BD_WOUNDED_TT" }
-					}
+							layoutstretchfactor_horizontal = 1
+							spacing = 3
 
-					# Slot 2
-					hbox = {
-						visible = "[GetScriptedGui('dob_bd_sgui_ally_2').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-						datacontext = "[GetPlayer.MakeScope.Var('dob_bd_ally_2_rider').Char]"
-						layoutpolicy_horizontal = expanding
-						spacing = 4
-						background = { visible = "[GetScriptedGui('dob_bd_sgui_ally_2_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    using = Status_Bad     alpha = 0.45 }
-						background = { visible = "[GetScriptedGui('dob_bd_sgui_ally_2_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" using = Status_Warning alpha = 0.35 }
-						portrait_head_small = {} # rider portrait
+							text_single = { text = "DOB_BD_ALLY" default_format = "#T" fontsize = 13 }
+
+							# Slot 1 — portrait do RIDER (humano), nome do DRAGÃO abaixo
+							hbox = {
+								visible = "[GetScriptedGui('dob_bd_sgui_ally_1').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+								datacontext = "[GetPlayer.MakeScope.Var('dob_bd_ally_1_rider').Char]"
+								layoutpolicy_horizontal = expanding
+								spacing = 4
+								background = { visible = "[GetScriptedGui('dob_bd_sgui_ally_1_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    using = Status_Bad     alpha = 0.45 }
+								background = { visible = "[GetScriptedGui('dob_bd_sgui_ally_1_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" using = Status_Warning alpha = 0.35 }
+								portrait_head_small = {} # rider portrait
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									text_single = { datacontext = "[GetPlayer.MakeScope.Var('dob_bd_ally_1').Char]" text = "[Character.GetNameNoTooltip]" layoutpolicy_horizontal = expanding fontsize = 13 } # dragon name
+									text_single = { text = "[Character.GetFirstNameNoTooltip]" default_format = "#weak" fontsize = 11 layoutpolicy_horizontal = expanding } # rider name
+								}
+								icon = { visible = "[GetScriptedGui('dob_bd_sgui_ally_1_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    texture = "gfx/interface/icons/icon_dead.dds"    size = { 20 20 } tooltip = "DOB_BD_DEAD_TT" }
+								icon = { visible = "[GetScriptedGui('dob_bd_sgui_ally_1_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" texture = "gfx/interface/icons/icon_wounded.dds" size = { 20 20 } tooltip = "DOB_BD_WOUNDED_TT" }
+							}
+
+							# Slot 2
+							hbox = {
+								visible = "[GetScriptedGui('dob_bd_sgui_ally_2').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+								datacontext = "[GetPlayer.MakeScope.Var('dob_bd_ally_2_rider').Char]"
+								layoutpolicy_horizontal = expanding
+								spacing = 4
+								background = { visible = "[GetScriptedGui('dob_bd_sgui_ally_2_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    using = Status_Bad     alpha = 0.45 }
+								background = { visible = "[GetScriptedGui('dob_bd_sgui_ally_2_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" using = Status_Warning alpha = 0.35 }
+								portrait_head_small = {} # rider portrait
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									text_single = { datacontext = "[GetPlayer.MakeScope.Var('dob_bd_ally_2').Char]" text = "[Character.GetNameNoTooltip]" layoutpolicy_horizontal = expanding fontsize = 13 } # dragon name
+									text_single = { text = "[Character.GetFirstNameNoTooltip]" default_format = "#weak" fontsize = 11 layoutpolicy_horizontal = expanding } # rider name
+								}
+								icon = { visible = "[GetScriptedGui('dob_bd_sgui_ally_2_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    texture = "gfx/interface/icons/icon_dead.dds"    size = { 20 20 } tooltip = "DOB_BD_DEAD_TT" }
+								icon = { visible = "[GetScriptedGui('dob_bd_sgui_ally_2_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" texture = "gfx/interface/icons/icon_wounded.dds" size = { 20 20 } tooltip = "DOB_BD_WOUNDED_TT" }
+							}
+
+							# Slot 3
+							hbox = {
+								visible = "[GetScriptedGui('dob_bd_sgui_ally_3').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+								datacontext = "[GetPlayer.MakeScope.Var('dob_bd_ally_3_rider').Char]"
+								layoutpolicy_horizontal = expanding
+								spacing = 4
+								background = { visible = "[GetScriptedGui('dob_bd_sgui_ally_3_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    using = Status_Bad     alpha = 0.45 }
+								background = { visible = "[GetScriptedGui('dob_bd_sgui_ally_3_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" using = Status_Warning alpha = 0.35 }
+								portrait_head_small = {} # rider portrait
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									text_single = { datacontext = "[GetPlayer.MakeScope.Var('dob_bd_ally_3').Char]" text = "[Character.GetNameNoTooltip]" layoutpolicy_horizontal = expanding fontsize = 13 } # dragon name
+									text_single = { text = "[Character.GetFirstNameNoTooltip]" default_format = "#weak" fontsize = 11 layoutpolicy_horizontal = expanding } # rider name
+								}
+								icon = { visible = "[GetScriptedGui('dob_bd_sgui_ally_3_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    texture = "gfx/interface/icons/icon_dead.dds"    size = { 20 20 } tooltip = "DOB_BD_DEAD_TT" }
+								icon = { visible = "[GetScriptedGui('dob_bd_sgui_ally_3_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" texture = "gfx/interface/icons/icon_wounded.dds" size = { 20 20 } tooltip = "DOB_BD_WOUNDED_TT" }
+							}
+
+							expand = {}
+						}
+
+						divider_light = { layoutpolicy_vertical = expanding }
+
+						# ── ENEMY SIDE ───────────────────────────────────────────────
 						vbox = {
 							layoutpolicy_horizontal = expanding
-							text_single = { datacontext = "[GetPlayer.MakeScope.Var('dob_bd_ally_2').Char]" text = "[Character.GetNameNoTooltip]" layoutpolicy_horizontal = expanding fontsize = 13 } # dragon name
-							text_single = { text = "[Character.GetFirstNameNoTooltip]" default_format = "#weak" fontsize = 11 layoutpolicy_horizontal = expanding } # rider name
+							layoutstretchfactor_horizontal = 1
+							spacing = 3
+
+							text_single = { text = "DOB_BD_ENEMY" default_format = "#F" fontsize = 13 align = right }
+
+							# Slot 1 — portrait do RIDER (humano), nome do DRAGÃO à esquerda
+							hbox = {
+								visible = "[GetScriptedGui('dob_bd_sgui_enemy_1').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+								datacontext = "[GetPlayer.MakeScope.Var('dob_bd_enemy_1_rider').Char]"
+								layoutpolicy_horizontal = expanding
+								spacing = 4
+								background = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_1_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    using = Status_Bad     alpha = 0.45 }
+								background = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_1_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" using = Status_Warning alpha = 0.35 }
+								icon = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_1_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    texture = "gfx/interface/icons/icon_dead.dds"    size = { 20 20 } tooltip = "DOB_BD_DEAD_TT" }
+								icon = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_1_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" texture = "gfx/interface/icons/icon_wounded.dds" size = { 20 20 } tooltip = "DOB_BD_WOUNDED_TT" }
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									text_single = { datacontext = "[GetPlayer.MakeScope.Var('dob_bd_enemy_1').Char]" text = "[Character.GetNameNoTooltip]" layoutpolicy_horizontal = expanding fontsize = 13 align = right } # dragon name
+									text_single = { text = "[Character.GetFirstNameNoTooltip]" default_format = "#weak" fontsize = 11 layoutpolicy_horizontal = expanding align = right } # rider name
+								}
+								portrait_head_small = {} # rider portrait
+							}
+
+							# Slot 2
+							hbox = {
+								visible = "[GetScriptedGui('dob_bd_sgui_enemy_2').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+								datacontext = "[GetPlayer.MakeScope.Var('dob_bd_enemy_2_rider').Char]"
+								layoutpolicy_horizontal = expanding
+								spacing = 4
+								background = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_2_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    using = Status_Bad     alpha = 0.45 }
+								background = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_2_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" using = Status_Warning alpha = 0.35 }
+								icon = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_2_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    texture = "gfx/interface/icons/icon_dead.dds"    size = { 20 20 } tooltip = "DOB_BD_DEAD_TT" }
+								icon = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_2_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" texture = "gfx/interface/icons/icon_wounded.dds" size = { 20 20 } tooltip = "DOB_BD_WOUNDED_TT" }
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									text_single = { datacontext = "[GetPlayer.MakeScope.Var('dob_bd_enemy_2').Char]" text = "[Character.GetNameNoTooltip]" layoutpolicy_horizontal = expanding fontsize = 13 align = right } # dragon name
+									text_single = { text = "[Character.GetFirstNameNoTooltip]" default_format = "#weak" fontsize = 11 layoutpolicy_horizontal = expanding align = right } # rider name
+								}
+								portrait_head_small = {} # rider portrait
+							}
+
+							# Slot 3
+							hbox = {
+								visible = "[GetScriptedGui('dob_bd_sgui_enemy_3').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+								datacontext = "[GetPlayer.MakeScope.Var('dob_bd_enemy_3_rider').Char]"
+								layoutpolicy_horizontal = expanding
+								spacing = 4
+								background = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_3_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    using = Status_Bad     alpha = 0.45 }
+								background = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_3_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" using = Status_Warning alpha = 0.35 }
+								icon = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_3_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    texture = "gfx/interface/icons/icon_dead.dds"    size = { 20 20 } tooltip = "DOB_BD_DEAD_TT" }
+								icon = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_3_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" texture = "gfx/interface/icons/icon_wounded.dds" size = { 20 20 } tooltip = "DOB_BD_WOUNDED_TT" }
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									text_single = { datacontext = "[GetPlayer.MakeScope.Var('dob_bd_enemy_3').Char]" text = "[Character.GetNameNoTooltip]" layoutpolicy_horizontal = expanding fontsize = 13 align = right } # dragon name
+									text_single = { text = "[Character.GetFirstNameNoTooltip]" default_format = "#weak" fontsize = 11 layoutpolicy_horizontal = expanding align = right } # rider name
+								}
+								portrait_head_small = {} # rider portrait
+							}
+
+							expand = {}
 						}
-						icon = { visible = "[GetScriptedGui('dob_bd_sgui_ally_2_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    texture = "gfx/interface/icons/icon_dead.dds"    size = { 20 20 } tooltip = "DOB_BD_DEAD_TT" }
-						icon = { visible = "[GetScriptedGui('dob_bd_sgui_ally_2_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" texture = "gfx/interface/icons/icon_wounded.dds" size = { 20 20 } tooltip = "DOB_BD_WOUNDED_TT" }
 					}
-
-					# Slot 3
-					hbox = {
-						visible = "[GetScriptedGui('dob_bd_sgui_ally_3').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-						datacontext = "[GetPlayer.MakeScope.Var('dob_bd_ally_3_rider').Char]"
-						layoutpolicy_horizontal = expanding
-						spacing = 4
-						background = { visible = "[GetScriptedGui('dob_bd_sgui_ally_3_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    using = Status_Bad     alpha = 0.45 }
-						background = { visible = "[GetScriptedGui('dob_bd_sgui_ally_3_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" using = Status_Warning alpha = 0.35 }
-						portrait_head_small = {} # rider portrait
-						vbox = {
-							layoutpolicy_horizontal = expanding
-							text_single = { datacontext = "[GetPlayer.MakeScope.Var('dob_bd_ally_3').Char]" text = "[Character.GetNameNoTooltip]" layoutpolicy_horizontal = expanding fontsize = 13 } # dragon name
-							text_single = { text = "[Character.GetFirstNameNoTooltip]" default_format = "#weak" fontsize = 11 layoutpolicy_horizontal = expanding } # rider name
-						}
-						icon = { visible = "[GetScriptedGui('dob_bd_sgui_ally_3_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    texture = "gfx/interface/icons/icon_dead.dds"    size = { 20 20 } tooltip = "DOB_BD_DEAD_TT" }
-						icon = { visible = "[GetScriptedGui('dob_bd_sgui_ally_3_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" texture = "gfx/interface/icons/icon_wounded.dds" size = { 20 20 } tooltip = "DOB_BD_WOUNDED_TT" }
-					}
-
-					expand = {}
-				}
-
-				divider_light = { layoutpolicy_vertical = expanding }
-
-				# ── ENEMY SIDE ───────────────────────────────────────────────
-				vbox = {
-					layoutpolicy_horizontal = expanding
-					layoutstretchfactor_horizontal = 1
-					spacing = 3
-
-					text_single = { text = "DOB_BD_ENEMY" default_format = "#F" fontsize = 13 align = right }
-
-					# Slot 1 — portrait do RIDER (humano), nome do DRAGÃO à esquerda
-					hbox = {
-						visible = "[GetScriptedGui('dob_bd_sgui_enemy_1').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-						datacontext = "[GetPlayer.MakeScope.Var('dob_bd_enemy_1_rider').Char]"
-						layoutpolicy_horizontal = expanding
-						spacing = 4
-						background = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_1_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    using = Status_Bad     alpha = 0.45 }
-						background = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_1_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" using = Status_Warning alpha = 0.35 }
-						icon = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_1_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    texture = "gfx/interface/icons/icon_dead.dds"    size = { 20 20 } tooltip = "DOB_BD_DEAD_TT" }
-						icon = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_1_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" texture = "gfx/interface/icons/icon_wounded.dds" size = { 20 20 } tooltip = "DOB_BD_WOUNDED_TT" }
-						vbox = {
-							layoutpolicy_horizontal = expanding
-							text_single = { datacontext = "[GetPlayer.MakeScope.Var('dob_bd_enemy_1').Char]" text = "[Character.GetNameNoTooltip]" layoutpolicy_horizontal = expanding fontsize = 13 align = right } # dragon name
-							text_single = { text = "[Character.GetFirstNameNoTooltip]" default_format = "#weak" fontsize = 11 layoutpolicy_horizontal = expanding align = right } # rider name
-						}
-						portrait_head_small = {} # rider portrait
-					}
-
-					# Slot 2
-					hbox = {
-						visible = "[GetScriptedGui('dob_bd_sgui_enemy_2').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-						datacontext = "[GetPlayer.MakeScope.Var('dob_bd_enemy_2_rider').Char]"
-						layoutpolicy_horizontal = expanding
-						spacing = 4
-						background = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_2_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    using = Status_Bad     alpha = 0.45 }
-						background = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_2_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" using = Status_Warning alpha = 0.35 }
-						icon = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_2_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    texture = "gfx/interface/icons/icon_dead.dds"    size = { 20 20 } tooltip = "DOB_BD_DEAD_TT" }
-						icon = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_2_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" texture = "gfx/interface/icons/icon_wounded.dds" size = { 20 20 } tooltip = "DOB_BD_WOUNDED_TT" }
-						vbox = {
-							layoutpolicy_horizontal = expanding
-							text_single = { datacontext = "[GetPlayer.MakeScope.Var('dob_bd_enemy_2').Char]" text = "[Character.GetNameNoTooltip]" layoutpolicy_horizontal = expanding fontsize = 13 align = right } # dragon name
-							text_single = { text = "[Character.GetFirstNameNoTooltip]" default_format = "#weak" fontsize = 11 layoutpolicy_horizontal = expanding align = right } # rider name
-						}
-						portrait_head_small = {} # rider portrait
-					}
-
-					# Slot 3
-					hbox = {
-						visible = "[GetScriptedGui('dob_bd_sgui_enemy_3').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-						datacontext = "[GetPlayer.MakeScope.Var('dob_bd_enemy_3_rider').Char]"
-						layoutpolicy_horizontal = expanding
-						spacing = 4
-						background = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_3_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    using = Status_Bad     alpha = 0.45 }
-						background = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_3_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" using = Status_Warning alpha = 0.35 }
-						icon = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_3_dead').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"    texture = "gfx/interface/icons/icon_dead.dds"    size = { 20 20 } tooltip = "DOB_BD_DEAD_TT" }
-						icon = { visible = "[GetScriptedGui('dob_bd_sgui_enemy_3_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" texture = "gfx/interface/icons/icon_wounded.dds" size = { 20 20 } tooltip = "DOB_BD_WOUNDED_TT" }
-						vbox = {
-							layoutpolicy_horizontal = expanding
-							text_single = { datacontext = "[GetPlayer.MakeScope.Var('dob_bd_enemy_3').Char]" text = "[Character.GetNameNoTooltip]" layoutpolicy_horizontal = expanding fontsize = 13 align = right } # dragon name
-							text_single = { text = "[Character.GetFirstNameNoTooltip]" default_format = "#weak" fontsize = 11 layoutpolicy_horizontal = expanding align = right } # rider name
-						}
-						portrait_head_small = {} # rider portrait
-					}
-
-					expand = {}
 				}
 			}
 		}

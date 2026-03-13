@@ -23,24 +23,30 @@ dob_bd_sgui_ally_3 = {
 
 # ── Ally dead status ──────────────────────────────────────────
 dob_bd_sgui_ally_1_dead = {
-	is_shown = { root = { has_variable = dob_bd_ally_1_status; var:dob_bd_ally_1_status >= 2 } }
+	is_shown = { root = { has_variable = dob_bd_ally_1_status
+						var:dob_bd_ally_1_status >= 2 } }
 }
 dob_bd_sgui_ally_2_dead = {
-	is_shown = { root = { has_variable = dob_bd_ally_2_status; var:dob_bd_ally_2_status >= 2 } }
+	is_shown = { root = { has_variable = dob_bd_ally_2_status
+						var:dob_bd_ally_2_status >= 2 } }
 }
 dob_bd_sgui_ally_3_dead = {
-	is_shown = { root = { has_variable = dob_bd_ally_3_status; var:dob_bd_ally_3_status >= 2 } }
+	is_shown = { root = { has_variable = dob_bd_ally_3_status
+						var:dob_bd_ally_3_status >= 2 } }
 }
 
 # ── Ally wounded status ───────────────────────────────────────
 dob_bd_sgui_ally_1_wounded = {
-	is_shown = { root = { has_variable = dob_bd_ally_1_status; var:dob_bd_ally_1_status = 1 } }
+	is_shown = { root = { has_variable = dob_bd_ally_1_status
+						var:dob_bd_ally_1_status = 1 } }
 }
 dob_bd_sgui_ally_2_wounded = {
-	is_shown = { root = { has_variable = dob_bd_ally_2_status; var:dob_bd_ally_2_status = 1 } }
+	is_shown = { root = { has_variable = dob_bd_ally_2_status
+						var:dob_bd_ally_2_status = 1 } }
 }
 dob_bd_sgui_ally_3_wounded = {
-	is_shown = { root = { has_variable = dob_bd_ally_3_status; var:dob_bd_ally_3_status = 1 } }
+	is_shown = { root = { has_variable = dob_bd_ally_3_status
+						var:dob_bd_ally_3_status = 1 } }
 }
 
 # ── Enemy dragon slots 1-3 ────────────────────────────────────
@@ -56,22 +62,28 @@ dob_bd_sgui_enemy_3 = {
 
 # ── Enemy dead status ─────────────────────────────────────────
 dob_bd_sgui_enemy_1_dead = {
-	is_shown = { root = { has_variable = dob_bd_enemy_1_status; var:dob_bd_enemy_1_status >= 2 } }
+	is_shown = { root = { has_variable = dob_bd_enemy_1_status
+						var:dob_bd_enemy_1_status >= 2 } }
 }
 dob_bd_sgui_enemy_2_dead = {
-	is_shown = { root = { has_variable = dob_bd_enemy_2_status; var:dob_bd_enemy_2_status >= 2 } }
+	is_shown = { root = { has_variable = dob_bd_enemy_2_status
+						var:dob_bd_enemy_2_status >= 2 } }
 }
 dob_bd_sgui_enemy_3_dead = {
-	is_shown = { root = { has_variable = dob_bd_enemy_3_status; var:dob_bd_enemy_3_status >= 2 } }
+	is_shown = { root = { has_variable = dob_bd_enemy_3_status
+						var:dob_bd_enemy_3_status >= 2 } }
 }
 
 # ── Enemy wounded status ──────────────────────────────────────
 dob_bd_sgui_enemy_1_wounded = {
-	is_shown = { root = { has_variable = dob_bd_enemy_1_status; var:dob_bd_enemy_1_status = 1 } }
+	is_shown = { root = { has_variable = dob_bd_enemy_1_status
+						var:dob_bd_enemy_1_status = 1 } }
 }
 dob_bd_sgui_enemy_2_wounded = {
-	is_shown = { root = { has_variable = dob_bd_enemy_2_status; var:dob_bd_enemy_2_status = 1 } }
+	is_shown = { root = { has_variable = dob_bd_enemy_2_status
+						var:dob_bd_enemy_2_status = 1 } }
 }
 dob_bd_sgui_enemy_3_wounded = {
-	is_shown = { root = { has_variable = dob_bd_enemy_3_status; var:dob_bd_enemy_3_status = 1 } }
+	is_shown = { root = { has_variable = dob_bd_enemy_3_status
+						var:dob_bd_enemy_3_status = 1 } }
 }

@@ -108,45 +108,50 @@ dob_dragon_battle_tier = {
 	#   Tier 10: size >= 170   (Vhagar, Balerion)
 	value = 0
 
+	# FIX: guard against ghost/dead dragon — dragon_size (MDE) calls has_trait internally
+	# and fails with "character is not valid" when called on a weak/dead character scope.
 	if = {
-		limit = { dragon_size >= 170 }
-		add = 10
-	}
-	else_if = {
-		limit = { dragon_size >= 150 }
-		add = 9
-	}
-	else_if = {
-		limit = { dragon_size >= 135 }
-		add = 8
-	}
-	else_if = {
-		limit = { dragon_size >= 120 }
-		add = 7
-	}
-	else_if = {
-		limit = { dragon_size >= 110 }
-		add = 6
-	}
-	else_if = {
-		limit = { dragon_size >= 95 }
-		add = 5
-	}
-	else_if = {
-		limit = { dragon_size >= 80 }
-		add = 4
-	}
-	else_if = {
-		limit = { dragon_size >= 65 }
-		add = 3
-	}
-	else_if = {
-		limit = { dragon_size >= 50 }
-		add = 2
-	}
-	else_if = {
-		limit = { dragon_size >= 30 }
-		add = 1
+		limit = { is_alive = yes }
+		if = {
+			limit = { dragon_size >= 170 }
+			add = 10
+		}
+		else_if = {
+			limit = { dragon_size >= 150 }
+			add = 9
+		}
+		else_if = {
+			limit = { dragon_size >= 135 }
+			add = 8
+		}
+		else_if = {
+			limit = { dragon_size >= 120 }
+			add = 7
+		}
+		else_if = {
+			limit = { dragon_size >= 110 }
+			add = 6
+		}
+		else_if = {
+			limit = { dragon_size >= 95 }
+			add = 5
+		}
+		else_if = {
+			limit = { dragon_size >= 80 }
+			add = 4
+		}
+		else_if = {
+			limit = { dragon_size >= 65 }
+			add = 3
+		}
+		else_if = {
+			limit = { dragon_size >= 50 }
+			add = 2
+		}
+		else_if = {
+			limit = { dragon_size >= 30 }
+			add = 1
+		}
 	}
 }
 
@@ -161,5 +166,11 @@ dob_dragon_battle_tier = {
 dob_dragon_battle_bonus_display = {
 	# Scope: o DRAGÃO
 	# Usa dragon_combat_effectiveness do AGOT (inclui size, traits, ferimentos, rider xp)
-	value = dragon_combat_effectiveness
+	# FIX: guard against ghost/dead dragon — dragon_combat_effectiveness calls dragon_size
+	# which calls has_trait internally and fails on an invalid (weak) character scope.
+	value = 0
+	if = {
+		limit = { is_alive = yes }
+		add = dragon_combat_effectiveness
+	}
 }

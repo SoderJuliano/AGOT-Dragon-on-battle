@@ -1,0 +1,122 @@
+# ============================================================
+# DRAGON ON BATTLE - Hook Purchase Events
+# Dispara quando o jogador usa dob_buy_hook_interaction.
+# Scope: root = jogador (initiator)
+# var:dob_hook_purchase_target = personagem alvo
+# ============================================================
+
+namespace = dob_hook
+
+# ── Evento principal: escolha como adquirir o hook ──────────
+# Root = jogador. Alvo salvo em var:dob_hook_purchase_target
+dob_hook.001 = {
+	type = character_event
+	title = dob_hook.001.t
+	desc = dob_hook.001.desc
+	theme = diplomacy
+
+	left_portrait = {
+		character = var:dob_hook_purchase_target
+		animation = personality_dishonorable
+	}
+
+	right_portrait = {
+		character = root
+		animation = personality_bold
+	}
+
+	# ── Opção A: Pagar 1000 gold → hook FORTE (strong hook) ──
+	option = {
+		name = dob_hook.001.gold
+		trigger = { gold >= 1000 }
+
+		add_gold = -1000
+
+		add_hook = {
+			target = var:dob_hook_purchase_target
+			type = strong_hook
+			years = 10
+		}
+
+		# Feedback: salva quanto ouro foi gasto
+		set_variable = { name = dob_hook_last_cost value = 1000 }
+
+		ai_chance = { base = 0 }
+	}
+
+	# ── Opção B: Sacrificar artefato comum/masterwork → hook FRACO ──
+	# "Artefato ruim" = common (branco) ou masterwork (verde)
+	option = {
+		name = dob_hook.001.artifact_weak
+		trigger = {
+			any_owned_artifact = {
+				OR = {
+					rarity = common
+					rarity = masterwork
+				}
+			}
+		}
+
+		# Destroi um artefato aleatório do tier correto
+		random_owned_artifact = {
+			limit = {
+				OR = {
+					rarity = common
+					rarity = masterwork
+				}
+			}
+			destroy_artifact = yes
+		}
+
+		add_hook = {
+			target = var:dob_hook_purchase_target
+			type = weak_hook
+			years = 10
+		}
+
+		ai_chance = { base = 0 }
+	}
+
+	# ── Opção C: Sacrificar artefato illustrious+ → hook FORTE ──
+	# "Artefato bom" = illustrious (azul), famed (roxo) ou melhor
+	option = {
+		name = dob_hook.001.artifact_strong
+		trigger = {
+			any_owned_artifact = {
+				OR = {
+					rarity = illustrious
+					rarity = famed
+					rarity = renowned
+					rarity = legendary
+				}
+			}
+		}
+
+		# Destroi um artefato aleatório do tier correto
+		random_owned_artifact = {
+			limit = {
+				OR = {
+					rarity = illustrious
+					rarity = famed
+					rarity = renowned
+					rarity = legendary
+				}
+			}
+			destroy_artifact = yes
+		}
+
+		add_hook = {
+			target = var:dob_hook_purchase_target
+			type = strong_hook
+			years = 10
+		}
+
+		ai_chance = { base = 0 }
+	}
+
+	# ── Opção D: Cancelar ─────────────────────────────────────
+	option = {
+		name = dob_hook.001.cancel
+		ai_chance = { base = 100 }
+	}
+}

@@ -456,7 +456,6 @@ dragon_battle.016 = {
 	# CONFIRMAR: libera o dragão, sem nenhuma penalidade
 	option = {
 		name = dragon_battle.016.a
-		highlight = yes
 		dob_release_dragon_effect = yes
 	}
 
@@ -486,7 +485,6 @@ dragon_battle.018 = {
 
 	option = {
 		name = dragon_battle.018.a
-		highlight = yes
 	}
 }
 
@@ -539,7 +537,6 @@ dragon_battle.019 = {
 
 	option = {
 		name = dragon_battle.019.a
-		highlight = yes
 		if = { limit = { has_variable = dob_skillup_dragon } remove_variable = dob_skillup_dragon }
 	}
 }
@@ -564,7 +561,6 @@ dragon_battle.020 = {
 
 	option = {
 		name = dragon_battle.020.a
-		highlight = yes
 		if = { limit = { has_variable = dob_skillup_dragon } remove_variable = dob_skillup_dragon }
 	}
 }
@@ -589,7 +585,6 @@ dragon_battle.021 = {
 
 	option = {
 		name = dragon_battle.021.a
-		highlight = yes
 		if = { limit = { has_variable = dob_skillup_dragon } remove_variable = dob_skillup_dragon }
 	}
 }
@@ -614,7 +609,6 @@ dragon_battle.022 = {
 
 	option = {
 		name = dragon_battle.022.a
-		highlight = yes
 		if = { limit = { has_variable = dob_skillup_dragon } remove_variable = dob_skillup_dragon }
 	}
 }

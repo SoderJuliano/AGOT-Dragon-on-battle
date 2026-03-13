@@ -1,0 +1,64 @@
+# ============================================================
+# DRAGON ON BATTLE - Hook Purchase Interaction
+# Permite ao jogador adquirir um hook (fraco ou forte) sobre
+# qualquer personagem pagando gold ou sacrificando artefatos.
+#
+# Aparece no menu de botão direito no retrato do personagem.
+#
+# Custos:
+#   1000 gold              → strong hook (10 anos)
+#   Artefato common/masterwork   → weak hook   (10 anos)
+#   Artefato illustrious+       → strong hook (10 anos)
+# ============================================================
+
+dob_buy_hook_interaction = {
+	category = interaction_category_hostile
+	icon = hook_strong
+
+	# IA nunca usa essa interação (é exclusiva do player)
+	ai_accept_base_value = -200
+	# Auto-aceita: não precisa da resposta do alvo (é uma "compra")
+	auto_accept = yes
+
+	# ── Visível quando ──────────────────────────────────────
+	is_shown = {
+		# Não pode ser no próprio personagem, alvo deve estar vivo
+		NOT = { this = root }
+		is_alive = yes
+		# Só o jogador humano pode usar
+		root = { is_ai = no }
+	}
+
+	# ── Válido se tiver gold OU pelo menos um artefato ──────
+	is_valid = {
+		OR = {
+			root = { gold >= 1000 }
+			root = { any_owned_artifact = { always = yes } }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		custom_description = {
+			text = dob_hook_no_resources_desc
+			OR = {
+				root = { gold >= 1000 }
+				root = { any_owned_artifact = { always = yes } }
+			}
+		}
+	}
+
+	# ── Ao aceitar: salva o alvo numa variável e dispara evento ──
+	on_accept = {
+		# this = alvo (recipient), root = jogador (initiator)
+		root = {
+			# Armazena referência ao alvo como variável no jogador
+			set_variable = {
+				name = dob_hook_purchase_target
+				value = prev	# prev aqui = this (alvo/recipient)
+			}
+			trigger_event = { id = dob_hook.001 }
+		}
+	}
+
+	cost = { }	# Custo real é escolhido dentro do evento
+}

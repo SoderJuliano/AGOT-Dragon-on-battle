@@ -1,0 +1,85 @@
+﻿# ============================================================
+# DRAGON ON BATTLE - Decisão: Buscar Ovos no Ninho da Dragoa
+#
+# Requisitos: rider de dragoa fêmea ATIVA,
+#             ou dragoa fêmea hospedada na corte do player
+# Cooldown:   1 vez por ano (flag dob_searched_nest_this_year)
+# Efeito:     50% de chance de achar 1 ovo; bônus de 40% para
+#             achar um segundo ovo no mesmo ninho.
+#
+# Nota: agot_dragon_lay_egg_effect é chamado no scope da DRAGOA.
+#       Se o nome mudar entre versões do AGOT, ajuste no arquivo
+#       events/dob_nest_search_events.txt.
+# ============================================================
+
+dob_search_dragon_nest_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_dragons.dds"
+	}
+	ai_check_interval = 0  # IA nunca executa
+
+	# ── Visibilidade ─────────────────────────────────────────────────────────────
+	# Visível se: rider de dragoa fêmea OU dragoa fêmea hospedada pelo player
+	is_shown = {
+		is_ai = no
+		OR = {
+			# Rider com dragoa fêmea viva e ativa
+			AND = {
+				is_current_dragonrider = yes
+				exists = var:current_dragon
+				var:current_dragon = {
+					is_alive = yes
+					is_female = yes
+				}
+			}
+			# Dragoa fêmea cujo host é o player (dragonpit)
+			any_living_dragon = {
+				is_female = yes
+				host = root
+			}
+		}
+	}
+
+	# ── Clicável se não foi usado neste ano ──────────────────────────────────────
+	is_valid = {
+		is_ai = no
+		NOT = { has_character_flag = dob_searched_nest_this_year }
+	}
+
+	is_valid_showing_failures_only = {
+		NOT = { has_character_flag = dob_searched_nest_this_year }
+	}
+
+	cost = { }
+
+	# ── Efeito ───────────────────────────────────────────────────────────────────
+	effect = {
+		# Cooldown de 1 ano
+		add_character_flag = {
+			flag = dob_searched_nest_this_year
+			years = 1
+		}
+
+		# Salvar a dragoa fêmea no scope antes de disparar o evento
+		# Prioridade: dragão bonded do rider > dragoa hospedada (host)
+		if = {
+			limit = {
+				is_current_dragonrider = yes
+				exists = var:current_dragon
+				var:current_dragon = { is_alive = yes is_female = yes }
+			}
+			var:current_dragon = { save_scope_as = dob_nest_dragon }
+		}
+		else = {
+			random_living_dragon = {
+				limit = {
+					is_female = yes
+					host = prev
+				}
+				save_scope_as = dob_nest_dragon
+			}
+		}
+
+		trigger_event = { id = dragon_nest.001 }
+	}
+}
