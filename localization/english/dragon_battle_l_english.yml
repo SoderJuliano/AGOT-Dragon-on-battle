@@ -21,8 +21,8 @@
  dob_hook.001.t: "Acquiring Leverage"
  dob_hook.001.desc: "Gold, gifts, and carefully placed secrets — the currency of power. You seek leverage over this person that can be used to demand favors, forge alliances, or enforce your will."
  dob_hook.001.gold: "Pay §Y1000 gold§! for a §Bstrong hook§! (10 years)"
- dob_hook.001.artifact_weak: "Trade a §Wcommon artifact§! for a §Hweak hook§! (10 years)"
- dob_hook.001.artifact_strong: "Trade a §Billustrious/famed artifact§! for a §Bstrong hook§! (10 years)"
+ dob_hook.001.artifact_weak: "Trade §W[dob_sacrifice_artifact_weak.GetName]§! for a §Hweak hook§! (10 years)"
+ dob_hook.001.artifact_strong: "Trade §B[dob_sacrifice_artifact_strong.GetName]§! for a §Bstrong hook§! (10 years)"
  dob_hook.001.cancel: "Perhaps another time."
 
 

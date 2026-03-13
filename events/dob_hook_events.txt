@@ -25,6 +25,46 @@ dob_hook.001 = {
 		animation = personality_bold
 	}
 
+	# Salva qual artefato será sacrificado para exibir o nome na opção
+	immediate = {
+		if = {
+			limit = {
+				any_artifact = {
+					OR = { rarity = common  rarity = masterwork }
+				}
+			}
+			random_artifact = {
+				limit = {
+					OR = { rarity = common  rarity = masterwork }
+				}
+				save_scope_as = dob_sacrifice_artifact_weak
+			}
+		}
+		if = {
+			limit = {
+				any_artifact = {
+					OR = {
+						rarity = illustrious
+						rarity = famed
+						rarity = renowned
+						rarity = legendary
+					}
+				}
+			}
+			random_artifact = {
+				limit = {
+					OR = {
+						rarity = illustrious
+						rarity = famed
+						rarity = renowned
+						rarity = legendary
+					}
+				}
+				save_scope_as = dob_sacrifice_artifact_strong
+			}
+		}
+	}
+
 	# ── Opção A: Pagar 1000 gold → hook FORTE (strong hook) ──
 	option = {
 		name = dob_hook.001.gold
@@ -57,16 +97,8 @@ dob_hook.001 = {
 			}
 		}
 
-		# Destroi um artefato aleatório do tier correto
-		random_artifact = {
-			limit = {
-				OR = {
-					rarity = common
-					rarity = masterwork
-				}
-			}
-			destroy_artifact = this
-		}
+		# Destroi o artefato específico que foi exibido ao jogador
+		scope:dob_sacrifice_artifact_weak = { destroy_artifact = this }
 
 		add_hook = {
 			target = var:dob_hook_purchase_target
@@ -92,18 +124,8 @@ dob_hook.001 = {
 			}
 		}
 
-		# Destroi um artefato aleatório do tier correto
-		random_artifact = {
-			limit = {
-				OR = {
-					rarity = illustrious
-					rarity = famed
-					rarity = renowned
-					rarity = legendary
-				}
-			}
-			destroy_artifact = this
-		}
+		# Destroi o artefato específico que foi exibido ao jogador
+		scope:dob_sacrifice_artifact_strong = { destroy_artifact = this }
 
 		add_hook = {
 			target = var:dob_hook_purchase_target
