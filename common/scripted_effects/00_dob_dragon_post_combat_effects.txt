@@ -1084,6 +1084,13 @@ dob_record_battle_dragons_effect = {
 			if = { limit = { has_variable = dob_bd_enemy_3 }        remove_variable = dob_bd_enemy_3 }
 			if = { limit = { has_variable = dob_bd_enemy_3_rider }  remove_variable = dob_bd_enemy_3_rider }
 			if = { limit = { has_variable = dob_bd_enemy_3_status } remove_variable = dob_bd_enemy_3_status }
+			if = { limit = { has_variable = dob_bd_ally_1_power }    remove_variable = dob_bd_ally_1_power }
+			if = { limit = { has_variable = dob_bd_ally_2_power }    remove_variable = dob_bd_ally_2_power }
+			if = { limit = { has_variable = dob_bd_ally_3_power }    remove_variable = dob_bd_ally_3_power }
+			if = { limit = { has_variable = dob_bd_enemy_1_power }   remove_variable = dob_bd_enemy_1_power }
+			if = { limit = { has_variable = dob_bd_enemy_2_power }   remove_variable = dob_bd_enemy_2_power }
+			if = { limit = { has_variable = dob_bd_enemy_3_power }   remove_variable = dob_bd_enemy_3_power }
+			if = { limit = { has_variable = dob_bd_total_ally_power } remove_variable = dob_bd_total_ally_power }
 		}
 	}
 
@@ -1252,6 +1259,48 @@ dob_record_battle_dragons_effect = {
 					}
 				}
 			}
+		}
+	}
+
+	# ── Step 5: Calcular poder de batalha de cada dragão para exibição na tela de resultado ──
+	if = {
+		limit = { exists = scope:dob_bd_player }
+		scope:dob_bd_player = {
+			if = {
+				limit = { has_variable = dob_bd_ally_1  var:dob_bd_ally_1 = { is_alive = yes } }
+				var:dob_bd_ally_1 = { save_scope_as = dob_pwr_d1 }
+				set_variable = { name = dob_bd_ally_1_power value = scope:dob_pwr_d1.dragon_combat_effectiveness }
+			}
+			if = {
+				limit = { has_variable = dob_bd_ally_2  var:dob_bd_ally_2 = { is_alive = yes } }
+				var:dob_bd_ally_2 = { save_scope_as = dob_pwr_d2 }
+				set_variable = { name = dob_bd_ally_2_power value = scope:dob_pwr_d2.dragon_combat_effectiveness }
+			}
+			if = {
+				limit = { has_variable = dob_bd_ally_3  var:dob_bd_ally_3 = { is_alive = yes } }
+				var:dob_bd_ally_3 = { save_scope_as = dob_pwr_d3 }
+				set_variable = { name = dob_bd_ally_3_power value = scope:dob_pwr_d3.dragon_combat_effectiveness }
+			}
+			if = {
+				limit = { has_variable = dob_bd_enemy_1  var:dob_bd_enemy_1 = { is_alive = yes } }
+				var:dob_bd_enemy_1 = { save_scope_as = dob_pwr_e1 }
+				set_variable = { name = dob_bd_enemy_1_power value = scope:dob_pwr_e1.dragon_combat_effectiveness }
+			}
+			if = {
+				limit = { has_variable = dob_bd_enemy_2  var:dob_bd_enemy_2 = { is_alive = yes } }
+				var:dob_bd_enemy_2 = { save_scope_as = dob_pwr_e2 }
+				set_variable = { name = dob_bd_enemy_2_power value = scope:dob_pwr_e2.dragon_combat_effectiveness }
+			}
+			if = {
+				limit = { has_variable = dob_bd_enemy_3  var:dob_bd_enemy_3 = { is_alive = yes } }
+				var:dob_bd_enemy_3 = { save_scope_as = dob_pwr_e3 }
+				set_variable = { name = dob_bd_enemy_3_power value = scope:dob_pwr_e3.dragon_combat_effectiveness }
+			}
+			# Total de poder dos dragões aliados
+			set_variable = { name = dob_bd_total_ally_power value = 0 }
+			if = { limit = { has_variable = dob_bd_ally_1_power } change_variable = { name = dob_bd_total_ally_power add = var:dob_bd_ally_1_power } }
+			if = { limit = { has_variable = dob_bd_ally_2_power } change_variable = { name = dob_bd_total_ally_power add = var:dob_bd_ally_2_power } }
+			if = { limit = { has_variable = dob_bd_ally_3_power } change_variable = { name = dob_bd_total_ally_power add = var:dob_bd_ally_3_power } }
 		}
 	}
 }

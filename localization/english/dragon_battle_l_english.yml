@@ -27,6 +27,14 @@
 
 
 
+ DOB_BD_TOTAL: "§wTotal: [GetPlayer.MakeScope.Var('dob_bd_total_ally_power')|0]§!"
+ DOB_BD_ALLY_1_POWER: "⚡ §YPoder: [GetPlayer.MakeScope.Var('dob_bd_ally_1_power')|0]§!"
+ DOB_BD_ALLY_2_POWER: "⚡ §YPoder: [GetPlayer.MakeScope.Var('dob_bd_ally_2_power')|0]§!"
+ DOB_BD_ALLY_3_POWER: "⚡ §YPoder: [GetPlayer.MakeScope.Var('dob_bd_ally_3_power')|0]§!"
+ DOB_BD_ENEMY_1_POWER: "⚡ §FPoder: [GetPlayer.MakeScope.Var('dob_bd_enemy_1_power')|0]§!"
+ DOB_BD_ENEMY_2_POWER: "⚡ §FPoder: [GetPlayer.MakeScope.Var('dob_bd_enemy_2_power')|0]§!"
+ DOB_BD_ENEMY_3_POWER: "⚡ §FPoder: [GetPlayer.MakeScope.Var('dob_bd_enemy_3_power')|0]§!"
+
  # ── Modifiers pós-batalha (prestígio, não duplicam AGOT) ───
  dob_dragon_victory_small: "Dragon Victory — Young Flame"
  dob_dragon_victory_small_desc: "You rode your dragon into battle and emerged victorious. Word of your young dragon's fire spreads through the realm."
