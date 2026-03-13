@@ -49,7 +49,7 @@ dob_hook.001 = {
 	option = {
 		name = dob_hook.001.artifact_weak
 		trigger = {
-			any_owned_artifact = {
+			any_artifact = {
 				OR = {
 					rarity = common
 					rarity = masterwork
@@ -58,14 +58,14 @@ dob_hook.001 = {
 		}
 
 		# Destroi um artefato aleatório do tier correto
-		random_owned_artifact = {
+		random_artifact = {
 			limit = {
 				OR = {
 					rarity = common
 					rarity = masterwork
 				}
 			}
-			destroy_artifact = yes
+			destroy_artifact = this
 		}
 
 		add_hook = {
@@ -82,7 +82,7 @@ dob_hook.001 = {
 	option = {
 		name = dob_hook.001.artifact_strong
 		trigger = {
-			any_owned_artifact = {
+			any_artifact = {
 				OR = {
 					rarity = illustrious
 					rarity = famed
@@ -93,7 +93,7 @@ dob_hook.001 = {
 		}
 
 		# Destroi um artefato aleatório do tier correto
-		random_owned_artifact = {
+		random_artifact = {
 			limit = {
 				OR = {
 					rarity = illustrious
@@ -102,7 +102,7 @@ dob_hook.001 = {
 					rarity = legendary
 				}
 			}
-			destroy_artifact = yes
+			destroy_artifact = this
 		}
 
 		add_hook = {

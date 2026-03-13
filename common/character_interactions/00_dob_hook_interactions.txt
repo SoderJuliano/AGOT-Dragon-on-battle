@@ -23,17 +23,17 @@ dob_buy_hook_interaction = {
 	# ── Visível quando ──────────────────────────────────────
 	is_shown = {
 		# Não pode ser no próprio personagem, alvo deve estar vivo
-		NOT = { this = root }
-		is_alive = yes
+		scope:recipient != scope:actor
+		scope:recipient = { is_alive = yes }
 		# Só o jogador humano pode usar
-		root = { is_ai = no }
+		scope:actor = { is_ai = no }
 	}
 
 	# ── Válido se tiver gold OU pelo menos um artefato ──────
 	is_valid = {
 		OR = {
-			root = { gold >= 1000 }
-			root = { any_owned_artifact = { always = yes } }
+			scope:actor = { gold >= 1000 }
+			scope:actor = { has_any_artifact = yes }
 		}
 	}
 
@@ -41,20 +41,20 @@ dob_buy_hook_interaction = {
 		custom_description = {
 			text = dob_hook_no_resources_desc
 			OR = {
-				root = { gold >= 1000 }
-				root = { any_owned_artifact = { always = yes } }
+				scope:actor = { gold >= 1000 }
+				scope:actor = { has_any_artifact = yes }
 			}
 		}
 	}
 
 	# ── Ao aceitar: salva o alvo numa variável e dispara evento ──
 	on_accept = {
-		# this = alvo (recipient), root = jogador (initiator)
-		root = {
+		# scope:actor = jogador (initiator), scope:recipient = alvo
+		scope:actor = {
 			# Armazena referência ao alvo como variável no jogador
 			set_variable = {
 				name = dob_hook_purchase_target
-				value = prev	# prev aqui = this (alvo/recipient)
+				value = scope:recipient
 			}
 			trigger_event = { id = dob_hook.001 }
 		}
