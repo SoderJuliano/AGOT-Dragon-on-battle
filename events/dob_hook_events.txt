@@ -1,4 +1,4 @@
-# ============================================================
+﻿# ============================================================
 # DRAGON ON BATTLE - Hook Purchase Events
 # Dispara quando o jogador usa dob_buy_hook_interaction.
 # Scope: root = jogador (initiator)
