@@ -340,37 +340,35 @@ dragon_battle.014 = {
 	theme = battle
 
 	immediate = {
-		# 0 = dragão vivo e saudável, 1 = ferido, 2 = morto
+		# Captura status AGORA (no dispatch), salva em variável no player.
+		# Depois de 2 dias o scope:dob_ally_dragon pode ser ghost — nunca reavaliado.
 		if = {
-			limit = { scope:dob_ally_dragon = { is_alive = no } }
-			set_variable = { name = dob_ally_status value = 2 }
+			limit = { NOT = { scope:dob_ally_dragon ?= { is_alive = yes } } }
+			set_variable = { name = dob_ally_status value = 2 }	# morto
 		}
 		else_if = {
-			limit = { scope:dob_ally_dragon = { has_character_modifier = dob_dragon_wounded } }
-			set_variable = { name = dob_ally_status value = 1 }
+			limit = { scope:dob_ally_dragon ?= { has_character_modifier = dob_dragon_wounded } }
+			set_variable = { name = dob_ally_status value = 1 }	# ferido
 		}
 		else = {
-			set_variable = { name = dob_ally_status value = 0 }
+			set_variable = { name = dob_ally_status value = 0 }	# vivo e saudável
 		}
 	}
 
 	desc = {
 		first_valid = {
 			triggered_desc = {
-				trigger = { scope:dob_ally_dragon = { is_alive = no } }
+				trigger = { var:dob_ally_status >= 2 }
 				desc = dragon_battle.014.desc_dead
 			}
 			triggered_desc = {
-				trigger = { scope:dob_ally_dragon = { has_character_modifier = dob_dragon_wounded } }
+				trigger = { var:dob_ally_status >= 1 }
 				desc = dragon_battle.014.desc_wounded
 			}
 			desc = dragon_battle.014.desc_alive
 		}
 	}
 
-	# FIX APLICADO: triggered_animation dentro de portrait quebra o parser do CK3
-	# (parser tratava 'right_portrait' e 'option' como novos IDs de evento).
-	# Usa animação estática; resultado visual (morto/ferido/vivo) já está no desc.
 	left_portrait = {
 		character = scope:dob_ally_rider_combat
 		animation = personality_bold
@@ -394,35 +392,34 @@ dragon_battle.015 = {
 	theme = battle
 
 	immediate = {
+		# Captura status AGORA, salva em variável. Após 3 dias o scope pode ser ghost.
 		if = {
-			limit = { scope:dob_enemy_dragon = { is_alive = no } }
-			set_variable = { name = dob_enemy_status value = 2 }
+			limit = { NOT = { scope:dob_enemy_dragon ?= { is_alive = yes } } }
+			set_variable = { name = dob_enemy_status value = 2 }	# morto
 		}
 		else_if = {
-			limit = { scope:dob_enemy_dragon = { has_character_modifier = dob_dragon_wounded } }
-			set_variable = { name = dob_enemy_status value = 1 }
+			limit = { scope:dob_enemy_dragon ?= { has_character_modifier = dob_dragon_wounded } }
+			set_variable = { name = dob_enemy_status value = 1 }	# ferido
 		}
 		else = {
-			set_variable = { name = dob_enemy_status value = 0 }
+			set_variable = { name = dob_enemy_status value = 0 }	# vivo e saudável
 		}
 	}
 
 	desc = {
 		first_valid = {
 			triggered_desc = {
-				trigger = { scope:dob_enemy_dragon = { is_alive = no } }
+				trigger = { var:dob_enemy_status >= 2 }
 				desc = dragon_battle.015.desc_dead
 			}
 			triggered_desc = {
-				trigger = { scope:dob_enemy_dragon = { has_character_modifier = dob_dragon_wounded } }
+				trigger = { var:dob_enemy_status >= 1 }
 				desc = dragon_battle.015.desc_wounded
 			}
 			desc = dragon_battle.015.desc_alive
 		}
 	}
 
-	# FIX APLICADO: mesmo fix do evento 014 — triggered_animation quebrava o parser.
-	# Animação estática; resultado visual (morto/ferido/vivo) já está no desc.
 	left_portrait = {
 		character = scope:dob_enemy_rider_combat
 		animation = war_attacker
