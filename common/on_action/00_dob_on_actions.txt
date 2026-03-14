@@ -398,7 +398,10 @@ dob_on_monthly_pulse = {
 				is_ai = no
 				NOT = { has_character_flag = dob_fix_all_ran_recently }
 			}
-			add_character_flag = { flag = dob_fix_all_ran_recently days = 60 }
+			# Cooldown de 10 dias: garante que dragões MDE sem registro sejam corrigidos
+			# rapidamente sem sobrecarregar. Após o primeiro fix, iterações futuras são baratas
+			# porque nenhum dragão passa na condição de filtro.
+			add_character_flag = { flag = dob_fix_all_ran_recently days = 10 }
 			dob_fix_all_broken_dragons = yes
 		}
 
@@ -543,27 +546,6 @@ dob_on_dragon_birthday = {
 						set_variable = { name = dragon_size_base value = 3 }
 					}
 				}
-			}
-			# CRÍTICO: Dragão NÃO está na gl_dragon_variable_storage (típico de dragões MDE).
-			# O AGOT já tentou change_dragon_size e falhou (no-op). Registrar o dragão agora
-			# para que nos próximos aniversários o AGOT cresça normalmente.
-			# Não faz delete+recreate — cria um story node novo via função oficial do AGOT.
-			else_if = {
-				limit = { NOT = { exists = scope:dob_sn } }
-				# Estimar tamanho correto pela idade e setar no personagem do dragão
-				dob_estimate_dragon_size_from_age = yes
-				# Garantir dragon_age no personagem (lido pelo on_setup da story)
-				if = {
-					limit = { NOT = { has_variable = dragon_age } }
-					set_variable = { name = dragon_age value = { value = 0 add = age } }
-				}
-				# Garantir gene vars de aparência (necessário para retrato correto)
-				if = {
-					limit = { NOT = { has_variable = gene_dragon_body_shading_template } }
-					agot_gen_appearance_variables = yes
-				}
-				# Registrar na story cycle — a partir do próximo aniversário o AGOT cresce normalmente
-				agot_dragon_transfer_vars_to_story_cycle_effect = { DRAGON = this }
 			}
 			# Atualizar modifier do rider se tiver um
 			if = {
