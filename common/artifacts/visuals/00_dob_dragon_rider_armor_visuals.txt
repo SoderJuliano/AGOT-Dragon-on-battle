@@ -1,0 +1,11 @@
+###############################################################
+# DRAGON ON BATTLE - Artifact Visual: Dragon Rider's Plate
+#
+# Icon references gfx/interface/icons/artifact/dob_dragon_rider_armor.dds
+# Asset references the Blackfyre 02 armor entity from AGOT.
+###############################################################
+
+dob_dragon_rider_armor_visuals = {
+	icon = "dob_dragon_rider_armor.dds"
+	asset = male_clothes_secular_valyrian_war_blackfyre_02_entity
+}

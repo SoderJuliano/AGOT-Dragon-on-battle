@@ -1,0 +1,33 @@
+###############################################################
+# DRAGON ON BATTLE - Artifact Template: Dragon Rider's Plate
+#
+# Template defines equip conditions and AI score.
+# Any character can equip it, but only dragon riders benefit fully.
+###############################################################
+
+dob_dragon_rider_armor_template = {
+	can_equip = {
+		always = yes
+	}
+
+	# Full benefit only for active dragon riders
+	can_benefit = {
+		is_capable_adult = yes
+	}
+
+	fallback = {
+		# Non-capable characters get no benefit
+	}
+
+	unique = no  # Can be crafted per dragon rider (not world-unique)
+
+	ai_score = {
+		value = 0
+		if = {
+			limit = {
+				is_current_dragonrider = yes
+			}
+			add = 150
+		}
+	}
+}

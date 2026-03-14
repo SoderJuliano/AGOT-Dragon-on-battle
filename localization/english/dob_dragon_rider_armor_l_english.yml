@@ -1,0 +1,21 @@
+l_english:
+ # ─── Artifact: Dragon Rider's Plate ─────────────────────────────────────────
+ dob_dragon_rider_armor_name:0 "Dragon Rider's Plate"
+ dob_dragon_rider_armor_description:0 "This magnificent suit of battle armor was forged in the ancient Valyrian tradition for those who dare to command dragons in open war. Its interlocking scales are layered like dragonhide, the pauldrons swept back to allow freedom of movement astride a dragon's neck, the visor slit narrow against the scorching breath of fire. Tempered in the heat of dragonflame itself and polished to a mirror sheen, the plate gleams as steel beneath the sun, its edges traced in hammered copper and gold. Those who ride to war wearing it are not merely warriors — they are the living heirs of the old Dragonlords, and all of Westeros knows to fear them."
+
+ # ─── Modifier tooltip ────────────────────────────────────────────────────────
+ dob_dragon_rider_armor_modifier:0 "Dragon Rider's Plate"
+
+ # ─── Decision ────────────────────────────────────────────────────────────────
+ dob_forge_dragon_rider_armor_decision:0 "Commission Dragon Rider's Plate"
+ dob_forge_dragon_rider_armor_decision_desc:0 "The armories of my realm hold capable smiths, but this commission demands masters — artisans trained in the Valyrian craft. I would have them forge a suit of battle armor worthy of a dragonrider: layered steel scales with copper and gold trim, fitted to move freely in the saddle of a dragon. The cost is considerable, but a dragonrider must look the part."
+ dob_forge_dragon_rider_armor_decision_tooltip:0 "Commission a Dragon Rider's Plate\n[Dragon Rider's Plate effects]\n+4 Prowess\n+2 Advantage\n+3% Enemy Fatal Casualties\n+10% Monthly Prestige\n+5% Monthly Dynasty Renown\n+1 Domain Limit\n+10 Vassal Limit\n+4 Court Grandeur\n+5% Knight Effectiveness\n+1 Knight Slot\n+10 Attraction Opinion\n+20% Fertility"
+
+ # ─── Validity failure descriptions ───────────────────────────────────────────
+ dob_forge_dragon_rider_armor_not_enough_gold:0 "I need at least [500] gold to commission this armor."
+ dob_forge_dragon_rider_armor_already_equipped:0 "I already bear a Dragon Rider's Plate. I need no second one."
+
+ # ─── Event: dob_armor.001 ────────────────────────────────────────────────────
+ dob_armor.001.t:0 "The Dragon Rider's Plate"
+ dob_armor.001.desc:0 "The master armorer has delivered the finished plate, and it is everything I asked for — and more. Layered scales of hardened steel catch the light like dragon scales themselves. The edges are dressed in beaten copper and veins of gold that trace the shape of wings across the breastplate. It is armor befitting a Dragonlord: fearsome, magnificent, and unmistakable. When I ride my dragon into battle wearing this, no man who sees us together will ever doubt who commands the skies."
+ dob_armor.001.a:0 "I shall wear it with pride — and with fire."

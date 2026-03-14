@@ -1,0 +1,32 @@
+###############################################################
+# DRAGON ON BATTLE - Artifact Modifier: Dragon Rider's Plate
+#
+# Bonuses granted while the artifact is equipped.
+###############################################################
+
+dob_dragon_rider_armor_modifier = {
+	icon = grandeur_positive
+
+	# ── Combat ────────────────────────────────────────────────────────────────────
+	prowess                        = 4
+	advantage                      = 2
+	enemy_hard_casualty_modifier   = 0.03   # +3% Enemy Fatal Casualties
+	negate_prowess_penalty_add     = 5      # Reduces armor prowess penalty
+
+	# ── Renown & Prestige ─────────────────────────────────────────────────────────
+	monthly_prestige_gain_mult     = 0.10   # +10% Monthly Prestige (+5% x2)
+	monthly_dynasty_prestige_mult  = 0.05   # +5% Monthly Dynasty Renown
+
+	# ── Domain & Court ────────────────────────────────────────────────────────────
+	domain_limit                   = 1
+	vassal_limit                   = 10
+	court_grandeur_baseline_add    = 4
+
+	# ── Knights ───────────────────────────────────────────────────────────────────
+	knight_effectiveness_mult      = 0.05   # +5% Knight Effectiveness
+	knight_limit                   = 1      # +1 Number of Knights
+
+	# ── Social ────────────────────────────────────────────────────────────────────
+	attraction_opinion             = 10
+	fertility                      = 0.20   # +20% Fertility
+}

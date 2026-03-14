@@ -1,0 +1,92 @@
+###############################################################
+# DRAGON ON BATTLE - Decision: Forge the Dragon Rider's Plate
+#
+# Available only to active dragon riders (non-AI).
+# Costs 500 gold. Cooldown: 10 years (in case the artifact is lost).
+# Creates an Illustrious-rarity wearable armor artifact.
+###############################################################
+
+dob_forge_dragon_rider_armor_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_dragons.dds"
+	}
+
+	desc = dob_forge_dragon_rider_armor_decision_desc
+	selection_tooltip = dob_forge_dragon_rider_armor_decision_tooltip
+
+	decision_group_type = artifact
+
+	cooldown = { years = 10 }
+
+	ai_check_interval = 0  # AI never executes
+
+	# ── Visibility ────────────────────────────────────────────────────────────────
+	is_shown = {
+		is_ai = no
+		is_current_dragonrider = yes
+	}
+
+	# ── Validity ──────────────────────────────────────────────────────────────────
+	is_valid = {
+		is_capable_adult = yes
+		is_current_dragonrider = yes
+		gold >= 500
+		# Must not already have the plate equipped
+		NOT = {
+			agot_has_artifact_equipped = { ARTIFACT_VARIABLE = dob_dragon_rider_armor_artifact }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_current_dragonrider = yes
+		custom_description = {
+			text = dob_forge_dragon_rider_armor_not_enough_gold
+			gold >= 500
+		}
+		custom_description = {
+			text = dob_forge_dragon_rider_armor_already_equipped
+			NOT = {
+				agot_has_artifact_equipped = { ARTIFACT_VARIABLE = dob_dragon_rider_armor_artifact }
+			}
+		}
+	}
+
+	cost = {
+		gold = 500
+	}
+
+	# ── Effect ────────────────────────────────────────────────────────────────────
+	effect = {
+		hidden_effect = {
+			save_scope_as = dob_armor_owner
+
+			create_artifact = {
+				name        = dob_dragon_rider_armor_name
+				description = dob_dragon_rider_armor_description
+				type        = armor_plate
+				visuals     = dob_dragon_rider_armor_visuals
+				wealth      = 100
+				quality     = 100
+				template    = dob_dragon_rider_armor_template
+				modifier    = dob_dragon_rider_armor_modifier
+				save_scope_as = dob_newly_created_armor
+				decaying    = no
+			}
+
+			scope:dob_newly_created_armor = {
+				set_artifact_rarity_illustrious = yes
+				# This variable is what the portrait modifier checks
+				set_variable = { name = dob_dragon_rider_armor_artifact value = yes }
+				equip_artifact_to_owner_replace = yes
+			}
+		}
+
+		# Flavor notification
+		trigger_event = { id = dob_armor.001 }
+	}
+
+	ai_potential = {
+		always = no
+	}
+}

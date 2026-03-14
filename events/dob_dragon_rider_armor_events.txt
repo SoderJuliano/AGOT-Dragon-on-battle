@@ -1,0 +1,27 @@
+###############################################################
+# DRAGON ON BATTLE - Events: Dragon Rider's Plate
+#
+# dob_armor.001 — Forging notification event
+###############################################################
+
+namespace = dob_armor
+
+# Triggered by dob_forge_dragon_rider_armor_decision
+dob_armor.001 = {
+	type = character_event
+	title = dob_armor.001.t
+	desc = dob_armor.001.desc
+	theme = realm
+
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+
+	immediate = { }
+
+	option = {
+		name = dob_armor.001.a
+		# The artifact was already created and equipped in the decision effect
+	}
+}

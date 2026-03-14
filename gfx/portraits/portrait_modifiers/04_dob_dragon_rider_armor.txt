@@ -1,0 +1,77 @@
+###############################################################
+# DRAGON ON BATTLE - Portrait Modifiers: Dragon Rider's Plate
+#
+# Applies the Valyrian Blackfyre 02 armor visual when the
+# Dragon Rider's Plate artifact is equipped.
+# This file is merged by CK3 with AGOT's portrait modifier groups.
+###############################################################
+
+clothes_armor = {
+
+	usage = game
+	selection_behavior = weighted_random
+	priority = 4
+
+	# ── Dragon Rider's Plate: Body + Legwear ─────────────────────────────────────
+	dob_clothing_dragon_rider_armor = {
+		dna_modifiers = {
+			accessory = {
+				mode = add
+				gene = clothes
+				template = agot_all_armors
+				accessory = male_clothes_valyrian_war_blackfyre_02
+			}
+			accessory = {
+				mode = add
+				gene = legwear
+				template = agot_all_legwear
+				accessory = male_legwear_secular_valyrian_war_blackfyre_02
+			}
+			morph = {
+				mode = modify_multiply
+				gene = gene_bs_bust
+				value = 0.8 # Reduce exaggerated bust effect when wearing armor
+				template = bust_clothes
+			}
+		}
+		outfit_tags = { military_outfit }
+		weight = {
+			base = 0
+			modifier = {
+				add = agot_artifact_portrait_modifier  # 500 — ensures override
+				exists = this
+				portrait_wear_armor_trigger = yes
+				agot_has_artifact_equipped = { ARTIFACT_VARIABLE = dob_dragon_rider_armor_artifact }
+			}
+		}
+	}
+}
+
+headgear_armor = {
+
+	usage = game
+	selection_behavior = weighted_random
+	priority = 4
+
+	# ── Dragon Rider's Plate: Headgear ───────────────────────────────────────────
+	dob_headgear_dragon_rider_armor = {
+		dna_modifiers = {
+			accessory = {
+				mode = add
+				gene = headgear
+				template = agot_most_headgears
+				accessory = male_headgear_secular_valyrian_war_blackfyre_03_high
+			}
+		}
+		outfit_tags = { military_outfit }
+		weight = {
+			base = 0
+			modifier = {
+				add = agot_artifact_portrait_modifier  # 500 — ensures override
+				exists = this
+				portrait_wear_helmet_trigger = yes
+				agot_has_artifact_equipped = { ARTIFACT_VARIABLE = dob_dragon_rider_armor_artifact }
+			}
+		}
+	}
+}
