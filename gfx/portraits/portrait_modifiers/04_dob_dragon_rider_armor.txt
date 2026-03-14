@@ -12,20 +12,20 @@ clothes_armor = {
 	selection_behavior = weighted_random
 	priority = 4
 
-	# ── Dragon Rider's Plate: Body + Legwear ─────────────────────────────────────
+	# ── Dragon Rider's Plate: Body + Legwear (steel+gold recolor) ───────────────
 	dob_clothing_dragon_rider_armor = {
 		dna_modifiers = {
 			accessory = {
 				mode = add
 				gene = clothes
 				template = agot_all_armors
-				accessory = male_clothes_valyrian_war_blackfyre_02
+				accessory = dob_dragon_rider_armor_body
 			}
 			accessory = {
 				mode = add
 				gene = legwear
 				template = agot_all_legwear
-				accessory = male_legwear_secular_valyrian_war_blackfyre_02
+				accessory = dob_dragon_rider_armor_legwear
 			}
 			morph = {
 				mode = modify_multiply
@@ -53,14 +53,14 @@ headgear_armor = {
 	selection_behavior = weighted_random
 	priority = 4
 
-	# ── Dragon Rider's Plate: Headgear ───────────────────────────────────────────
+	# ── Dragon Rider's Plate: Headgear (steel+gold recolor) ─────────────────────
 	dob_headgear_dragon_rider_armor = {
 		dna_modifiers = {
 			accessory = {
 				mode = add
 				gene = headgear
 				template = agot_most_headgears
-				accessory = male_headgear_secular_valyrian_war_blackfyre_03_high
+				accessory = dob_dragon_rider_armor_headgear
 			}
 		}
 		outfit_tags = { military_outfit }

@@ -1,0 +1,22 @@
+# Dragon on Battle — Dragon Rider's Plate: Legwear Asset
+# Reuses the Blackfyre 02 legwear mesh with our steel+gold diffuse.
+
+pdxmesh = {
+        name = "dob_dragon_rider_armor_legwear_mesh"
+        file = "male_legwear_secular_valyrian_war_02.mesh"
+
+        meshsettings = {
+                name = "male_legwear_secular_valyrian_war_02Shape"
+                index = 0
+                texture_diffuse  = "dob_dragon_rider_body_diffuse.dds"
+                texture_normal   = "valyrian_02_normal.dds"
+                texture_specular = "valyrian_02_properties.dds"
+                shader      = "portrait_attachment"
+                shader_file = "gfx/FX/jomini/portrait.shader"
+        }
+}
+
+entity = {
+        name = "dob_dragon_rider_armor_legwear_entity"
+        pdxmesh = "dob_dragon_rider_armor_legwear_mesh"
+}

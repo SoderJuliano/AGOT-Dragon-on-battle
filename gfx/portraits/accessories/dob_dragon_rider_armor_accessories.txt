@@ -1,0 +1,27 @@
+###############################################################
+# DRAGON ON BATTLE - Portrait Accessories: Dragon Rider's Plate
+#
+# Registers the DOB-specific armor accessories that use our
+# recolored steel+gold textures. These point to our own entities
+# instead of AGOT's Blackfyre entities.
+###############################################################
+
+# ── Body (clothes slot) ───────────────────────────────────────────────────────
+dob_dragon_rider_armor_body = {
+	set_tags = "shrink_arms,shrink_chest,shrink_belly,offset2"
+	entity = { required_tags = "" shared_pose_entity = torso entity = dob_dragon_rider_armor_body_entity }
+}
+
+# ── Legwear slot ──────────────────────────────────────────────────────────────
+dob_dragon_rider_armor_legwear = {
+	set_tags = "shrink_legs"
+	entity = { required_tags = "" shared_pose_entity = torso entity = dob_dragon_rider_armor_legwear_entity }
+}
+
+# ── Headgear slot ─────────────────────────────────────────────────────────────
+dob_dragon_rider_armor_headgear = {
+	set_tags = "helmet,cap,snug_headgear,agot_snug_headgear,agot_closed_helmet"
+	set_tags = "no_hair"
+	set_tags = "no_beard"
+	entity = { required_tags = "" shared_pose_entity = head entity = dob_dragon_rider_armor_headgear_entity }
+}

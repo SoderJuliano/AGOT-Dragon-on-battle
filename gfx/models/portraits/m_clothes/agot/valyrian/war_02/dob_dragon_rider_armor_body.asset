@@ -1,0 +1,33 @@
+# Dragon on Battle — Dragon Rider's Plate: Body Asset
+# Uses the AGOT Blackfyre 02 mesh but with our recolored steel+gold diffuse texture.
+# The mesh file is found via CK3's merged virtual filesystem from AGOT.
+
+pdxmesh = {
+        name = "dob_dragon_rider_armor_body_mesh"
+        file = "male_clothes_secular_valyrian_war_02.mesh"
+
+        blend_shape = { id = "male_clothes_secular_valyrian_war_02_bs_fat"      type = "male_clothes_secular_valyrian_war_02_bs_fat.mesh" }
+        blend_shape = { id = "male_clothes_secular_valyrian_war_02_bs_gaunt"    type = "male_clothes_secular_valyrian_war_02_bs_gaunt.mesh" }
+        blend_shape = { id = "male_clothes_secular_valyrian_war_02_bs_muscular"  type = "male_clothes_secular_valyrian_war_02_bs_muscular.mesh" }
+        blend_shape = { id = "male_clothes_secular_valyrian_war_02_bs_dwarf"    type = "male_clothes_secular_valyrian_war_02_bs_dwarf.mesh" }
+
+        meshsettings = {
+                name = "male_clothes_secular_valyrian_war_02Shape"
+                index = 0
+                texture_diffuse  = "dob_dragon_rider_body_diffuse.dds"
+                texture_normal   = "valyrian_02_normal.dds"
+                texture_specular = "valyrian_02_properties.dds"
+                shader      = "portrait_attachment_alpha_to_coverage"
+                shader_file = "gfx/FX/jomini/portrait.shader"
+        }
+}
+
+entity = {
+        name = "dob_dragon_rider_armor_body_entity"
+        pdxmesh = "dob_dragon_rider_armor_body_mesh"
+
+        attribute = { name = "bs_body_fat_1"      blend_shape = "male_clothes_secular_valyrian_war_02_bs_fat" }
+        attribute = { name = "bs_body_gaunt_1"    blend_shape = "male_clothes_secular_valyrian_war_02_bs_gaunt" }
+        attribute = { name = "bs_body_muscular_1" blend_shape = "male_clothes_secular_valyrian_war_02_bs_muscular" }
+        attribute = { name = "bs_body_dwarf_1"    blend_shape = "male_clothes_secular_valyrian_war_02_bs_dwarf" }
+}
