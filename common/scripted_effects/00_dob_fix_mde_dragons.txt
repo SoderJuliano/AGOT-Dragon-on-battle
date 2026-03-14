@@ -182,10 +182,7 @@ dob_correct_all_dragon_sizes_on_load = {
 	every_in_global_list = {
 		variable = gl_dragon_variable_storage
 		limit = {
-			OR = {
-				NOT = { exists = var:dragon_id }
-				var:dragon_id = { is_alive = no }
-			}
+			NOT = { var:dragon_id ?= { is_alive = yes } }
 		}
 		remove_list_global_variable = {
 			name = gl_dragon_variable_storage
@@ -200,8 +197,7 @@ dob_correct_all_dragon_sizes_on_load = {
 	every_in_global_list = {
 		variable = gl_dragon_variable_storage
 		limit = {
-			exists = var:dragon_id
-			var:dragon_id = { is_alive = yes }	# ignorar dragões mortos
+			var:dragon_id ?= { is_alive = yes }	# ?= seguro: ghost/morto/inexistente → false
 		}
 		# this = story node; var:dragon_id = character do dragão; var:dragon_size_base = tamanho base
 		# Floors de EMERGÊNCIA — só interferem se size_base for impossívelmente baixo.
@@ -292,10 +288,7 @@ dob_fix_all_broken_dragons = {
 	every_in_global_list = {
 		variable = gl_dragon_variable_storage
 		limit = {
-			OR = {
-				NOT = { exists = var:dragon_id }
-				var:dragon_id = { is_alive = no }
-			}
+			NOT = { var:dragon_id ?= { is_alive = yes } }
 		}
 		remove_list_global_variable = {
 			name = gl_dragon_variable_storage
@@ -308,8 +301,7 @@ dob_fix_all_broken_dragons = {
 	every_in_global_list = {
 		variable = gl_dragon_variable_storage
 		limit = {
-			exists = var:dragon_id
-			var:dragon_id = { is_alive = yes }	# ignorar personagens mortos
+			var:dragon_id ?= { is_alive = yes }	# ?= seguro: ghost/morto/inexistente → false
 			var:dragon_size_base <= 0
 		}
 		var:dragon_id = { dob_fix_single_dragon_delete_recreate = yes }

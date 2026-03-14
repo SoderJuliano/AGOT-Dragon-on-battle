@@ -245,10 +245,8 @@ dob_on_title_gain_cleanup = {
 			every_in_global_list = {
 				variable = gl_dragon_variable_storage
 				limit = {
-					OR = {
-						NOT = { exists = var:dragon_id }
-						var:dragon_id = { is_alive = no }
-					}
+					# ?= operador seguro: ghost/fraco/morto/inexistente → false sem crash
+					NOT = { var:dragon_id ?= { is_alive = yes } }
 				}
 				# NÃO chamar end_story — AGOT pode já ter encerrado esta story (dragon morte)
 				# end_story em story já encerrada = ponteiro inválido = EXCEPTION_ACCESS_VIOLATION
@@ -277,10 +275,7 @@ dob_on_character_death = {
 			every_in_global_list = {
 				variable = gl_dragon_variable_storage
 				limit = {
-					OR = {
-						NOT = { exists = var:dragon_id }
-						var:dragon_id = { is_alive = no }
-					}
+					NOT = { var:dragon_id ?= { is_alive = yes } }
 				}
 				# NÃO chamar end_story — AGOT pode já ter encerrado esta story (sua morte)
 				# end_story em story já encerrada = double-free = EXCEPTION_ACCESS_VIOLATION
@@ -310,10 +305,7 @@ dob_on_war_ended_cleanup = {
 		every_in_global_list = {
 			variable = gl_dragon_variable_storage
 			limit = {
-				OR = {
-					NOT = { exists = var:dragon_id }
-					var:dragon_id = { is_alive = no }
-				}
+				NOT = { var:dragon_id ?= { is_alive = yes } }
 			}
 			# Apenas remove da lista — NÃO end_story (AGOT pode já ter encerrado)
 			remove_list_global_variable = { name = gl_dragon_variable_storage target = this }
@@ -375,10 +367,7 @@ dob_on_monthly_pulse = {
 		every_in_global_list = {
 			variable = gl_dragon_variable_storage
 			limit = {
-				OR = {
-					NOT = { exists = var:dragon_id }
-					var:dragon_id = { is_alive = no }
-				}
+				NOT = { var:dragon_id ?= { is_alive = yes } }
 			}
 			remove_list_global_variable = { name = gl_dragon_variable_storage target = this }
 		}
