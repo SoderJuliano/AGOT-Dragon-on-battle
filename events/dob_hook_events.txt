@@ -74,7 +74,7 @@ dob_hook.001 = {
 
 		add_hook = {
 			target = var:dob_hook_purchase_target
-			type = strong_hook
+			type = strong_favor_hook
 			years = 10
 		}
 
@@ -102,7 +102,7 @@ dob_hook.001 = {
 
 		add_hook = {
 			target = var:dob_hook_purchase_target
-			type = weak_hook
+			type = favor_hook
 			years = 10
 		}
 
@@ -129,7 +129,7 @@ dob_hook.001 = {
 
 		add_hook = {
 			target = var:dob_hook_purchase_target
-			type = strong_hook
+			type = strong_favor_hook
 			years = 10
 		}
 
