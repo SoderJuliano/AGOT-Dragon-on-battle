@@ -16,14 +16,17 @@ dob_forge_dragon_rider_armor_decision = {
 
 	decision_group_type = artifact
 
-	cooldown = { years = 10 }
-
 	ai_check_interval = 0  # AI never executes
 
 	# ── Visibility ────────────────────────────────────────────────────────────────
+	# Hidden entirely once the artifact exists on the character (equipped or stored).
+	# If the artifact is somehow lost/destroyed, this becomes visible again.
 	is_shown = {
 		is_ai = no
 		is_current_dragonrider = yes
+		NOT = {
+			any_owned_artifact = { has_variable = dob_dragon_rider_armor_artifact }
+		}
 	}
 
 	# ── Validity ──────────────────────────────────────────────────────────────────
@@ -31,10 +34,7 @@ dob_forge_dragon_rider_armor_decision = {
 		is_capable_adult = yes
 		is_current_dragonrider = yes
 		gold >= 500
-		# Must not already have the plate equipped
-		NOT = {
-			agot_has_artifact_equipped = { ARTIFACT_VARIABLE = dob_dragon_rider_armor_artifact }
-		}
+		prestige >= 500
 	}
 
 	is_valid_showing_failures_only = {
@@ -45,15 +45,14 @@ dob_forge_dragon_rider_armor_decision = {
 			gold >= 500
 		}
 		custom_description = {
-			text = dob_forge_dragon_rider_armor_already_equipped
-			NOT = {
-				agot_has_artifact_equipped = { ARTIFACT_VARIABLE = dob_dragon_rider_armor_artifact }
-			}
+			text = dob_forge_dragon_rider_armor_not_enough_prestige
+			prestige >= 500
 		}
 	}
 
 	cost = {
 		gold = 500
+		prestige = 500
 	}
 
 	# ── Effect ────────────────────────────────────────────────────────────────────

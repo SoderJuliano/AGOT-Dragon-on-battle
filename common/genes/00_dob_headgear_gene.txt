@@ -1,0 +1,63 @@
+###############################################################
+# DRAGON ON BATTLE - Genes: Register Dragon Rider's Plate accessories
+#
+# All three accessories are appended to AGOT's own template names
+# (same approach AGOT uses for Maelys/Blackfyre artifact entries):
+#   headgear → agot_most_headgears (index 300, safe above AGOT's 236)
+#   clothes  → agot_all_armors    (index 300, safe above AGOT's 255)
+#   legwear  → agot_all_legwear   (index 200, safe above AGOT's 164)
+#
+# CK3 merges all blocks with the same template name across files
+# and searches ALL of them when resolving an accessory by name.
+###############################################################
+
+special_genes = {
+accessory_genes = {
+
+	# ── Headgear ─────────────────────────────────────────────────────────────────
+	headgear = {
+		agot_most_headgears = {
+			index = 300
+			male = {
+				1 = dob_dragon_rider_armor_headgear
+			}
+			female = {
+				1 = dob_dragon_rider_armor_headgear
+			}
+			boy = male
+			girl = female
+		}
+	}
+
+	# ── Body (clothes slot) ──────────────────────────────────────────────────────
+	clothes = {
+		agot_all_armors = {
+			index = 300
+			male = {
+				1 = dob_dragon_rider_armor_body
+			}
+			female = {
+				1 = dob_dragon_rider_armor_body
+			}
+			boy = male
+			girl = female
+		}
+	}
+
+	# ── Legwear ───────────────────────────────────────────────────────────────────
+	legwear = {
+		agot_all_legwear = {
+			index = 200
+			male = {
+				1 = dob_dragon_rider_armor_legwear
+			}
+			female = {
+				1 = dob_dragon_rider_armor_legwear
+			}
+			boy = male
+			girl = female
+		}
+	}
+
+}
+}

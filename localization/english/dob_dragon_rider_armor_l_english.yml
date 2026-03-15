@@ -8,12 +8,13 @@ l_english:
 
  # ─── Decision ────────────────────────────────────────────────────────────────
  dob_forge_dragon_rider_armor_decision:0 "Commission Dragon Rider's Plate"
+ dob_forge_dragon_rider_armor_decision_confirm:0 "Commission the Dragon Rider's Plate"
  dob_forge_dragon_rider_armor_decision_desc:0 "The armories of my realm hold capable smiths, but this commission demands masters — artisans trained in the Valyrian craft. I would have them forge a suit of battle armor worthy of a dragonrider: layered steel scales with copper and gold trim, fitted to move freely in the saddle of a dragon. The cost is considerable, but a dragonrider must look the part."
  dob_forge_dragon_rider_armor_decision_tooltip:0 "Commission a Dragon Rider's Plate\n[Dragon Rider's Plate effects]\n+4 Prowess\n+2 Advantage\n+3% Enemy Fatal Casualties\n+10% Monthly Prestige\n+5% Monthly Dynasty Renown\n+1 Domain Limit\n+10 Vassal Limit\n+4 Court Grandeur\n+5% Knight Effectiveness\n+1 Knight Slot\n+10 Attraction Opinion\n+20% Fertility"
 
  # ─── Validity failure descriptions ───────────────────────────────────────────
  dob_forge_dragon_rider_armor_not_enough_gold:0 "I need at least [500] gold to commission this armor."
- dob_forge_dragon_rider_armor_already_equipped:0 "I already bear a Dragon Rider's Plate. I need no second one."
+ dob_forge_dragon_rider_armor_not_enough_prestige:0 "I need at least [500] prestige to commission this armor."
 
  # ─── Event: dob_armor.001 ────────────────────────────────────────────────────
  dob_armor.001.t:0 "The Dragon Rider's Plate"

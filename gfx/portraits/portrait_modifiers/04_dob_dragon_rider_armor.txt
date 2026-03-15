@@ -1,18 +1,23 @@
 ###############################################################
 # DRAGON ON BATTLE - Portrait Modifiers: Dragon Rider's Plate
 #
-# Applies the Valyrian Blackfyre 02 armor visual when the
-# Dragon Rider's Plate artifact is equipped.
-# This file is merged by CK3 with AGOT's portrait modifier groups.
+# Body + Legwear → clothes_armor (priority 4)
+# Headgear       → headgear_armor (priority 4), SEM portrait_wear_helmet_trigger
+#
+# SEM portrait_wear_helmet_trigger: a trigger retorna no na janela do
+# personagem, então outros mods ganham a seleção. Sem ela, nosso entry
+# tem peso 1000000 sempre que o artefato estiver equipado — outros entries
+# de headgear_armor têm peso 0 fora de batalha (dependem da trigger),
+# então perdemos para ninguém.
 ###############################################################
 
+# ── Body + Legwear ────────────────────────────────────────────────────────────
 clothes_armor = {
 
 	usage = game
 	selection_behavior = weighted_random
 	priority = 4
 
-	# ── Dragon Rider's Plate: Body + Legwear (steel+gold recolor) ───────────────
 	dob_clothing_dragon_rider_armor = {
 		dna_modifiers = {
 			accessory = {
@@ -30,7 +35,7 @@ clothes_armor = {
 			morph = {
 				mode = modify_multiply
 				gene = gene_bs_bust
-				value = 0.8 # Reduce exaggerated bust effect when wearing armor
+				value = 0.8
 				template = bust_clothes
 			}
 		}
@@ -38,22 +43,27 @@ clothes_armor = {
 		weight = {
 			base = 0
 			modifier = {
-				add = agot_artifact_portrait_modifier  # 500 — ensures override
+				add = 1000000
 				exists = this
-				portrait_wear_armor_trigger = yes
 				agot_has_artifact_equipped = { ARTIFACT_VARIABLE = dob_dragon_rider_armor_artifact }
 			}
 		}
 	}
 }
 
-headgear_armor = {
+# ── Headgear override ─────────────────────────────────────────────────────────
+# Grupo com nome PRÓPRIO em priority = 5, acima do headgear_armor de todos
+# os outros mods (AGOT, Armor of the Kingsguard, Crowns, etc. usam priority 4).
+# CK3 aplica grupos em ordem crescente de priority: o nosso roda por ÚLTIMO
+# e sobrescreve qualquer headgear já selecionado pelos grupos de priority 4.
+# Quando o artefato NÃO está equipado, nosso entry tem peso 0 e não seleciona
+# nada — o headgear do priority 4 permanece (comportamento correto).
+dob_headgear_override = {
 
 	usage = game
 	selection_behavior = weighted_random
-	priority = 4
+	priority = 5
 
-	# ── Dragon Rider's Plate: Headgear (steel+gold recolor) ─────────────────────
 	dob_headgear_dragon_rider_armor = {
 		dna_modifiers = {
 			accessory = {
@@ -67,9 +77,8 @@ headgear_armor = {
 		weight = {
 			base = 0
 			modifier = {
-				add = agot_artifact_portrait_modifier  # 500 — ensures override
+				add = 1000000
 				exists = this
-				portrait_wear_helmet_trigger = yes
 				agot_has_artifact_equipped = { ARTIFACT_VARIABLE = dob_dragon_rider_armor_artifact }
 			}
 		}

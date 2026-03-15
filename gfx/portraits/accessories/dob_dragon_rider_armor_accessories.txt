@@ -20,8 +20,6 @@ dob_dragon_rider_armor_legwear = {
 
 # ── Headgear slot ─────────────────────────────────────────────────────────────
 dob_dragon_rider_armor_headgear = {
-	set_tags = "helmet,cap,snug_headgear,agot_snug_headgear,agot_closed_helmet"
-	set_tags = "no_hair"
-	set_tags = "no_beard"
+	set_tags = "helmet,cap,snug_headgear,agot_snug_headgear,agot_closed_helmet,no_hair,no_beard"
 	entity = { required_tags = "" shared_pose_entity = head entity = dob_dragon_rider_armor_headgear_entity }
 }
