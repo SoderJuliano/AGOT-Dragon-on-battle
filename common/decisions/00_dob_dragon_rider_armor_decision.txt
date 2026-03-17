@@ -25,7 +25,7 @@ dob_forge_dragon_rider_armor_decision = {
 		is_ai = no
 		is_current_dragonrider = yes
 		NOT = {
-			any_owned_artifact = { has_variable = dob_dragon_rider_armor_artifact }
+			any_character_artifact = { has_variable = dob_dragon_rider_armor_artifact }
 		}
 	}
 

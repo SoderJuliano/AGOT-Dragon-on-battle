@@ -1,0 +1,149 @@
+namespace = agot_faceless_interaction
+
+scripted_effect agot_faceless_determine_price = {
+	# Override AGOT's "no gold price" branch.
+	# For high-significance targets we cap at the existing extreme tier instead of
+	# hiding the gold option entirely, which was leaving only the cancel button.
+	scope:payer = {
+		if = {
+			limit = {
+				exists = var:price_significance
+				var:price_significance >= 100
+			}
+			set_variable = {
+				name = faceless_gold_price
+				value = flag:extreme
+			}
+		}
+		else_if = {
+			limit = {
+				exists = var:price_significance
+				var:price_significance >= 75
+			}
+			set_variable = {
+				name = faceless_gold_price
+				value = flag:extreme
+			}
+		}
+		else_if = {
+			limit = {
+				exists = var:price_significance
+				var:price_significance >= 50
+			}
+			set_variable = {
+				name = faceless_gold_price
+				value = flag:high
+			}
+		}
+		else_if = {
+			limit = {
+				exists = var:price_significance
+				var:price_significance >= 25
+			}
+			set_variable = {
+				name = faceless_gold_price
+				value = flag:low
+			}
+		}
+		else = {
+			set_variable = {
+				name = faceless_gold_price
+				value = flag:minimal
+			}
+		}
+
+		if = {
+			limit = {
+				agot_can_afford_faceless_blood_price = yes
+				OR = {
+					AND = {
+						has_character_flag = faceless_payed_gold_price
+						has_character_flag = faceless_payed_child_price
+						has_character_flag = faceless_payed_artifact_price
+					}
+					var:faceless_gold_price ?= flag:extreme
+				}
+			}
+			add_character_flag = faceless_blood_price
+		}
+		else_if = {
+			limit = {
+				NOR = {
+					var:faceless_gold_price ?= flag:extreme
+					var:faceless_gold_price ?= flag:no
+				}
+				agot_can_afford_faceless_child_price = yes
+			}
+
+			random_child = {
+				limit = {
+					age <= 10
+					num_of_bad_genetic_traits = 0
+					OR = {
+						intrigue >= 5
+						martial >= 5
+					}
+				}
+				save_scope_as = child_price
+			}
+		}
+		else_if = {
+			limit = {
+				NOR = {
+					var:faceless_gold_price ?= flag:minimal
+					var:faceless_gold_price ?= flag:low
+					var:faceless_gold_price ?= flag:no
+				}
+				NOT = { has_character_flag = faceless_payed_artifact_price }
+				agot_can_afford_faceless_artifact_price = yes
+			}
+
+			if = {
+				limit = {
+					any_character_artifact = {
+						has_variable = dragon_egg
+						save_temporary_scope_as = dragon_egg_temp
+					}
+				}
+				scope:dragon_egg_temp = { save_scope_as = artifact_price }
+			}
+			else_if = {
+				limit = {
+					any_character_artifact = {
+						artifact_type = dragon_horn
+						save_temporary_scope_as = dragon_horn_temp
+					}
+				}
+				scope:dragon_horn_temp = { save_scope_as = artifact_price }
+			}
+			else_if = {
+				limit = {
+					any_character_artifact = {
+						has_variable = valyrian_steel
+						save_temporary_scope_as = valyrian_steel_temp
+					}
+				}
+				scope:valyrian_steel_temp = { save_scope_as = artifact_price }
+			}
+		}
+	}
+}
+
+scripted_effect agot_faceless_get_kill_price = {
+	$PAYER$ = { save_scope_as = payer }
+	$TARGET$ = { save_scope_as = target }
+
+	# Clear stale state before AGOT recalculates the offer, otherwise the event can
+	# reopen with only the cancel button visible.
+	scope:payer = {
+		remove_character_flag = faceless_payed_gold_price
+		remove_character_flag = faceless_payed_child_price
+		remove_character_flag = faceless_payed_artifact_price
+		remove_character_flag = faceless_blood_price
+		remove_character_flag = faceless_chose_blood_price
+		remove_character_flag = faceless_cancel
+	}
+
+	agot_faceless_assess_weight = yes
+	agot_faceless_determine_price = yes
+}

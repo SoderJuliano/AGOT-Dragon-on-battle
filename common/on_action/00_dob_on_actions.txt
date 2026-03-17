@@ -399,6 +399,19 @@ dob_on_monthly_pulse = {
 			dob_correct_all_dragon_sizes_on_load = yes
 		}
 
+		# ── AGOT Faceless interaction: clear stale payment flags (player only) ─────
+		# AGOT's faceless chain can leave these flags set in some paths, which hides
+		# the gold payment option and leaves only the reconsider/cancel button.
+		if = {
+			limit = { is_ai = no }
+			remove_character_flag = faceless_payed_gold_price
+			remove_character_flag = faceless_payed_child_price
+			remove_character_flag = faceless_payed_artifact_price
+			remove_character_flag = faceless_blood_price
+			remove_character_flag = faceless_chose_blood_price
+			remove_character_flag = faceless_cancel
+		}
+
 		# ── Skybreaker: aplicar habilidade em dragões Tier 10 (dragon_size >= 300) ────
 		# Usa every_living_dragon para pegar TODOS os dragões vivos, incluindo MDE
 		# que podem não estar em gl_dragon_variable_storage.

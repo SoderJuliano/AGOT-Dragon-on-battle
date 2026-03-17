@@ -16,7 +16,9 @@ dob_buy_hook_interaction = {
 	icon = hook_strong
 
 	# IA nunca usa essa interação (é exclusiva do player)
-	ai_accept_base_value = -200
+	ai_accept = {
+		base = -200
+	}
 	# Auto-aceita: não precisa da resposta do alvo (é uma "compra")
 	auto_accept = yes
 

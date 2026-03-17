@@ -1,14 +1,11 @@
-###############################################################
+﻿###############################################################
 # DRAGON ON BATTLE - Portrait Modifiers: Dragon Rider's Plate
 #
-# Body + Legwear → clothes_armor (priority 4)
-# Headgear       → headgear_armor (priority 4), SEM portrait_wear_helmet_trigger
-#
-# SEM portrait_wear_helmet_trigger: a trigger retorna no na janela do
-# personagem, então outros mods ganham a seleção. Sem ela, nosso entry
-# tem peso 1000000 sempre que o artefato estiver equipado — outros entries
-# de headgear_armor têm peso 0 fora de batalha (dependem da trigger),
-# então perdemos para ninguém.
+# Uses EXISTING AGOT accessories already registered in built-in
+# gene templates. No custom gene registration needed.
+#   body:    male_clothes_valyrian_war_blackfyre_02   (agot_all_armors)
+#   legwear: male_legwear_secular_valyrian_war_blackfyre_02 (agot_all_legwear)
+#   headgear:male_headgear_secular_valyrian_war_blackfyre_03_high (agot_most_headgears)
 ###############################################################
 
 # ── Body + Legwear ────────────────────────────────────────────────────────────
@@ -24,13 +21,13 @@ clothes_armor = {
 				mode = add
 				gene = clothes
 				template = agot_all_armors
-				accessory = dob_dragon_rider_armor_body
+				accessory = male_clothes_valyrian_war_blackfyre_02
 			}
 			accessory = {
 				mode = add
 				gene = legwear
 				template = agot_all_legwear
-				accessory = dob_dragon_rider_armor_legwear
+				accessory = male_legwear_secular_valyrian_war_blackfyre_02
 			}
 			morph = {
 				mode = modify_multiply
@@ -43,7 +40,7 @@ clothes_armor = {
 		weight = {
 			base = 0
 			modifier = {
-				add = 1000000
+				add = 200000
 				exists = this
 				agot_has_artifact_equipped = { ARTIFACT_VARIABLE = dob_dragon_rider_armor_artifact }
 			}
@@ -51,14 +48,8 @@ clothes_armor = {
 	}
 }
 
-# ── Headgear override ─────────────────────────────────────────────────────────
-# Grupo com nome PRÓPRIO em priority = 5, acima do headgear_armor de todos
-# os outros mods (AGOT, Armor of the Kingsguard, Crowns, etc. usam priority 4).
-# CK3 aplica grupos em ordem crescente de priority: o nosso roda por ÚLTIMO
-# e sobrescreve qualquer headgear já selecionado pelos grupos de priority 4.
-# Quando o artefato NÃO está equipado, nosso entry tem peso 0 e não seleciona
-# nada — o headgear do priority 4 permanece (comportamento correto).
-dob_headgear_override = {
+# ── Headgear ──────────────────────────────────────────────────────────────────
+headgear_armor = {
 
 	usage = game
 	selection_behavior = weighted_random
@@ -70,14 +61,72 @@ dob_headgear_override = {
 				mode = add
 				gene = headgear
 				template = agot_most_headgears
-				accessory = dob_dragon_rider_armor_headgear
+				accessory = male_headgear_secular_valyrian_war_blackfyre_03_high
 			}
 		}
 		outfit_tags = { military_outfit }
 		weight = {
 			base = 0
 			modifier = {
-				add = 1000000
+				add = 200000
+				exists = this
+				agot_has_artifact_equipped = { ARTIFACT_VARIABLE = dob_dragon_rider_armor_artifact }
+			}
+		}
+	}
+}
+
+# ── Headgear (base fallback) ─────────────────────────────────────────────────
+# Some stacks resolve headgear from base groups when situational rules do not
+# apply. This keeps the artifact helmet forced there too.
+headgear_base = {
+
+	usage = game
+	selection_behavior = weighted_random
+	priority = 7
+
+	dob_headgear_dragon_rider_armor_base = {
+		dna_modifiers = {
+			accessory = {
+				mode = add
+				gene = headgear
+				template = agot_most_headgears
+				accessory = male_headgear_secular_valyrian_war_blackfyre_03_high
+			}
+		}
+		weight = {
+			base = 0
+			modifier = {
+				add = 200000
+				exists = this
+				agot_has_artifact_equipped = { ARTIFACT_VARIABLE = dob_dragon_rider_armor_artifact }
+			}
+		}
+	}
+}
+
+# ── Headgear (situational fallback) ──────────────────────────────────────────
+# Some mod stacks pick headgear from situational groups outside war context.
+# This ensures the artifact helmet still overrides those selections.
+headgear_situational = {
+
+	usage = game
+	selection_behavior = weighted_random
+	priority = 6
+
+	dob_headgear_dragon_rider_armor_situational = {
+		dna_modifiers = {
+			accessory = {
+				mode = add
+				gene = headgear
+				template = agot_most_headgears
+				accessory = male_headgear_secular_valyrian_war_blackfyre_03_high
+			}
+		}
+		weight = {
+			base = 0
+			modifier = {
+				add = 200000
 				exists = this
 				agot_has_artifact_equipped = { ARTIFACT_VARIABLE = dob_dragon_rider_armor_artifact }
 			}

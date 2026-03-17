@@ -1,11 +1,13 @@
 # Dragon on Battle — Dragon Rider's Plate: Headgear Asset
-# Uses the AGOT Blackfyre war_03_high helm mesh with our recolored steel+gold diffuse.
+# Baseado no male_headgear_secular_valyrian_war_blackfyre_03_high.asset do AGOT.
+# Usa o mesmo mesh (war_03_high) mas com a nossa difuse recolorida (aço+ouro).
 
 pdxmesh = {
         name = "dob_dragon_rider_armor_headgear_mesh"
         file = "male_headgear_secular_valyrian_war_03_high.mesh"
 
-        blend_shape = { id = "male_headgear_secular_valyrian_war_03_high_bs_fat" type = "male_headgear_secular_valyrian_war_03_high_bs_fat.mesh" }
+        blend_shape = { id = "male_headgear_secular_valyrian_war_03_high_bs_fat"
+                type = "male_headgear_secular_valyrian_war_03_high_bs_fat.mesh" }
 
         meshsettings = {
                 name = "male_headgear_secular_valyrian_war_03_highShape"
@@ -27,7 +29,6 @@ entity = {
         game_data = {
                 portrait_entity_user_data = {
                         portrait_accessory = {
-                                # Reuses the same CoA masking pattern as the original AGOT headgear
                                 pattern_mask = "gfx/models/portraits/m_clothes/agot/blankmask/agot_blank_clothes_mask.dds"
                                 variation = "AGOT_coa_valyrian_armor"
                         }
