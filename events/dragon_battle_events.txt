@@ -22,6 +22,10 @@ dragon_battle.001 = {
 		character = root
 		animation = aggressive_sword
 	}
+	right_portrait = {
+		character = scope:dob_event_dragon
+		animation = personality_bold
+	}
 
 	# Dispara no escopo do rider (root = rider)
 	immediate = {
@@ -33,6 +37,11 @@ dragon_battle.001 = {
 		set_variable = {
 			name = dob_dragon_size
 			value = dob_dragon_size_value
+		}
+		# Salvar scope do dragão para o right_portrait
+		if = {
+			limit = { exists = var:current_dragon }
+			var:current_dragon = { save_scope_as = dob_event_dragon }
 		}
 	}
 
@@ -192,6 +201,10 @@ dragon_battle.008 = {
 		character = root
 		animation = war_attacker
 	}
+	right_portrait = {
+		character = scope:dob_event_dragon
+		animation = personality_bold
+	}
 
 	immediate = {
 		set_variable = {
@@ -201,6 +214,11 @@ dragon_battle.008 = {
 		set_variable = {
 			name = dob_dragon_size
 			value = dob_dragon_size_value
+		}
+		# Salvar scope do dragão para o right_portrait
+		if = {
+			limit = { exists = var:current_dragon }
+			var:current_dragon = { save_scope_as = dob_event_dragon }
 		}
 	}
 
