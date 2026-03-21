@@ -27,14 +27,16 @@
 
 
 
- DOB_BD_ALLY_TOTAL: "Total: [GetPlayer.MakeScope.ScriptValue('dob_bd_total_ally_power_loc')|0] ([GetPlayer.MakeScope.ScriptValue('dob_bd_total_ally_pct_loc')|0]%)"
- DOB_BD_ENEMY_TOTAL: "Total: [GetPlayer.MakeScope.ScriptValue('dob_bd_total_enemy_power_loc')|0] ([GetPlayer.MakeScope.ScriptValue('dob_bd_total_enemy_pct_loc')|0]%)"
- DOB_BD_ALLY_1_POWER: "Power: [GetPlayer.MakeScope.ScriptValue('dob_bd_ally_1_power_loc')|0] ([GetPlayer.MakeScope.ScriptValue('dob_bd_ally_1_pct_loc')|0]%)"
- DOB_BD_ALLY_2_POWER: "Power: [GetPlayer.MakeScope.ScriptValue('dob_bd_ally_2_power_loc')|0] ([GetPlayer.MakeScope.ScriptValue('dob_bd_ally_2_pct_loc')|0]%)"
- DOB_BD_ALLY_3_POWER: "Power: [GetPlayer.MakeScope.ScriptValue('dob_bd_ally_3_power_loc')|0] ([GetPlayer.MakeScope.ScriptValue('dob_bd_ally_3_pct_loc')|0]%)"
- DOB_BD_ENEMY_1_POWER: "Power: [GetPlayer.MakeScope.ScriptValue('dob_bd_enemy_1_power_loc')|0] ([GetPlayer.MakeScope.ScriptValue('dob_bd_enemy_1_pct_loc')|0]%)"
- DOB_BD_ENEMY_2_POWER_DOB: "Power: [GetPlayer.MakeScope.ScriptValue('dob_bd_enemy_2_power_loc')|0] ([GetPlayer.MakeScope.ScriptValue('dob_bd_enemy_2_pct_loc')|0]%)"
- DOB_BD_ENEMY_3_POWER: "Power: [GetPlayer.MakeScope.ScriptValue('dob_bd_enemy_3_power_loc')|0] ([GetPlayer.MakeScope.ScriptValue('dob_bd_enemy_3_pct_loc')|0]%)"
+ DOB_BD_ALLY_TOTAL: "Dragon Pwr: [GetPlayer.MakeScope.ScriptValue('dob_bd_total_ally_power_loc')|0]"
+ DOB_BD_ENEMY_TOTAL: "Dragon Pwr: [GetPlayer.MakeScope.ScriptValue('dob_bd_total_enemy_power_loc')|0]"
+ DOB_BD_ALLY_1_POWER: "Pwr: [GetPlayer.MakeScope.ScriptValue('dob_bd_ally_1_power_loc')|0]"
+ DOB_BD_ALLY_2_POWER: "Pwr: [GetPlayer.MakeScope.ScriptValue('dob_bd_ally_2_power_loc')|0]"
+ DOB_BD_ALLY_3_POWER: "Pwr: [GetPlayer.MakeScope.ScriptValue('dob_bd_ally_3_power_loc')|0]"
+ DOB_BD_ENEMY_1_POWER: "Pwr: [GetPlayer.MakeScope.ScriptValue('dob_bd_enemy_1_power_loc')|0]"
+ DOB_BD_ENEMY_2_POWER_DOB: "Pwr: [GetPlayer.MakeScope.ScriptValue('dob_bd_enemy_2_power_loc')|0]"
+ DOB_BD_ENEMY_3_POWER: "Pwr: [GetPlayer.MakeScope.ScriptValue('dob_bd_enemy_3_power_loc')|0]"
+ DOB_BD_POWER_TT: "#T Dragon Battle Power#!\n#weak Combat effectiveness score calculated by AGOT from the dragon's size, traits, wounds and rider experience. A larger number means the dragon contributed more to the battle outcome.#!"
+ DOB_BD_KILLS_TT: "#T Rider Kills#!\n#weak Number of enemy soldiers killed by this dragon's rider during the battle. The dragon's raw power is shown separately as 'Pwr'.#!"
 
  # ── Modifiers pós-batalha (prestígio, não duplicam AGOT) ───
  dob_dragon_victory_small: "Dragon Victory — Young Flame"
