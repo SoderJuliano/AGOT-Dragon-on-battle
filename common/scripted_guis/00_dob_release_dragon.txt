@@ -6,29 +6,38 @@
 # ============================================================
 
 # Controla visibilidade do botão "Liberar Dragão"
-# FIX: usa has_variable (não exists) para detectar dragon ghost/inválido
-# FIX: não testa this = root (falha para ghost) — mostra sempre que player tem bond para liberar
 dob_can_release_dragon = {
 	is_shown = {
 		exists = scope:player
-		# O player tem que ser dragonrider COM variável current_dragon registrada
-		# has_variable funciona mesmo para ghost dragons (exists falha para ghost)
-		scope:player = {
-			has_trait = dragonrider
-			has_variable = current_dragon
+		OR = {
+			scope:player = {
+				has_relation_agot_dragon = root
+			}
+			scope:player = {
+				has_variable = current_dragon
+				var:current_dragon ?= root
+			}
 		}
 	}
 	is_valid = {
 		exists = scope:player
-		scope:player = {
-			has_trait = dragonrider
-			has_variable = current_dragon
+		OR = {
+			scope:player = {
+				has_relation_agot_dragon = root
+			}
+			scope:player = {
+				has_variable = current_dragon
+				var:current_dragon ?= root
+			}
 		}
 	}
 	effect = {
-		# Dispara o evento de confirmação no player (rider scope)
 		scope:player = {
-			trigger_event = { id = dragon_battle.016 }
+			dob_prepare_release_dragon_target = yes
+			if = {
+				limit = { has_variable = dob_release_dragon_target }
+				trigger_event = { id = dragon_battle.016 }
+			}
 		}
 	}
 }

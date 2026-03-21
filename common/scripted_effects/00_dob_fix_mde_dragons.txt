@@ -17,75 +17,9 @@
 # Scope: o DRAGÃO (has_trait = dragon)
 # ============================================================
 
-# Estima dragon_size_base baseado na idade do dragão.
-# Fórmula baseada na taxa de crescimento do AGOT:
-#   Age < 11: +3 size/year (young phase)
-#   Age 11-15: +2 size/year (adolescent)
-#   Age 15+: +~1 size/year (adult, já crescido)
-# Valores aproximados, conservadores (sem traits de physique).
-# Tiers reais AGOT: 0=<30 | 1=30-60 | 2=60-90 | 3=90-120 | 4=120-150 | 5=150-180
-#               6=180-210 | 7=210-240 | 8=240-270 | 9=270-300 | 10=300+
-# Floors de EMERGÊNCIA: apenas para dragões quebrados (size=0 ou MDE não-registrado).
-# O AGOT cresce dragões naturalmente via birthday events. Esses pisos SÓ devem
-# interferir se o size_base for impossívelmente baixo para a idade.
-# Com physique_good_3 (x1.5): age80→90x1.5=135 (Tier4); age55→45x1.5=67 (Tier2).
-dob_estimate_dragon_size_from_age = {
-	if = {
-		limit = { age >= 150 }
-		set_variable = { name = dragon_size_base value = 200 }
-	}
-	else_if = {
-		limit = { age >= 120 }
-		set_variable = { name = dragon_size_base value = 150 }
-	}
-	else_if = {
-		limit = { age >= 100 }
-		set_variable = { name = dragon_size_base value = 120 }
-	}
-	else_if = {
-		limit = { age >= 80 }
-		set_variable = { name = dragon_size_base value = 90 }
-	}
-	else_if = {
-		limit = { age >= 65 }
-		set_variable = { name = dragon_size_base value = 60 }
-	}
-	else_if = {
-		limit = { age >= 55 }
-		set_variable = { name = dragon_size_base value = 45 }
-	}
-	else_if = {
-		limit = { age >= 45 }
-		set_variable = { name = dragon_size_base value = 30 }
-	}
-	else_if = {
-		limit = { age >= 35 }
-		set_variable = { name = dragon_size_base value = 20 }
-	}
-	else_if = {
-		limit = { age >= 25 }
-		set_variable = { name = dragon_size_base value = 15 }
-	}
-	else_if = {
-		limit = { age >= 20 }
-		set_variable = { name = dragon_size_base value = 10 }
-	}
-	else_if = {
-		limit = { age >= 15 }
-		set_variable = { name = dragon_size_base value = 6 }
-	}
-	else_if = {
-		limit = { age >= 10 }
-		set_variable = { name = dragon_size_base value = 3 }
-	}
-	else_if = {
-		limit = { age >= 5 }
-		set_variable = { name = dragon_size_base value = 2 }
-	}
-	else = {
-		set_variable = { name = dragon_size_base value = 1 }
-	}
-}
+# Curva compartilhada movida para 00_dob_dragon_growth_curve.txt.
+# Use dob_estimate_dragon_size_from_age e dob_apply_dragon_size_floor_to_story_node
+# para manter todos os consumidores no mesmo ponto de verdade.
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Abordagem: DELETE & RECREATE
@@ -95,6 +29,80 @@ dob_estimate_dragon_size_from_age = {
 #   3. Re-registra o dragão do zero via função oficial do AGOT
 #      (que lê dragon_size_base e dragon_age do personagem do dragão)
 # ─────────────────────────────────────────────────────────────────────────────
+
+# Regera os genes/visual de cor do dragão a partir das flags já guardadas no personagem.
+# Scope: o DRAGÃO (has_trait = dragon)
+dob_refresh_single_dragon_color_effect = {
+	if = {
+		limit = { has_variable = egg_color }
+		save_scope_as = egg
+		set_variable = {
+			name = dragon_egg_color
+			value = var:egg_color
+		}
+		agot_gen_hatchling_color_effect = yes
+		if = {
+			limit = { has_variable = dragon_egg_color }
+			remove_variable = dragon_egg_color
+		}
+	}
+
+	if = {
+		limit = {
+			NOT = { has_variable = primary_color }
+		}
+		if = {
+			limit = { has_variable = color }
+			set_variable = {
+				name = primary_color
+				value = var:color
+			}
+		}
+		else = {
+			agot_gen_random_primary_color_effect = yes
+			if = {
+				limit = { NOT = { has_variable = secondary_color } }
+				agot_gen_random_secondary_color_effect = yes
+			}
+			if = {
+				limit = { NOT = { has_variable = tertiary_color } }
+				agot_gen_random_tertiary_color_effect = yes
+			}
+		}
+	}
+
+	if = {
+		limit = {
+			has_variable = primary_color
+		}
+		set_variable = baby_dragon
+		set_variable = {
+			name = color
+			value = var:primary_color
+		}
+		agot_back_apply_dragon_aging_effect = yes
+		agot_gen_appearance_variables = yes
+		if = { limit = { has_variable = baby_dragon } remove_variable = baby_dragon }
+		save_temporary_scope_as = dob_refresh_dragon
+		every_in_global_list = {
+			variable = gl_dragon_variable_storage
+			limit = { var:dragon_id ?= scope:dob_refresh_dragon }
+			remove_list_global_variable = {
+				name = gl_dragon_variable_storage
+				target = this
+			}
+		}
+		agot_dragon_transfer_vars_to_story_cycle_effect = { DRAGON = this }
+	}
+}
+
+# Regera a cor/genes de todos os dragões vivos que ainda guardam flags de cor.
+# Scope: qualquer (normalmente o player, via decisão manual de fix)
+dob_refresh_all_dragon_colors = {
+	every_living_dragon = {
+		dob_refresh_single_dragon_color_effect = yes
+	}
+}
 
 # Conserta um único dragão: apaga story corrompida e recria do zero.
 # Scope: o DRAGÃO (has_trait = dragon)
@@ -199,65 +207,29 @@ dob_correct_all_dragon_sizes_on_load = {
 		limit = {
 			var:dragon_id ?= { is_alive = yes }	# ?= seguro: ghost/morto/inexistente → false
 		}
-		# this = story node; var:dragon_id = character do dragão; var:dragon_size_base = tamanho base
-		# Floors de EMERGÊNCIA — só interferem se size_base for impossívelmente baixo.
-		# Com physique_good_3 (x1.5): age150→200x1.5=300 (T10); age80→90x1.5=135 (T4); age55→45x1.5=67 (T2)
-		if = {
-			limit = { var:dragon_id = { age >= 150 } var:dragon_size_base < 200 }
-			set_variable = { name = dragon_size_base value = 200 }
-		}
-		else_if = {
-			limit = { var:dragon_id = { age >= 120 } var:dragon_size_base < 150 }
-			set_variable = { name = dragon_size_base value = 150 }
-		}
-		else_if = {
-			limit = { var:dragon_id = { age >= 100 } var:dragon_size_base < 120 }
-			set_variable = { name = dragon_size_base value = 120 }
-		}
-		else_if = {
-			limit = { var:dragon_id = { age >= 80 } var:dragon_size_base < 90 }
-			set_variable = { name = dragon_size_base value = 90 }
-		}
-		else_if = {
-			limit = { var:dragon_id = { age >= 65 } var:dragon_size_base < 60 }
-			set_variable = { name = dragon_size_base value = 60 }
-		}
-		else_if = {
-			limit = { var:dragon_id = { age >= 55 } var:dragon_size_base < 45 }
-			set_variable = { name = dragon_size_base value = 45 }
-		}
-		else_if = {
-			limit = { var:dragon_id = { age >= 45 } var:dragon_size_base < 30 }
-			set_variable = { name = dragon_size_base value = 30 }
-		}
-		else_if = {
-			limit = { var:dragon_id = { age >= 35 } var:dragon_size_base < 20 }
-			set_variable = { name = dragon_size_base value = 20 }
-		}
-		else_if = {
-			limit = { var:dragon_id = { age >= 25 } var:dragon_size_base < 15 }
-			set_variable = { name = dragon_size_base value = 15 }
-		}
-		else_if = {
-			limit = { var:dragon_id = { age >= 20 } var:dragon_size_base < 10 }
-			set_variable = { name = dragon_size_base value = 10 }
-		}
-		else_if = {
-			limit = { var:dragon_id = { age >= 15 } var:dragon_size_base < 6 }
-			set_variable = { name = dragon_size_base value = 6 }
-		}
-		else_if = {
-			limit = { var:dragon_id = { age >= 5 } var:dragon_size_base < 3 }
-			set_variable = { name = dragon_size_base value = 3 }
-		}
+		# this = story node; var:dragon_id = character do dragao; var:dragon_size_base = tamanho base
+		dob_apply_dragon_size_floor_to_story_node = yes
 	}
 	# Caso A: dragões fora da story cycle (MDE sem registro) — usar every_living_dragon como fallback
 	every_living_dragon = {
 		limit = {
-			NOT = {
-				any_in_global_list = {
-					variable = gl_dragon_variable_storage
-					var:dragon_id ?= root
+			OR = {
+				NOT = {
+					any_in_global_list = {
+						variable = gl_dragon_variable_storage
+						var:dragon_id ?= root
+					}
+				}
+				NOT = {
+					any_in_global_list = {
+						variable = gl_dragon_variable_storage
+						var:dragon_id ?= root
+						exists = var:gene_dragon_primary_color_hue
+						exists = var:gene_dragon_primary_color_value
+						exists = var:gene_dragon_body_shading_template
+						exists = var:gene_dragon_wings_shading_template
+						exists = var:gene_dragon_main_horn_shape_template
+					}
 				}
 			}
 		}
@@ -266,11 +238,7 @@ dob_correct_all_dragon_sizes_on_load = {
 			limit = { NOT = { has_variable = dragon_age } }
 			set_variable = { name = dragon_age value = { value = 0 add = age } }
 		}
-		if = {
-			limit = { NOT = { has_variable = gene_dragon_body_shading_template } }
-			agot_gen_appearance_variables = yes
-		}
-		agot_dragon_transfer_vars_to_story_cycle_effect = { DRAGON = this }
+		dob_refresh_single_dragon_color_effect = yes
 	}
 }
 
@@ -297,12 +265,24 @@ dob_fix_all_broken_dragons = {
 	}
 
 	# FIX: iterate story nodes directly — funciona de qualquer scope
-	# Caso 1: dragões na story com size_base = 0 → recriar
+	# Caso 1: dragões na story quebrados → recriar
+	# Critérios:
+	#   - size_base <= 0 (clássico MDE quebrado)
+	#   - OU dragão adulto (18+) com dragon_size real < 30 (travado em filhote)
+	#     Mesmo com anos passando, esse caso não destrava sozinho em alguns saves.
 	every_in_global_list = {
 		variable = gl_dragon_variable_storage
 		limit = {
 			var:dragon_id ?= { is_alive = yes }	# ?= seguro: ghost/morto/inexistente → false
-			var:dragon_size_base <= 0
+			OR = {
+				var:dragon_size_base <= 0
+				AND = {
+					var:dragon_id = {
+						age >= 18
+						dragon_size < 30
+					}
+				}
+			}
 		}
 		var:dragon_id = { dob_fix_single_dragon_delete_recreate = yes }
 	}

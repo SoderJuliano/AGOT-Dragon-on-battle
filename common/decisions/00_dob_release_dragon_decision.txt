@@ -11,22 +11,27 @@ dob_release_dragon_decision = {
 	ai_check_interval = 0  # IA nunca executa
 
 	# ── Quem pode ver a decisão ──────────────────────────────────────────────────
-	# Usa has_variable (não exists) para pegar rider com dragão ghost também
 	is_shown = {
 		is_ai = no
-		has_trait = dragonrider
-		has_variable = current_dragon  # funciona mesmo se o alvo for ghost/inválido
+		OR = {
+			is_current_dragonrider = yes
+			has_variable = current_dragon
+		}
 	}
 
 	# ── A decisão fica clicável sempre que for visível ────────────────────────────
 	is_valid = {
-		has_trait = dragonrider
-		has_variable = current_dragon
+		OR = {
+			is_current_dragonrider = yes
+			has_variable = current_dragon
+		}
 	}
 
 	is_valid_showing_failures_only = {
-		has_trait = dragonrider
-		has_variable = current_dragon
+		OR = {
+			is_current_dragonrider = yes
+			has_variable = current_dragon
+		}
 	}
 
 	# ── Custo: zero ──────────────────────────────────────────────────────────────
@@ -34,6 +39,10 @@ dob_release_dragon_decision = {
 
 	# ── Efeito: abre o popup de confirmação ──────────────────────────────────────
 	effect = {
-		trigger_event = { id = dragon_battle.016 }
+		dob_prepare_release_dragon_target = yes
+		if = {
+			limit = { has_variable = dob_release_dragon_target }
+			trigger_event = { id = dragon_battle.016 }
+		}
 	}
 }

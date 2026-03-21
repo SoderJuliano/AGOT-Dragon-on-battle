@@ -1,0 +1,130 @@
+# ============================================================
+# DRAGON ON BATTLE - Shared Dragon Growth Curve
+# Single source of truth for age -> dragon_size_base floors.
+#
+# Use dob_estimate_dragon_size_from_age on the dragon character scope.
+# Use dob_apply_dragon_size_floor_to_story_node on the story node scope.
+# ============================================================
+
+# Scope: the DRAGON character
+dob_estimate_dragon_size_from_age = {
+	if = {
+		limit = { age >= 175 }
+		set_variable = { name = dragon_size_base value = 200 }
+	}
+	else_if = {
+		limit = { age >= 150 }
+		set_variable = { name = dragon_size_base value = 195 }
+	}
+	else_if = {
+		limit = { age >= 130 }
+		set_variable = { name = dragon_size_base value = 190 }
+	}
+	else_if = {
+		limit = { age >= 100 }
+		set_variable = { name = dragon_size_base value = 185 }
+	}
+	else_if = {
+		limit = { age >= 80 }
+		set_variable = { name = dragon_size_base value = 175 }
+	}
+	else_if = {
+		limit = { age >= 65 }
+		set_variable = { name = dragon_size_base value = 165 }
+	}
+	else_if = {
+		limit = { age >= 50 }
+		set_variable = { name = dragon_size_base value = 150 }
+	}
+	else_if = {
+		limit = { age >= 35 }
+		set_variable = { name = dragon_size_base value = 125 }
+	}
+	else_if = {
+		limit = { age >= 25 }
+		set_variable = { name = dragon_size_base value = 100 }
+	}
+	else_if = {
+		limit = { age >= 18 }
+		set_variable = { name = dragon_size_base value = 80 }
+	}
+	else_if = {
+		limit = { age >= 12 }
+		set_variable = { name = dragon_size_base value = 60 }
+	}
+	else_if = {
+		limit = { age >= 8 }
+		set_variable = { name = dragon_size_base value = 45 }
+	}
+	else_if = {
+		limit = { age >= 5 }
+		set_variable = { name = dragon_size_base value = 30 }
+	}
+	else_if = {
+		limit = { age >= 3 }
+		set_variable = { name = dragon_size_base value = 15 }
+	}
+	else = {
+		set_variable = { name = dragon_size_base value = 5 }
+	}
+}
+
+# Scope: the dragon story node in gl_dragon_variable_storage
+dob_apply_dragon_size_floor_to_story_node = {
+	if = {
+		limit = { var:dragon_id = { age >= 175 } var:dragon_size_base < 200 }
+		set_variable = { name = dragon_size_base value = 200 }
+	}
+	else_if = {
+		limit = { var:dragon_id = { age >= 150 } var:dragon_size_base < 195 }
+		set_variable = { name = dragon_size_base value = 195 }
+	}
+	else_if = {
+		limit = { var:dragon_id = { age >= 130 } var:dragon_size_base < 190 }
+		set_variable = { name = dragon_size_base value = 190 }
+	}
+	else_if = {
+		limit = { var:dragon_id = { age >= 100 } var:dragon_size_base < 185 }
+		set_variable = { name = dragon_size_base value = 185 }
+	}
+	else_if = {
+		limit = { var:dragon_id = { age >= 80 } var:dragon_size_base < 175 }
+		set_variable = { name = dragon_size_base value = 175 }
+	}
+	else_if = {
+		limit = { var:dragon_id = { age >= 65 } var:dragon_size_base < 165 }
+		set_variable = { name = dragon_size_base value = 165 }
+	}
+	else_if = {
+		limit = { var:dragon_id = { age >= 50 } var:dragon_size_base < 150 }
+		set_variable = { name = dragon_size_base value = 150 }
+	}
+	else_if = {
+		limit = { var:dragon_id = { age >= 35 } var:dragon_size_base < 125 }
+		set_variable = { name = dragon_size_base value = 125 }
+	}
+	else_if = {
+		limit = { var:dragon_id = { age >= 25 } var:dragon_size_base < 100 }
+		set_variable = { name = dragon_size_base value = 100 }
+	}
+	else_if = {
+		limit = { var:dragon_id = { age >= 18 } var:dragon_size_base < 80 }
+		set_variable = { name = dragon_size_base value = 80 }
+	}
+	else_if = {
+		limit = { var:dragon_id = { age >= 12 } var:dragon_size_base < 60 }
+		set_variable = { name = dragon_size_base value = 60 }
+	}
+	else_if = {
+		limit = { var:dragon_id = { age >= 8 } var:dragon_size_base < 45 }
+		set_variable = { name = dragon_size_base value = 45 }
+	}
+	else_if = {
+		limit = { var:dragon_id = { age >= 5 } var:dragon_size_base < 30 }
+		set_variable = { name = dragon_size_base value = 30 }
+	}
+	else_if = {
+		limit = { var:dragon_id = { age >= 3 } var:dragon_size_base < 15 }
+		set_variable = { name = dragon_size_base value = 15 }
+	}
+}

@@ -37,6 +37,7 @@ dob_on_war_started = {
 				}
 			}
 			scope:attacker = {
+				dob_sync_current_dragon_from_relation = yes
 				set_variable = {
 					name = dob_dragon_power
 					value = dob_dragon_battle_bonus
@@ -67,6 +68,7 @@ dob_on_war_started = {
 				}
 			}
 			scope:attacker = {
+				dob_sync_current_dragon_from_relation = yes
 				set_variable = {
 					name = dob_dragon_size
 					value = dob_dragon_size_value
@@ -101,6 +103,7 @@ dob_on_war_started = {
 				}
 			}
 			scope:defender = {
+				dob_sync_current_dragon_from_relation = yes
 				set_variable = {
 					name = dob_dragon_power
 					value = dob_dragon_battle_bonus
@@ -147,6 +150,7 @@ dob_on_join_war_as_secondary = {
 				}
 				scope:war = { is_attacker = root }
 			}
+			dob_sync_current_dragon_from_relation = yes
 			set_variable = { name = dob_dragon_power value = dob_dragon_battle_bonus }
 			set_variable = { name = dob_dragon_size  value = dob_dragon_size_value }
 			trigger_event = { id = dragon_battle.001 days = 1 }
@@ -166,6 +170,7 @@ dob_on_join_war_as_secondary = {
 				}
 				NOT = { scope:war = { is_attacker = root } }
 			}
+			dob_sync_current_dragon_from_relation = yes
 			set_variable = { name = dob_dragon_power value = dob_dragon_battle_bonus }
 			set_variable = { name = dob_dragon_size  value = dob_dragon_size_value }
 			trigger_event = { id = dragon_battle.008 days = 1 }
@@ -436,6 +441,7 @@ dob_on_monthly_pulse = {
 			# is_current_dragonrider verifica: vivo, não incapaz, dragonrider trait, relação agot_dragon ativa
 			# Funciona mesmo quando var:current_dragon aponta para personagem ghost/inválido
 			limit = { is_current_dragonrider = yes }
+			dob_sync_current_dragon_from_relation = yes
 			if = {
 				# FIX: is_alive = yes guards against ghost/weak references where exists = yes but char is dead
 				limit = { exists = var:current_dragon  var:current_dragon = { is_alive = yes } }
@@ -495,58 +501,8 @@ dob_on_dragon_birthday = {
 			if = {
 				limit = { exists = scope:dob_sn }
 				scope:dob_sn = {
-					# this = story node, scope:dob_bday_d = dragão. Só AUMENTA nunca diminui.
-					# Floors de EMERGÊNCIA — só interferem se size_base for impossívelmente baixo.
-					# O AGOT cresce dragões via birthday events; nosso floor só corrige dragões quebrados.
-					# Com physique_good_3 (x1.5): age150→300(T10); age80→135(T4); age55→67(T2); age45→45(T1)
-					if = {
-						limit = { scope:dob_bday_d = { age >= 150 } var:dragon_size_base < 200 }
-						set_variable = { name = dragon_size_base value = 200 }
-					}
-					else_if = {
-						limit = { scope:dob_bday_d = { age >= 120 } var:dragon_size_base < 150 }
-						set_variable = { name = dragon_size_base value = 150 }
-					}
-					else_if = {
-						limit = { scope:dob_bday_d = { age >= 100 } var:dragon_size_base < 120 }
-						set_variable = { name = dragon_size_base value = 120 }
-					}
-					else_if = {
-						limit = { scope:dob_bday_d = { age >= 80 } var:dragon_size_base < 90 }
-						set_variable = { name = dragon_size_base value = 90 }
-					}
-					else_if = {
-						limit = { scope:dob_bday_d = { age >= 65 } var:dragon_size_base < 60 }
-						set_variable = { name = dragon_size_base value = 60 }
-					}
-					else_if = {
-						limit = { scope:dob_bday_d = { age >= 55 } var:dragon_size_base < 45 }
-						set_variable = { name = dragon_size_base value = 45 }
-					}
-					else_if = {
-						limit = { scope:dob_bday_d = { age >= 45 } var:dragon_size_base < 30 }
-						set_variable = { name = dragon_size_base value = 30 }
-					}
-					else_if = {
-						limit = { scope:dob_bday_d = { age >= 35 } var:dragon_size_base < 20 }
-						set_variable = { name = dragon_size_base value = 20 }
-					}
-					else_if = {
-						limit = { scope:dob_bday_d = { age >= 25 } var:dragon_size_base < 15 }
-						set_variable = { name = dragon_size_base value = 15 }
-					}
-					else_if = {
-						limit = { scope:dob_bday_d = { age >= 20 } var:dragon_size_base < 10 }
-						set_variable = { name = dragon_size_base value = 10 }
-					}
-					else_if = {
-						limit = { scope:dob_bday_d = { age >= 15 } var:dragon_size_base < 6 }
-						set_variable = { name = dragon_size_base value = 6 }
-					}
-					else_if = {
-						limit = { scope:dob_bday_d = { age >= 5 } var:dragon_size_base < 3 }
-						set_variable = { name = dragon_size_base value = 3 }
-					}
+					# Shared growth curve helper. this = story node.
+					dob_apply_dragon_size_floor_to_story_node = yes
 				}
 			}
 			# Atualizar modifier do rider se tiver um

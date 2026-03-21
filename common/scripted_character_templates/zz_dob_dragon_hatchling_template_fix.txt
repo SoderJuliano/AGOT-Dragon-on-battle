@@ -1,0 +1,102 @@
+agot_dragon_hatchling_template = {
+	age = 0
+	gender_female_chance = dragon_female_chance
+	dynasty = none
+	trait = dragon
+	#Misc
+	after_creation = {
+		#physical
+		if = {
+			limit = {
+				scope:egg ?= {
+					OR = {
+						has_variable_list = dragon_parent
+						has_variable_list = dragon_parent_other
+					}
+				}
+				NOT = { has_game_rule = agot_dragon_trait_inheritance_disabled }
+			}
+			# Transfer trait data before egg is destroyed
+			agot_transfer_parent_congenital_traits_to_dragon = {
+				DRAGON_EGG = scope:egg
+				DRAGON = scope:dragon
+			}
+			# Give Congenital Traits
+			agot_dragon_assign_parent_congenital_traits = {
+				DRAGON = scope:dragon
+			}
+		}
+		else = {
+			agot_give_random_physical_traits = yes
+		}
+
+		# Hide gender
+		set_variable = {
+			name = dragon_gender_hidden
+			value = 1
+		}
+
+		if = {
+			limit = { exists = scope:sacrifice }
+			add_trait = dragon_destined
+		}
+
+		# Give story
+		create_story = story_dragon_alive
+
+		# Needed for visuals
+		set_variable = {
+			name = dragon_age
+			value = age
+		}
+		set_variable = {
+			name = dragon_size
+			value = 0 # Set to 0 here since they're a baby-the backage effect doesn't update their age. Their size will grow on birthdays.
+		}
+		set_variable = {
+			name = dragon_size_base
+			value = 0 # Set to 0 here since they're a baby-the backage effect doesn't update their age. Their size will grow on birthdays.
+		}
+		set_variable = baby_dragon
+		agot_gen_hatchling_color_effect = yes
+		if = {
+			limit = {
+				exists = var:primary_color
+			}
+			set_variable = {
+				name = color
+				value = var:primary_color
+			}
+		}
+		# Store dragon egg color for later use
+		if = {
+			limit = {
+				exists = scope:egg
+				exists = scope:egg.var:dragon_egg_color
+			}
+			set_variable = {
+				name = egg_color
+				value = scope:egg.var:dragon_egg_color
+			}
+		}
+		#Set dragon visual gene ranges here.
+		agot_back_apply_dragon_aging_effect = yes # This won't really do anything since the age check returns false on the while trigger, but forwarding it over to keep parity with how it was before.
+		agot_gen_appearance_variables = yes
+		agot_dragon_transfer_vars_to_story_cycle_effect = { DRAGON = scope:dragon }
+
+		#Stop current egg from being reforged
+		if = {
+			limit = {
+				exists = scope:egg
+			}
+			scope:egg = {
+				set_variable = { name = currently_hatching }
+			}
+		}
+		agot_dragon_birth_magic_effect = yes
+
+	}
+
+	faith = faith:valyrian_pan_freehold
+	culture = culture:dragon_culture
+}

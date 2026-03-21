@@ -46,6 +46,10 @@ dob_fix_all_dragons_decision = {
 		# (inclui dragões já registrados mas com size ou genes errados)
 		dob_correct_all_dragon_sizes_on_load = yes
 
+		# Regerar as cores/genes dos dragões que guardam egg_color ou primary_color.
+		# Isso corrige hatchlings antigos afetados pela lógica legada do MDE.
+		dob_refresh_all_dragon_colors = yes
+
 		# Evento que mostra o resultado com contagem de dragões corrigidos
 		trigger_event = { id = dragon_battle.017 }
 	}

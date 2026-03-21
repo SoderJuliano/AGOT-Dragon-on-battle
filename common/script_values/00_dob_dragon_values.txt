@@ -174,3 +174,86 @@ dob_dragon_battle_bonus_display = {
 		add = dragon_combat_effectiveness
 	}
 }
+
+# -- Battle report values for localization --------------------------------------
+# Scope: character (player)
+
+dob_bd_ally_1_power_loc = {
+	value = 0
+	if = { limit = { has_variable = dob_bd_ally_1_power } add = var:dob_bd_ally_1_power }
+}
+
+dob_bd_ally_2_power_loc = {
+	value = 0
+	if = { limit = { has_variable = dob_bd_ally_2_power } add = var:dob_bd_ally_2_power }
+}
+
+dob_bd_ally_3_power_loc = {
+	value = 0
+	if = { limit = { has_variable = dob_bd_ally_3_power } add = var:dob_bd_ally_3_power }
+}
+
+dob_bd_enemy_1_power_loc = {
+	value = 0
+	if = { limit = { has_variable = dob_bd_enemy_1_power } add = var:dob_bd_enemy_1_power }
+}
+
+dob_bd_enemy_2_power_loc = {
+	value = 0
+	if = { limit = { has_variable = dob_bd_enemy_2_power } add = var:dob_bd_enemy_2_power }
+}
+
+dob_bd_enemy_3_power_loc = {
+	value = 0
+	if = { limit = { has_variable = dob_bd_enemy_3_power } add = var:dob_bd_enemy_3_power }
+}
+
+dob_bd_total_ally_power_loc = {
+	value = 0
+	if = { limit = { has_variable = dob_bd_total_ally_power } add = var:dob_bd_total_ally_power }
+}
+
+dob_bd_total_enemy_power_loc = {
+	value = 0
+	if = { limit = { has_variable = dob_bd_total_enemy_power } add = var:dob_bd_total_enemy_power }
+}
+
+dob_bd_ally_1_pct_loc = {
+	value = 0
+	if = { limit = { has_variable = dob_bd_ally_1_pct } add = var:dob_bd_ally_1_pct }
+}
+
+dob_bd_ally_2_pct_loc = {
+	value = 0
+	if = { limit = { has_variable = dob_bd_ally_2_pct } add = var:dob_bd_ally_2_pct }
+}
+
+dob_bd_ally_3_pct_loc = {
+	value = 0
+	if = { limit = { has_variable = dob_bd_ally_3_pct } add = var:dob_bd_ally_3_pct }
+}
+
+dob_bd_enemy_1_pct_loc = {
+	value = 0
+	if = { limit = { has_variable = dob_bd_enemy_1_pct } add = var:dob_bd_enemy_1_pct }
+}
+
+dob_bd_enemy_2_pct_loc = {
+	value = 0
+	if = { limit = { has_variable = dob_bd_enemy_2_pct } add = var:dob_bd_enemy_2_pct }
+}
+
+dob_bd_enemy_3_pct_loc = {
+	value = 0
+	if = { limit = { has_variable = dob_bd_enemy_3_pct } add = var:dob_bd_enemy_3_pct }
+}
+
+dob_bd_total_ally_pct_loc = {
+	value = 0
+	if = { limit = { has_variable = dob_bd_total_ally_pct } add = var:dob_bd_total_ally_pct }
+}
+
+dob_bd_total_enemy_pct_loc = {
+	value = 0
+	if = { limit = { has_variable = dob_bd_total_enemy_pct } add = var:dob_bd_total_enemy_pct }
+}

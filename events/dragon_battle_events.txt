@@ -447,7 +447,7 @@ dragon_battle.016 = {
 		animation = stress
 	}
 	right_portrait = {
-		character = var:current_dragon
+		character = var:dob_release_dragon_target
 	}
 
 	# CONFIRMAR: libera o dragão, sem nenhuma penalidade
@@ -459,6 +459,7 @@ dragon_battle.016 = {
 	# CANCELAR
 	option = {
 		name = dragon_battle.016.b
+		if = { limit = { has_variable = dob_release_dragon_target } remove_variable = dob_release_dragon_target }
 	}
 }
 
