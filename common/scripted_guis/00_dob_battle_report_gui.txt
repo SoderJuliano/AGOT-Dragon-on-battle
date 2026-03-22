@@ -87,3 +87,22 @@ dob_bd_sgui_enemy_3_wounded = {
 	is_shown = { root = { has_variable = dob_bd_enemy_3_status
 						var:dob_bd_enemy_3_status = 1 } }
 }
+
+# ── DOB: Event background image selectors ──────────────────────────────
+# dob_event_bg values (set in event immediate, removed in option):
+#   1 = victory (dragon burning troops)
+#   2 = wounded dragon
+#   3 = dragon killed mid-battle (in-flight)
+#   4 = dragon killed post-battle (on ground)
+dob_bg_sgui_victory = {
+	is_shown = { root = { has_variable = dob_event_bg  var:dob_event_bg = 1 } }
+}
+dob_bg_sgui_wounded = {
+	is_shown = { root = { has_variable = dob_event_bg  var:dob_event_bg = 2 } }
+}
+dob_bg_sgui_sky_death = {
+	is_shown = { root = { has_variable = dob_event_bg  var:dob_event_bg = 3 } }
+}
+dob_bg_sgui_ground_death = {
+	is_shown = { root = { has_variable = dob_event_bg  var:dob_event_bg = 4 } }
+}

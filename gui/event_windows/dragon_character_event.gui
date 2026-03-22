@@ -93,6 +93,41 @@
 		{}
 	}
 
+	# ── DOB: Custom battle background illustrations ────────────────────────────────
+	# dob_event_bg variable on the player selects which image to show.
+	# Rendered above window frame, below character portraits and VFX.
+	widget = {
+		name = "dob_battle_bg"
+		size = { 100% 100% }
+		margin = { 40 20 }
+
+		icon = {
+			name = "dob_bg_victory"
+			visible = "[GetScriptedGui('dob_bg_sgui_victory').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			size = { 100% 100% }
+			texture = "gfx/interface/event_illustrations/dob/dob_bg_victory.png"
+		}
+		icon = {
+			name = "dob_bg_wounded"
+			visible = "[GetScriptedGui('dob_bg_sgui_wounded').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			size = { 100% 100% }
+			texture = "gfx/interface/event_illustrations/dob/dob_bg_wounded.png"
+		}
+		icon = {
+			name = "dob_bg_sky_death"
+			visible = "[GetScriptedGui('dob_bg_sgui_sky_death').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			size = { 100% 100% }
+			texture = "gfx/interface/event_illustrations/dob/dob_bg_sky_death.png"
+		}
+		icon = {
+			name = "dob_bg_ground_death"
+			visible = "[GetScriptedGui('dob_bg_sgui_ground_death').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			size = { 100% 100% }
+			texture = "gfx/interface/event_illustrations/dob/dob_bg_ground_death.png"
+		}
+	}
+	# ── END DOB battle backgrounds ──────────────────────────────────────
+
 	vbox = { # Event shaders (behind character portraits)
 		name = "agot_shader_event_background"
 		margin = { 30 15 }
