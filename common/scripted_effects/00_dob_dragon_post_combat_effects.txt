@@ -329,8 +329,6 @@ dob_dragon_winner_effect = {
 					}
 				}
 			}
-		}
-	}
 
 	# -- KNIGHT vencedor com dragï¿½o ï¿½ mesmo comportamento que commander player --------
 	# Cobre o caso em que o player serve como knight (nï¿½o commander) na batalha
@@ -404,8 +402,6 @@ dob_dragon_winner_effect = {
 			else = {
 				trigger_event = { id = dragon_battle.005 days = 1 }
 			}
-		}
-	}
 
 	# -- Notificar player sobre dragï¿½es ALIADOS (mesma side, IA) ----------------------
 	# Roda apenas se hï¿½ um player neste lado
@@ -432,8 +428,6 @@ dob_dragon_winner_effect = {
 					trigger_event = { id = dragon_battle.014 days = 2 }
 				}
 			}
-		}
-	}
 
 	# -- Notificar player sobre dragï¿½es de CAPITï¿½ES (player ausente da batalha) ------
 	# Cobre vassalos/contratados do player lutando com dragï¿½o quando o player
@@ -510,8 +504,6 @@ dob_dragon_winner_effect = {
 					}
 				}
 			}
-		}
-	}
 
 	# -- Notificar player sobre dragï¿½es INIMIGOS (side perdedora) --------------------
 	# Delay de 3 dias para garantir que loser_effect jï¿½ processou mortes/ferimentos
@@ -534,8 +526,6 @@ dob_dragon_winner_effect = {
 					}
 				}
 			}
-		}
-	}
 
 	# -- Gravar participantes dragï¿½es para o Battle Report GUI ------------------------
 	# Roda se o player (ou vassalo/capitï¿½o do player) estï¿½ neste lado
@@ -648,8 +638,6 @@ dob_dragon_loser_effect = {
 					trigger_event = { id = dragon_battle.006 days = 1 }
 				}
 			}
-		}
-	}
 
 	# -- KNIGHT perdedor com dragï¿½o ï¿½ mesmo comportamento que commander player ---------
 	# Cobre o caso em que o player serve como knight (nï¿½o commander) na batalha
@@ -714,8 +702,6 @@ dob_dragon_loser_effect = {
 			else = {
 				trigger_event = { id = dragon_battle.006 days = 1 }
 			}
-		}
-	}
 
 	# -- Gravar participantes dragï¿½es para o Battle Report GUI ------------------------
 	# Roda se o player (ou vassalo/capitï¿½o do player) estï¿½ neste lado
@@ -772,8 +758,6 @@ dob_dragon_loser_notifications = {
 					trigger_event = { id = dragon_battle.014 days = 2 }
 				}
 			}
-		}
-	}
 
 	# -- Notificar player sobre dragï¿½es de CAPITï¿½ES (player ausente da batalha) ------
 	if = {
@@ -846,8 +830,6 @@ dob_dragon_loser_notifications = {
 					}
 				}
 			}
-		}
-	}
 
 	# -- Notificar player sobre dragï¿½es INIMIGOS (side vencedora) ------------------
 	# Delay de 3 dias: winner_effect jï¿½ processou tudo neste lado
@@ -1144,8 +1126,6 @@ dob_record_battle_dragons_effect = {
 				limit = { top_liege = { is_ai = no } }
 				top_liege = { save_scope_as = dob_bd_player }
 			}
-		}
-	}
 
 	# â”€â”€ Step 2: Initialize battle record on player â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 	if = {
@@ -1298,8 +1278,6 @@ dob_record_battle_dragons_effect = {
 				}
 				}
 			}
-		}
-	}
 
 	# â”€â”€ Step 4: Record enemy dragons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 	# scope:dob_bd_player persists inside enemy_side scope transitions.
@@ -1408,63 +1386,54 @@ dob_record_battle_dragons_effect = {
 					}
 				}
 			}
-		}
-	}
 
 	# ── Step 5: Record power per dragon ──────────────────────────────────────────────────────
-	# FIX: Use save_scope_as to enter the dragon's scope directly, then access
-	# dragon_combat_effectiveness via scope:named_scope.sv — avoids broken var:char.sv
-	# double-chain in value blocks that was causing 0 to be stored for every dragon.
+	# Use var:char.script_value syntax — the same pattern AGOT uses (var:current_dragon.dragon_combat_effectiveness).
+	# scope:named_scope.script_value does NOT work in value blocks; var:char.script_value does.
 	# Fallback: dragon_size (always non-zero for living dragons).
 	if = {
 		limit = { exists = scope:dob_bd_player }
 		scope:dob_bd_player = {
 			if = {
 				limit = { has_variable = dob_bd_ally_1  var:dob_bd_ally_1 = { is_alive = yes } }
-				var:dob_bd_ally_1 = { save_scope_as = dob_pw_d1 }
-				set_variable = { name = dob_bd_ally_1_power value = { value = 0  add = scope:dob_pw_d1.dragon_combat_effectiveness } }
+				set_variable = { name = dob_bd_ally_1_power value = { value = 0  add = var:dob_bd_ally_1.dragon_combat_effectiveness } }
 				if = { limit = { var:dob_bd_ally_1_power <= 0 }
-					set_variable = { name = dob_bd_ally_1_power value = { value = 0  add = scope:dob_pw_d1.dragon_size } }
+					set_variable = { name = dob_bd_ally_1_power value = { value = 0  add = var:dob_bd_ally_1.dragon_size } }
 				}
 			}
 			if = {
 				limit = { has_variable = dob_bd_ally_2  var:dob_bd_ally_2 = { is_alive = yes } }
-				var:dob_bd_ally_2 = { save_scope_as = dob_pw_d2 }
-				set_variable = { name = dob_bd_ally_2_power value = { value = 0  add = scope:dob_pw_d2.dragon_combat_effectiveness } }
+				set_variable = { name = dob_bd_ally_2_power value = { value = 0  add = var:dob_bd_ally_2.dragon_combat_effectiveness } }
 				if = { limit = { var:dob_bd_ally_2_power <= 0 }
-					set_variable = { name = dob_bd_ally_2_power value = { value = 0  add = scope:dob_pw_d2.dragon_size } }
+					set_variable = { name = dob_bd_ally_2_power value = { value = 0  add = var:dob_bd_ally_2.dragon_size } }
 				}
 			}
 			if = {
 				limit = { has_variable = dob_bd_ally_3  var:dob_bd_ally_3 = { is_alive = yes } }
-				var:dob_bd_ally_3 = { save_scope_as = dob_pw_d3 }
-				set_variable = { name = dob_bd_ally_3_power value = { value = 0  add = scope:dob_pw_d3.dragon_combat_effectiveness } }
+				set_variable = { name = dob_bd_ally_3_power value = { value = 0  add = var:dob_bd_ally_3.dragon_combat_effectiveness } }
 				if = { limit = { var:dob_bd_ally_3_power <= 0 }
-					set_variable = { name = dob_bd_ally_3_power value = { value = 0  add = scope:dob_pw_d3.dragon_size } }
+					set_variable = { name = dob_bd_ally_3_power value = { value = 0  add = var:dob_bd_ally_3.dragon_size } }
 				}
 			}
 			if = {
 				limit = { has_variable = dob_bd_enemy_1  var:dob_bd_enemy_1 = { is_alive = yes } }
-				var:dob_bd_enemy_1 = { save_scope_as = dob_pw_d4 }
-				set_variable = { name = dob_bd_enemy_1_power value = { value = 0  add = scope:dob_pw_d4.dragon_combat_effectiveness } }
+				set_variable = { name = dob_bd_enemy_1_power value = { value = 0  add = var:dob_bd_enemy_1.dragon_combat_effectiveness } }
 				if = { limit = { var:dob_bd_enemy_1_power <= 0 }
-					set_variable = { name = dob_bd_enemy_1_power value = { value = 0  add = scope:dob_pw_d4.dragon_size } }
+					set_variable = { name = dob_bd_enemy_1_power value = { value = 0  add = var:dob_bd_enemy_1.dragon_size } }
 				}
 			}
 			if = {
 				limit = { has_variable = dob_bd_enemy_2  var:dob_bd_enemy_2 = { is_alive = yes } }
-				var:dob_bd_enemy_2 = { save_scope_as = dob_pw_d5 }
-				set_variable = { name = dob_bd_enemy_2_power value = { value = 0  add = scope:dob_pw_d5.dragon_combat_effectiveness } }
+				set_variable = { name = dob_bd_enemy_2_power value = { value = 0  add = var:dob_bd_enemy_2.dragon_combat_effectiveness } }
 				if = { limit = { var:dob_bd_enemy_2_power <= 0 }
-					set_variable = { name = dob_bd_enemy_2_power value = { value = 0  add = scope:dob_pw_d5.dragon_size } }
+					set_variable = { name = dob_bd_enemy_2_power value = { value = 0  add = var:dob_bd_enemy_2.dragon_size } }
 				}
 			}
 			if = {
 				limit = { has_variable = dob_bd_enemy_3  var:dob_bd_enemy_3 = { is_alive = yes } }
-				var:dob_bd_enemy_3 = { save_scope_as = dob_pw_d6 }
-				set_variable = { name = dob_bd_enemy_3_power value = { value = 0  add = scope:dob_pw_d6.dragon_combat_effectiveness } }
+				set_variable = { name = dob_bd_enemy_3_power value = { value = 0  add = var:dob_bd_enemy_3.dragon_combat_effectiveness } }
 				if = { limit = { var:dob_bd_enemy_3_power <= 0 }
-					set_variable = { name = dob_bd_enemy_3_power value = { value = 0  add = scope:dob_pw_d6.dragon_size } }
+					set_variable = { name = dob_bd_enemy_3_power value = { value = 0  add = var:dob_bd_enemy_3.dragon_size } }
 				}
 			}
 			# Total de poder dos dragões aliados

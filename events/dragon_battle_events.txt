@@ -59,6 +59,10 @@ dragon_battle.002 = {
 	desc = dragon_battle.002.desc
 	theme = battle
 
+	background = {
+		reference = "dob_bg_victory"
+	}
+
 	immediate = {
 		if = {
 			limit = { exists = scope:dob_event_dragon }
@@ -88,6 +92,10 @@ dragon_battle.003 = {
 	title = dragon_battle.003.t
 	desc = dragon_battle.003.desc
 	theme = battle
+
+	background = {
+		reference = "dob_bg_ground_death"
+	}
 
 	immediate = {
 		if = {
@@ -119,6 +127,10 @@ dragon_battle.005 = {
 	desc = dragon_battle.005.desc
 	theme = battle
 
+	background = {
+		reference = "dob_bg_sky_death"
+	}
+
 	left_portrait = {
 		character = root
 		animation = grief
@@ -141,6 +153,10 @@ dragon_battle.006 = {
 	title = dragon_battle.006.t
 	desc = dragon_battle.006.desc
 	theme = battle
+
+	background = {
+		reference = "dob_bg_sky_death"
+	}
 
 	left_portrait = {
 		character = root
@@ -165,6 +181,10 @@ dragon_battle.007 = {
 	title = dragon_battle.007.t
 	desc = dragon_battle.007.desc
 	theme = battle
+
+	background = {
+		reference = "dob_bg_wounded"
+	}
 
 	left_portrait = {
 		character = root
@@ -246,6 +266,10 @@ dragon_battle.009 = {
 	desc = dragon_battle.009.desc
 	theme = battle
 
+	background = {
+		reference = "dob_bg_victory"
+	}
+
 	immediate = {
 		if = {
 			limit = { exists = scope:dob_event_dragon }
@@ -276,6 +300,10 @@ dragon_battle.010 = {
 	desc = dragon_battle.010.desc
 	theme = battle
 
+	background = {
+		reference = "dob_bg_ground_death"
+	}
+
 	immediate = {
 		if = {
 			limit = { exists = scope:dob_event_dragon }
@@ -304,6 +332,10 @@ dragon_battle.011 = {
 	desc = dragon_battle.011.desc
 	theme = battle
 
+	background = {
+		reference = "dob_bg_sky_death"
+	}
+
 	left_portrait = {
 		character = root
 		animation = grief
@@ -328,6 +360,10 @@ dragon_battle.012 = {
 	desc = dragon_battle.012.desc
 	theme = battle
 
+	background = {
+		reference = "dob_bg_sky_death"
+	}
+
 	left_portrait = {
 		character = root
 		animation = grief
@@ -351,6 +387,10 @@ dragon_battle.013 = {
 	title = dragon_battle.013.t
 	desc = dragon_battle.013.desc
 	theme = battle
+
+	background = {
+		reference = "dob_bg_wounded"
+	}
 
 	left_portrait = {
 		character = root
@@ -588,6 +628,10 @@ dragon_battle.020 = {
 	desc = dragon_battle.020.desc
 	theme = battle
 
+	background = {
+		reference = "dob_bg_victory"
+	}
+
 	left_portrait = {
 		character = root
 		animation = aggressive_sword
@@ -612,6 +656,10 @@ dragon_battle.021 = {
 	desc = dragon_battle.021.desc
 	theme = battle
 
+	background = {
+		reference = "dob_bg_victory"
+	}
+
 	left_portrait = {
 		character = root
 		animation = war_attacker
@@ -635,6 +683,10 @@ dragon_battle.022 = {
 	title = dragon_battle.022.t
 	desc = dragon_battle.022.desc
 	theme = battle
+
+	background = {
+		reference = "dob_bg_victory"
+	}
 
 	left_portrait = {
 		character = root

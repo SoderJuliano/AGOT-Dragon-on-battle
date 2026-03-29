@@ -1,0 +1,24 @@
+﻿# ============================================================
+# DRAGON ON BATTLE - Event Backgrounds
+# Registers custom 2D backgrounds for DOB battle events.
+# ============================================================
+
+dob_bg_victory = {
+	background = "gfx/interface/event_illustrations/dob/dob_bg_victory.png"
+	environment = "environment_event_battlefield"
+}
+
+dob_bg_ground_death = {
+	background = "gfx/interface/event_illustrations/dob/dob_bg_ground_death.png"
+	environment = "environment_event_battlefield"
+}
+
+dob_bg_sky_death = {
+	background = "gfx/interface/event_illustrations/dob/dob_bg_sky_death.png"
+	environment = "environment_event_battlefield"
+}
+
+dob_bg_wounded = {
+	background = "gfx/interface/event_illustrations/dob/dob_bg_wounded.png"
+	environment = "environment_event_battlefield"
+}
